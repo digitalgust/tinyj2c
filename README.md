@@ -2,15 +2,15 @@
 # java2c
 
 Convert java source to c source , then compile to standalone binary.    
-
+Source contains a minimal vm and gc support.
     
 # Requirement
      
 1. Jetbrain Idea for compile and run converter.    
-2. cmake compile c source , recommend Jetbrain Clion.     
+2. cmake for compile c source , recommend Jetbrain Clion.     
 3. JDK 8+.     
-4. miniJVM for java runtime classes.       
-5. clang     
+4. miniJVM for runtime java classes, Convert need only.       
+5. clang.     
 
      
 # Step    
@@ -19,7 +19,7 @@ Convert java source to c source , then compile to standalone binary.
 * git clone https://github.com/digitalgust/java2c.git        
 * Idea open class2c , run converter.    
 * Clion open java2c , compile c source and run .      
-     
+* Run binary no java classes dependence.     
      
 # Example   
     
