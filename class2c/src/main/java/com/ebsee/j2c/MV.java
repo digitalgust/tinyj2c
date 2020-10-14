@@ -162,8 +162,8 @@ public class MV extends MethodVisitor {
         int cntSlot = 0, cntArgs = 0;
 
         for (String s : signature.getCtypeArgs()) {
-            String fname = Util.getStackFieldName_Ctype(s);
-            String vname = Util.getStackName_Ctype(s);
+            String fname = Util.getStackFieldName_by_Ctype(s);
+            String vname = Util.getStackName_by_Ctype(s);
             add(vname + "local[" + cntSlot + "]." + fname + " = p" + cntSlot + ";");
             cntArgs++;
             cntSlot++;
@@ -728,7 +728,7 @@ public class MV extends MethodVisitor {
                 add("stack[sp++].i = " + value + ";");
                 break;
             case Opcodes.NEWARRAY: // 188
-                newArray(Util.jtypeIndex2javaTag(value));
+                newArray(Util.getjavaTag_by_JtypeIndex(value));
                 break;
             default:
                 //System.out.println("visitIntInsn " + opcode + " " + value);
@@ -1226,7 +1226,7 @@ public class MV extends MethodVisitor {
             usedLabels.add(EXCEPTION_HANDLER_NOT_FOUND);
             add(EXCEPTION_HANDLER_NOT_FOUND + ":");
             String rtype = signature.getResult();
-            String returnValue = getDefValueByCType(rtype);
+            String returnValue = getDefValue_by_Ctype(rtype);
             add(AssistLLVM.FUNC_METHOD_EXIT + "(runtime);");
             add("return " + returnValue + ";");
         }
@@ -1455,15 +1455,15 @@ public class MV extends MethodVisitor {
         for (int i = 0; i < argsCount; i++) {
             sb.append(", ");
             String s = sig.getCtypeArgs().get(i);
-            String fname = Util.getStackFieldName_Ctype(s);
-            String vname = Util.getStackName_Ctype(s);
+            String fname = Util.getStackFieldName_by_Ctype(s);
+            String vname = Util.getStackName_by_Ctype(s);
             sb.append(vname + "stack[sp + " + slotIndex + "].").append(fname);
-            slotIndex += Util.getSlot_Ctype(s);
+            slotIndex += Util.getSlot_by_Ctype(s);
         }
         String ret = "";
         if (!sig.getResult().equals("void")) {
-            String fname = Util.getStackFieldName_Ctype(sig.getResult());
-            String vname = Util.getStackName_Ctype(sig.getResult());
+            String fname = Util.getStackFieldName_by_Ctype(sig.getResult());
+            String vname = Util.getStackName_by_Ctype(sig.getResult());
             ret = vname + "stack[sp]." + fname + " = ";
         }
         if (m.isSync()) {
@@ -1525,15 +1525,15 @@ public class MV extends MethodVisitor {
         for (int i = 0; i < argsCount; i++) {
             sb.append(", ");
             String s = sig.getCtypeArgs().get(i);
-            String fname = Util.getStackFieldName_Ctype(s);
-            String vname = Util.getStackName_Ctype(s);
+            String fname = Util.getStackFieldName_by_Ctype(s);
+            String vname = Util.getStackName_by_Ctype(s);
             sb.append(vname + "stack[sp + " + slotIndex + "].").append(fname);
-            slotIndex += Util.getSlot_Ctype(s);
+            slotIndex += Util.getSlot_by_Ctype(s);
         }
         String ret = "";
         if (!sig.getResult().equals("void")) {
-            String fname = Util.getStackFieldName_Ctype(sig.getResult());
-            String vname = Util.getStackName_Ctype(sig.getResult());
+            String fname = Util.getStackFieldName_by_Ctype(sig.getResult());
+            String vname = Util.getStackName_by_Ctype(sig.getResult());
             ret = vname + "stack[sp]." + fname + " = ";
         }
         if (m.isSync()) {
@@ -1583,7 +1583,7 @@ public class MV extends MethodVisitor {
 
     public void multiArr(String s, int dims) {
 
-        String type = Util.javaSignature2Ctype(s);
+        String type = Util.getJavaSignatureCtype(s);
         int index = AssistLLVM.getStrIndex(s);
         comment("; newarray/multiarray Dimension Array: " + s + " " + dims);
         add("{");
@@ -1601,10 +1601,10 @@ public class MV extends MethodVisitor {
         comment("putfield " + className + " " + name + " " + signature);
         Field field = ClassManger.findField(className, name, signature);
 
-        String ty = Util.className2Ctype(className);
-        String fname = Util.getStackFieldName_Jtype(signature);
-        String vname = Util.getStackName_Jtype(signature);
-        add("sp -= " + (Util.getSlot_Jtype(signature) + 1) + ";");
+        String ty = Util.getCtype_by_className(className);
+        String fname = Util.getStackFieldName_by_Jtype(signature);
+        String vname = Util.getStackName_by_Jtype(signature);
+        add("sp -= " + (Util.getSlot_by_Jtype(signature) + 1) + ";");
         add("((" + ty + ")rstack[sp + 0].obj)->" + getFieldVarName(field) + " = " + vname + "stack[sp + 1]." + fname + ";");
     }
 
@@ -1612,10 +1612,10 @@ public class MV extends MethodVisitor {
         comment("putstatic " + className + " " + name + " " + signature);
         Field field = ClassManger.findField(className, name, signature);
 
-        String fname = Util.getStackFieldName_Jtype(signature);
-        String vname = Util.getStackName_Jtype(signature);
-        add("sp -= " + Util.getSlot_Jtype(signature) + ";");
-        add(Util.getStaticStructVarName(field.getClassFile().getThisClassName()) + "." + getFieldVarName(field) + " = " + vname + "stack[sp]." + fname + ";");
+        String fname = Util.getStackFieldName_by_Jtype(signature);
+        String vname = Util.getStackName_by_Jtype(signature);
+        add("sp -= " + Util.getSlot_by_Jtype(signature) + ";");
+        add(Util.getStaticFieldStructVarName(field.getClassFile().getThisClassName()) + "." + getFieldVarName(field) + " = " + vname + "stack[sp]." + fname + ";");
     }
 
 
@@ -1623,30 +1623,30 @@ public class MV extends MethodVisitor {
         comment("getfield " + className + " " + name + " " + signature);
         Field field = ClassManger.findField(className, name, signature);
 
-        String ty = Util.className2Ctype(className);
-        String fname = Util.getStackFieldName_Jtype(signature);
-        String vname = Util.getStackName_Jtype(signature);
+        String ty = Util.getCtype_by_className(className);
+        String fname = Util.getStackFieldName_by_Jtype(signature);
+        String vname = Util.getStackName_by_Jtype(signature);
         add(vname + "stack[sp - 1]." + fname + " = ((" + ty + ")rstack[sp - 1].obj)->" + getFieldVarName(field) + ";");
-        add("sp += " + (Util.getSlot_Jtype(signature) - 1) + ";");
+        add("sp += " + (Util.getSlot_by_Jtype(signature) - 1) + ";");
     }
 
     public void getstatic(String className, String name, String signature) {
         comment("getstatic " + className + " " + name + " " + signature);
         Field field = ClassManger.findField(className, name, signature);
 
-        String fname = Util.getStackFieldName_Jtype(signature);
-        String vname = Util.getStackName_Jtype(signature);
-        add(vname + "stack[sp]." + fname + " =" + Util.getStaticStructVarName(field.getClassFile().getThisClassName()) + "." + getFieldVarName(field) + ";");
-        add("sp += " + Util.getSlot_Jtype(signature) + ";");
+        String fname = Util.getStackFieldName_by_Jtype(signature);
+        String vname = Util.getStackName_by_Jtype(signature);
+        add(vname + "stack[sp]." + fname + " =" + Util.getStaticFieldStructVarName(field.getClassFile().getThisClassName()) + "." + getFieldVarName(field) + ";");
+        add("sp += " + Util.getSlot_by_Jtype(signature) + ";");
     }
 
     public void arrstore(String ctype) {
-        String fname = Util.getStackFieldName_Ctype(ctype);
-        String vname = Util.getStackName_Ctype(ctype);
-        String arrName = Util.getArrayName_Ctype(ctype);
+        String fname = Util.getStackFieldName_by_Ctype(ctype);
+        String vname = Util.getStackName_by_Ctype(ctype);
+        String arrName = Util.getArrayName_by_Ctype(ctype);
         comment("arrstore " + ctype + "  ,  " + curLabel + " bc index = " + curLabel.getOffsetInMethod());
         add("{");
-        add("    " + (Util.getSlot_Ctype(ctype) == 2 ? "--sp;" : ";"));
+        add("    " + (Util.getSlot_by_Ctype(ctype) == 2 ? "--sp;" : ";"));
         add("    " + ctype + " value = " + vname + "stack[--sp]." + fname + ";");
         add("    s32 idx = stack[--sp].i;");
         add("    " + STR_JARRAY_TYPE_NAME + " *arr = rstack[--sp].obj;");
@@ -1669,9 +1669,9 @@ public class MV extends MethodVisitor {
 
 
     public void arrload(String ctype) {
-        String fname = Util.getStackFieldName_Ctype(ctype);
-        String vname = Util.getStackName_Ctype(ctype);
-        String arrName = Util.getArrayName_Ctype(ctype);
+        String fname = Util.getStackFieldName_by_Ctype(ctype);
+        String vname = Util.getStackName_by_Ctype(ctype);
+        String arrName = Util.getArrayName_by_Ctype(ctype);
         comment("arrload " + ctype + "  ,  " + curLabel + " bc index = " + curLabel.getOffsetInMethod());
         add("{");
         add("    s32 idx = stack[--sp].i;");
@@ -1690,7 +1690,7 @@ public class MV extends MethodVisitor {
         add("        goto " + MV.EXCEPTION_HANDLER + ";");
         add("    }");
         add("    " + vname + "stack[sp]." + fname + " = arr->prop." + arrName + "[idx];");
-        add("    sp += " + Util.getSlot_Ctype(ctype) + ";");
+        add("    sp += " + Util.getSlot_by_Ctype(ctype) + ";");
         add("}");
     }
 
@@ -1709,7 +1709,7 @@ public class MV extends MethodVisitor {
 //            int debug = 1;
 //        }
 
-        String methodRawName = Util.method2rawName(this.cv.className, this.methodName, signatureStr);
+        String methodRawName = Util.getMethodRawName(this.cv.className, this.methodName, signatureStr);
         String methodIrName = signature.getCTypeOfResult() + " " + methodRawName + "(" + signature.getCTypeArgsString() + ")";
         if (methodName.equals("<clinit>")) {
             int index = AssistLLVM.getMethodIndex(cv.className, methodName, signatureStr);

@@ -59,23 +59,23 @@ public final class Util {
     static final String SEMICOLON_SPLITOR = "_2";//;
     static final String LEFT_BRACERT_SPLITOR = "_3";//[
 
-    static public String asTypePtr(String str) {
-        return asType(str) + "*";
+    static public String getClassStructTypePtr(String str) {
+        return getClassStructType(str) + "*";
     }
 
     static public String regulString(String s) {
         return s.replace("_", UNDERLINE_SPLITOR).replaceAll("[\\.\\/\\<\\>]", "_").replace("$", INNER_CLASS_SPLITOR).replace(";", SEMICOLON_SPLITOR).replace("[", LEFT_BRACERT_SPLITOR);
     }
 
-    static public String asType(String str) {
+    static public String getClassStructType(String str) {
         return regulString("struct " + str);
     }
 
-    static public String asRawName(String str) {
+    static public String getClassStructTypeRawName(String str) {
         return regulString(str);
     }
 
-    public static String javaSignature2Ctype(String str) {
+    public static String getJavaSignatureCtype(String str) {
 
         if (str.equals("B")) {
             return BYTE;
@@ -97,7 +97,7 @@ public final class Util {
             return BOOLEAN;
         } else if (str.startsWith("L")) {
             str = str.substring(1, str.length() - 1);
-            return asTypePtr(str);
+            return getClassStructTypePtr(str);
         } else if (str.startsWith("[")) {
             return javaArr2CtypePtr();
         }
@@ -110,7 +110,7 @@ public final class Util {
     }
 
 
-    public static boolean isRefer_Jtype(String jtype) {
+    public static boolean isRefer_by_Jtype(String jtype) {
         switch (jtype) {
             case "I":
             case "S":
@@ -126,7 +126,7 @@ public final class Util {
         }
     }
 
-    public static boolean isRefer_Ctype(String jtype) {
+    public static boolean isRefer_by_Ctype(String jtype) {
         switch (jtype) {
             case VOID:
             case INT:
@@ -143,7 +143,7 @@ public final class Util {
         }
     }
 
-    public static String getStackFieldName_Jtype(String jtype) {
+    public static String getStackFieldName_by_Jtype(String jtype) {
         switch (jtype) {
             case "I":
             case "S":
@@ -162,7 +162,7 @@ public final class Util {
         }
     }
 
-    public static String getStackName_Jtype(String jtype) {
+    public static String getStackName_by_Jtype(String jtype) {
         switch (jtype) {
             case "I":
             case "S":
@@ -178,7 +178,7 @@ public final class Util {
         }
     }
 
-    public static String getStackFieldName_Ctype(String ctype) {
+    public static String getStackFieldName_by_Ctype(String ctype) {
         switch (ctype) {
             case INT:
             case SHORT:
@@ -196,7 +196,7 @@ public final class Util {
         }
     }
 
-    public static String getStackName_Ctype(String ctype) {
+    public static String getStackName_by_Ctype(String ctype) {
         switch (ctype) {
             case INT:
             case SHORT:
@@ -211,7 +211,7 @@ public final class Util {
         }
     }
 
-    public static String getArrayName_Ctype(String ctype) {
+    public static String getArrayName_by_Ctype(String ctype) {
         switch (ctype) {
             case INT:
                 return "as_s32_arr";
@@ -232,7 +232,7 @@ public final class Util {
         }
     }
 
-    static public int getSlot_Ctype(String ctype) {
+    static public int getSlot_by_Ctype(String ctype) {
         if (DOUBLE.equals(ctype) || LONG.equals(ctype)) {
             return 2;
         } else if (VOID.equals(ctype)) {
@@ -241,7 +241,7 @@ public final class Util {
         return 1;
     }
 
-    static public int getSlot_Jtype(String jtype) {
+    static public int getSlot_by_Jtype(String jtype) {
         if ("D".equals(jtype) || "J".equals(jtype)) {
             return 2;
         } else if ("V".equals(jtype)) {
@@ -251,7 +251,7 @@ public final class Util {
     }
 
 
-    public static String getDefValueByCType(String type) {
+    public static String getDefValue_by_Ctype(String type) {
         String returnValue = "";
         switch (type) {
             case "void": {
@@ -278,12 +278,12 @@ public final class Util {
         return returnValue;
     }
 
-    public static List<String> javaMethodSignature2Ctypes(String str) {
+    public static List<String> getJavaMethodSignatureCtypes(String str) {
         List<String> list = splitMethodSignature(str);
 
         List<String> result = new ArrayList<>();
         for (String s : list) {
-            result.add(javaSignature2Ctype(s));
+            result.add(getJavaSignatureCtype(s));
         }
         return result;
     }
@@ -329,11 +329,11 @@ public final class Util {
 
 
     public static String getMethodRawName(Method method) {
-        return method2rawName(method.getClassFile().getThisClassName(), method.getMethodName(), method.getDescriptor());
+        return getMethodRawName(method.getClassFile().getThisClassName(), method.getMethodName(), method.getDescriptor());
     }
 
 
-    public static String method2rawName(String className, String methodName, String signature) {
+    public static String getMethodRawName(String className, String methodName, String signature) {
         StringBuilder result = new StringBuilder();
         result.append("Java");
         result.append('.');
@@ -351,7 +351,7 @@ public final class Util {
     }
 
     public static String getMethodDeclare(String className, String methodName, JSignature sig) {
-        return sig.getResult() + " " + method2rawName(className, methodName, sig.javaSignature) + "(" + sig.getCTypeArgsString() + ")";
+        return sig.getResult() + " " + getMethodRawName(className, methodName, sig.javaSignature) + "(" + sig.getCTypeArgsString() + ")";
     }
 
     public static String class2structDefine(String className) {
@@ -369,10 +369,10 @@ public final class Util {
                 joiner.add(getVMTableTypePtr() + " vm_table");
                 for (Field f : fieldsContainSuperClass) {
                     if ((f.getAccessFlags() & Modifier.STATIC) == 0) {
-                        joiner.add(javaSignature2Ctype(f.getDescriptor()) + " " + getFieldVarName(f));
+                        joiner.add(getJavaSignatureCtype(f.getDescriptor()) + " " + getFieldVarName(f));
                     }
                 }
-                String s = asType(className) + " " + joiner + ";";
+                String s = getClassStructType(className) + " " + joiner + ";";
                 return s;
             }
         } catch (Exception e) {
@@ -389,20 +389,20 @@ public final class Util {
         return regulString(field.getFieldName()) + "_" + ClassManger.getFieldIndexInFieldTable(field);
     }
 
-    public static String getStaticStructVarName(String className) {
-        return "static_var_" + asRawName(className);
+    public static String getStaticFieldStructVarName(String className) {
+        return "static_var_" + getClassStructTypeRawName(className);
     }
 
-    public static String getStaticFieldTypeRawName(String className) {
-        return asRawName(className) + "_static";
+    public static String getStaticFieldStructTypeRawName(String className) {
+        return getClassStructTypeRawName(className) + "_static";
     }
 
-    public static String getStaticFieldType(String className) {
-        return asType(className) + "_static";
+    public static String getStaticFieldStructType(String className) {
+        return getClassStructType(className) + "_static";
     }
 
-    public static String getStaticFieldTypePtr(String className) {
-        return asType(className) + "_static *";
+    public static String getStaticFieldStructTypePtr(String className) {
+        return getClassStructType(className) + "_static *";
     }
 
     public static String classStaticInit(String className) {
@@ -414,14 +414,14 @@ public final class Util {
                 StringJoiner joiner = new StringJoiner(", ", "{", "}");
                 for (Field f : c.getFields()) {
                     if ((f.getAccessFlags() & Modifier.STATIC) != 0) {
-                        if (isRefer_Jtype(f.getDescriptor())) {
+                        if (isRefer_by_Jtype(f.getDescriptor())) {
                             joiner.add("NULL");
                         } else {
                             joiner.add("0");
                         }
                     }
                 }
-                String s = getStaticFieldType(className) + " " + getStaticStructVarName(className) + " = " + joiner + ";";
+                String s = getStaticFieldStructType(className) + " " + getStaticFieldStructVarName(className) + " = " + joiner + ";";
                 return s;
             }
         } catch (Exception e) {
@@ -439,10 +439,10 @@ public final class Util {
                 StringJoiner joiner = new StringJoiner("; ", "{", ";}");
                 for (Field f : c.getFields()) {
                     if ((f.getAccessFlags() & Modifier.STATIC) != 0) {
-                        joiner.add(javaSignature2Ctype(f.getDescriptor()) + " " + getFieldVarName(f));
+                        joiner.add(getJavaSignatureCtype(f.getDescriptor()) + " " + getFieldVarName(f));
                     }
                 }
-                String s = getStaticFieldType(className) + " " + joiner + ";";
+                String s = getStaticFieldStructType(className) + " " + joiner + ";";
                 return s;
             }
         } catch (Exception e) {
@@ -452,13 +452,13 @@ public final class Util {
     }
 
     public static String getStaticFieldExternalDeclare(String className) {
-        return "extern " + getStaticFieldType(className) + " " + getStaticStructVarName(className) + ";";
+        return "extern " + getStaticFieldStructType(className) + " " + getStaticFieldStructVarName(className) + ";";
     }
 
-    public static String className2Ctype(String className) {
+    public static String getCtype_by_className(String className) {
         try {
             String cn = "L" + className.replace('.', '/') + ";";
-            return javaSignature2Ctype(cn);
+            return getJavaSignatureCtype(cn);
         } catch (Exception e) {
             e.printStackTrace();
             return className + " is unknown";
@@ -477,7 +477,7 @@ public final class Util {
         return 0;
     }
 
-    public static String jtypeIndex2javaTag(int type) {
+    public static String getjavaTag_by_JtypeIndex(int type) {
         switch (type) {
             case 4:
                 return "Z";
@@ -499,7 +499,7 @@ public final class Util {
         return null;
     }
 
-    public static String className2javaDesc(String name) {
+    public static String getJavaDesc_by_className(String name) {
         switch (name) {
             case "int":
                 return "I";
@@ -526,7 +526,7 @@ public final class Util {
 
 
     public static String getVMTableName(String className) {
-        return "vmtable_" + asRawName(className);
+        return "vmtable_" + getClassStructTypeRawName(className);
     }
 
     public static String getVMTableTypePtr() {
@@ -580,7 +580,7 @@ public final class Util {
 
 
     public static String getExceptionTableRawName(String className, String methodName, JSignature signature) {
-        return "extable_" + method2rawName(className, methodName, signature.getJavaSignature());
+        return "extable_" + getMethodRawName(className, methodName, signature.getJavaSignature());
     }
 
 

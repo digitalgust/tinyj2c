@@ -61,7 +61,7 @@ public class CV extends ClassVisitor {
 
     public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
         if ((access & Opcodes.ACC_STATIC) != 0) {
-            Util.javaSignature2Ctype(desc);
+            Util.getJavaSignatureCtype(desc);
             this.staticFields.add(new JField(className, name, desc));
         } else {
             this.fields.add(new JField(className, name, desc));
@@ -157,7 +157,7 @@ public class CV extends ClassVisitor {
             for (int j = 0; j < methodSize; j++) {
                 Method m = methods.get(j);
                 String cName = m.getClassFile().getThisClassName();
-                Util.asTypePtr(cName);
+                Util.getClassStructTypePtr(cName);
                 sb.append("    ").append(Util.getMethodRawName(m));
 
                 if (j < methodSize - 1) {

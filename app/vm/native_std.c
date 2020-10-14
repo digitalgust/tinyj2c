@@ -431,10 +431,10 @@ s32 isDir(Utf8String *path) {
 
 s32 jstring_2_utf8(struct java_lang_String *jstr, Utf8String *utf8) {
     if (!jstr)return 1;
-    JArray *arr = jstr->value_0;
+    JArray *arr = jstr->value_in_string;
     if (arr) {
-        s32 count = jstr->count_2;
-        s32 offset = jstr->offset_1;
+        s32 count = jstr->count_in_string;
+        s32 offset = jstr->offset_in_string;
         u16 *arrbody = arr->prop.as_u16_arr;
         if (arr->prop.as_u16_arr)unicode_2_utf8(&arrbody[offset], utf8, count);
     }
@@ -449,17 +449,17 @@ s32 jstring_equals(struct java_lang_String *jstr1, struct java_lang_String *jstr
     } else if (!jstr2) {
         return 0;
     }
-    JArray *arr1 = jstr1->value_0;//取得 char[] value
-    JArray *arr2 = jstr2->value_0;//取得 char[] value
+    JArray *arr1 = jstr1->value_in_string;//取得 char[] value
+    JArray *arr2 = jstr2->value_in_string;//取得 char[] value
     s32 count1 = 0, offset1 = 0, count2 = 0, offset2 = 0;
     //0长度字符串可能value[] 是空值，也可能不是空值但count是0
     if (arr1) {
-        count1 = jstr1->count_2;
-        offset1 = jstr1->offset_1;
+        count1 = jstr1->count_in_string;
+        offset1 = jstr1->offset_in_string;
     }
     if (arr2) {
-        count2 = jstr2->count_2;
-        offset2 = jstr2->offset_1;
+        count2 = jstr2->count_in_string;
+        offset2 = jstr2->offset_in_string;
     }
     if (count1 != count2) {
         return 0;
@@ -480,17 +480,17 @@ s32 jstring_equals(struct java_lang_String *jstr1, struct java_lang_String *jstr
 void jstring_print(__refer jobj) {
     struct java_lang_String *jstr = (struct java_lang_String *) jobj;
     s32 i;
-    for (i = 0; i < jstr->count_2; i++) {
-        printf("%c", jstr->value_0->prop.as_u16_arr[jstr->offset_1 + i]);
+    for (i = 0; i < jstr->count_in_string; i++) {
+        printf("%c", jstr->value_in_string->prop.as_u16_arr[jstr->offset_in_string + i]);
     }
     printf("\n");
 }
 
 u16 jstring_char_at(struct java_lang_String *jstr, s32 index) {
-    JArray *ptr = (jstr)->value_0;
+    JArray *ptr = (jstr)->value_in_string;
     if (ptr) {
-        s32 offset = (jstr)->offset_1;
-        s32 count = (jstr)->count_2;
+        s32 offset = (jstr)->offset_in_string;
+        s32 count = (jstr)->count_in_string;
         if (index >= count) {
             return -1;
         }
@@ -501,11 +501,11 @@ u16 jstring_char_at(struct java_lang_String *jstr, s32 index) {
 
 
 s32 jstring_index_of(struct java_lang_String *jstr, s32 ch, s32 startAt) {
-    JArray *ptr = (jstr)->value_0;
+    JArray *ptr = (jstr)->value_in_string;
     if (ptr && startAt >= 0) {
         u16 *jchar_arr = (u16 *) ptr->prop.as_u16_arr;
-        s32 count = (jstr)->count_2;
-        s32 offset = (jstr)->offset_1;
+        s32 count = (jstr)->count_in_string;
+        s32 offset = (jstr)->offset_in_string;
         s32 i;
         for (i = startAt; i < count; i++) {
             if (jchar_arr[i + offset] == ch) {
@@ -526,12 +526,12 @@ JObject *buildStackElement(JThreadRuntime *runtime, StackFrame *target) {
         MethodInfo *method = get_methodinfo_by_rawindex(target->methodRawIndex);
 
         //
-        ins->declaringClass_0 = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->clazz->name));
-        ins->methodName_1 = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->name));
-        ins->fileName_2 = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->clazz->source_name));
-        ins->lineNumber_3 = target->lineNo;
+        ins->declaringClass_in_stacktraceelement = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->clazz->name));
+        ins->methodName_in_stacktraceelement = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->name));
+        ins->fileName_in_stacktraceelement = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->clazz->source_name));
+        ins->lineNumber_in_stacktraceelement = target->lineNo;
         if (target->next) {
-            ins->parent_4 = (__refer) buildStackElement(runtime, target->next);
+            ins->parent_in_stacktraceelement = (__refer) buildStackElement(runtime, target->next);
         }
         instance_release_from_thread(runtime, ins);
         return (__refer) ins;
@@ -633,7 +633,7 @@ void Java_java_lang_ClassLoader_load__Ljava_lang_String_2Ljava_lang_Class_2Z_V(J
     return;
 }
 
-struct java_lang_Class *Java_java_lang_Class_forName__Ljava_lang_String_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_String *p0) {
+struct java_lang_Class *Java_java_lang_Class_forName__Ljava_lang_String_2ZLjava_lang_ClassLoader_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_String *p0, s8 p1, struct java_lang_ClassLoader *p2) {
     JClass *cl = NULL;
     if (p0) {
         Utf8String *ustr = utf8_create();
@@ -663,7 +663,7 @@ struct java_lang_ClassLoader *Java_java_lang_Class_getClassLoader0___Ljava_lang_
 }
 
 struct java_lang_String *Java_java_lang_Class_getName0___Ljava_lang_String_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
-    JClass *cl = (__refer) (intptr_t) p0->classHandle_6;
+    JClass *cl = (__refer) (intptr_t) p0->classHandle_in_class;
     if (cl) {
         Utf8String *ustr = utf8_create_copy(cl->name);
         utf8_replace_c(ustr, "/", ".");
@@ -689,7 +689,7 @@ struct java_lang_Class *Java_java_lang_Class_getPrimitiveClass__Ljava_lang_Strin
 
 struct java_lang_Class *Java_java_lang_Class_getSuperclass___Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
     if (p0) {
-        JClass *scl = getSuperClass((__refer) (intptr_t) p0->classHandle_6);
+        JClass *scl = getSuperClass((__refer) (intptr_t) p0->classHandle_in_class);
         if (!scl) return NULL;
         JObject *ins = ins_of_Class_create_get(runtime, scl);
         return (__refer) ins;
@@ -699,34 +699,34 @@ struct java_lang_Class *Java_java_lang_Class_getSuperclass___Ljava_lang_Class_2(
 }
 
 s8 Java_java_lang_Class_isArray___Z(JThreadRuntime *runtime, struct java_lang_Class *p0) {
-    JClass *clazz = ((JClass *) (__refer) (intptr_t) p0->classHandle_6);
+    JClass *clazz = ((JClass *) (__refer) (intptr_t) p0->classHandle_in_class);
     return clazz->array_cell_class != NULL;
 }
 
 s8 Java_java_lang_Class_isAssignableFrom__Ljava_lang_Class_2_Z(JThreadRuntime *runtime, struct java_lang_Class *p0, struct java_lang_Class *p1) {
-    JClass *c0 = (__refer) (intptr_t) p0->classHandle_6;
-    JClass *c1 = (__refer) (intptr_t) p1->classHandle_6;
+    JClass *c0 = (__refer) (intptr_t) p0->classHandle_in_class;
+    JClass *c1 = (__refer) (intptr_t) p1->classHandle_in_class;
 
     return assignable_from(c1, c0);
 }
 
 s8 Java_java_lang_Class_isInstance__Ljava_lang_Object_2_Z(JThreadRuntime *runtime, struct java_lang_Class *p0, struct java_lang_Object *p1) {
-    return instance_of((InstProp *) p1, (__refer) (intptr_t) p0->classHandle_6);
+    return instance_of((InstProp *) p1, (__refer) (intptr_t) p0->classHandle_in_class);
 }
 
 s8 Java_java_lang_Class_isInterface___Z(JThreadRuntime *runtime, struct java_lang_Class *p0) {
-    ClassRaw *raw = ((JClass *) (__refer) (intptr_t) p0->classHandle_6)->raw;
+    ClassRaw *raw = ((JClass *) (__refer) (intptr_t) p0->classHandle_in_class)->raw;
     if (raw)return raw->acc_flag & ACC_INTERFACE;
     return 0;//array
 }
 
 s8 Java_java_lang_Class_isPrimitive___Z(JThreadRuntime *runtime, struct java_lang_Class *p0) {
-    JClass *clazz = ((JClass *) (__refer) (intptr_t) p0->classHandle_6);
+    JClass *clazz = ((JClass *) (__refer) (intptr_t) p0->classHandle_in_class);
     return clazz->primitive;
 }
 
 struct java_lang_Object *Java_java_lang_Class_newInstance___Ljava_lang_Object_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
-    JClass *cl = ((JClass *) (__refer) (intptr_t) p0->classHandle_6);
+    JClass *cl = ((JClass *) (__refer) (intptr_t) p0->classHandle_in_class);
     if (cl && !cl->prop.arr_type) {//class exists and not array class
         JObject *ins = new_instance_with_class(runtime, cl);
         instance_init(runtime, ins);
@@ -888,9 +888,9 @@ s64 Java_java_lang_Runtime_totalMemory___J(JThreadRuntime *runtime, struct java_
 //}
 
 u16 Java_java_lang_String_charAt0__I_C(JThreadRuntime *runtime, struct java_lang_String *p0, s32 p1) {
-    JArray *carr = p0->value_0;
-    s32 offset = p0->offset_1;
-    s32 count = p0->count_2;
+    JArray *carr = p0->value_in_string;
+    s32 offset = p0->offset_in_string;
+    s32 count = p0->count_in_string;
     if (p1 >= count) {
         JObject *exception = new_instance_with_name(runtime, STR_JAVA_LANG_NULL_POINTER_EXCEPTION);
         instance_init(runtime, exception);
@@ -926,22 +926,22 @@ struct java_lang_String *Java_java_lang_String_intern0___Ljava_lang_String_2(JTh
 
 JArray *Java_java_lang_String_replace0__Ljava_lang_String_2Ljava_lang_String_2__3C(JThreadRuntime *runtime, struct java_lang_String *p0, struct java_lang_String *p1, struct java_lang_String *p2) {
 
-    s32 count = p0->count_2;
-    s32 offset = p0->offset_1;
-    u16 *value = p0->value_0->prop.as_u16_arr;
+    s32 count = p0->count_in_string;
+    s32 offset = p0->offset_in_string;
+    u16 *value = p0->value_in_string->prop.as_u16_arr;
 
-    s32 src_count = p1->count_2;
-    s32 dst_count = p2->count_2;
+    s32 src_count = p1->count_in_string;
+    s32 dst_count = p2->count_in_string;
     if (count == 0 || p1 == NULL || p2 == NULL || src_count == 0 || dst_count == 0) {
         JArray *jchar_arr = multi_array_create_by_typename(runtime, &count, 1, "[C");
         memcpy((c8 *) jchar_arr->prop.as_s8_arr, (c8 *) &value[offset], count * sizeof(u16));
         return jchar_arr;
     } else {
 
-        s32 src_offset = p1->offset_1;
-        u16 *src_value = p1->value_0->prop.as_u16_arr;
-        s32 dst_offset = p2->offset_1;
-        u16 *dst_value = p2->value_0->prop.as_u16_arr;
+        s32 src_offset = p1->offset_in_string;
+        u16 *src_value = p1->value_in_string->prop.as_u16_arr;
+        s32 dst_offset = p2->offset_in_string;
+        u16 *dst_value = p2->value_in_string->prop.as_u16_arr;
 
         ByteBuf *sb = bytebuf_create(count);
         int i, j;
@@ -1118,6 +1118,11 @@ s32 Java_java_lang_Thread_activeCount___I(JThreadRuntime *runtime) {
     return g_jvm->thread_list->length;
 }
 
+struct java_lang_ClassLoader *Java_java_lang_Thread_getContextClassLoader___Ljava_lang_ClassLoader_2(JThreadRuntime *runtime, struct java_lang_Thread *p0) {
+    JThreadRuntime *tr = (JThreadRuntime *) (intptr_t) p0->stackFrame_in_thread;
+    return (struct java_lang_ClassLoader *) tr->context_classloader;
+}
+
 struct java_lang_Thread *Java_java_lang_Thread_currentThread___Ljava_lang_Thread_2(JThreadRuntime *runtime) {
     return (__refer) runtime->jthread;
 }
@@ -1137,6 +1142,12 @@ s8 Java_java_lang_Thread_isAlive___Z(JThreadRuntime *runtime, struct java_lang_T
     }
     spin_unlock(&g_jvm->thread_list->spinlock);
     return 0;
+}
+
+void Java_java_lang_Thread_setContextClassLoader__Ljava_lang_ClassLoader_2_V(JThreadRuntime *runtime, struct java_lang_Thread *p0, struct java_lang_ClassLoader *p1) {
+    JThreadRuntime *tr = (JThreadRuntime *) (intptr_t) p0->stackFrame_in_thread;
+    tr->context_classloader = (JObject *) p1;
+    return;
 }
 
 void Java_java_lang_Thread_setPriority0__I_V(JThreadRuntime *runtime, struct java_lang_Thread *p0, s32 p1) {
@@ -1772,7 +1783,7 @@ s8 Java_org_mini_reflect_ReflectArray_getTypeTag__Ljava_lang_Object_2_B(JThreadR
 }
 
 struct java_lang_Object *Java_org_mini_reflect_ReflectArray_multiNewArray__Ljava_lang_Class_2_3I_Ljava_lang_Object_2(JThreadRuntime *runtime, struct java_lang_Class *p0, JArray *p1) {
-    JClass *cl = (__refer) (intptr_t) p0->classHandle_6;
+    JClass *cl = (__refer) (intptr_t) p0->classHandle_in_class;
     Utf8String *desc = utf8_create();
     if (cl->primitive) {
         utf8_pushback(desc, getDataTypeTagByName(cl->name));
@@ -1794,7 +1805,7 @@ struct java_lang_Object *Java_org_mini_reflect_ReflectArray_multiNewArray__Ljava
 }
 
 struct java_lang_Object *Java_org_mini_reflect_ReflectArray_newArray__Ljava_lang_Class_2I_Ljava_lang_Object_2(JThreadRuntime *runtime, struct java_lang_Class *p0, s32 p1) {
-    JClass *cl = (__refer) (intptr_t) p0->classHandle_6;
+    JClass *cl = (__refer) (intptr_t) p0->classHandle_in_class;
     Utf8String *desc = utf8_create_c("[");
     if (cl->primitive) {
         utf8_pushback(desc, getDataTypeTagByName(cl->name));
@@ -1962,7 +1973,7 @@ struct org_mini_reflect_DataWrap *Java_org_mini_reflect_ReflectMethod_invokeMeth
             p1;
     struct org_mini_reflect_DataWrap *result = (struct org_mini_reflect_DataWrap *) new_instance_with_name(runtime, "org/mini/reflect/DataWrap");
     gc_refer_hold(result);
-    instance_init(runtime, (JObject *)result);
+    instance_init(runtime, (JObject *) result);
     s32 isVoid = utf8_char_at(method->returntype, 0) == 'V';
     if (p3->prop.arr_length == 0) {
         switch (utf8_char_at(method->returntype, 0)) {
@@ -2106,6 +2117,38 @@ void Java_org_mini_reflect_vm_RefNative_addJarToClasspath__Ljava_lang_String_2_V
 }
 
 struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_defineClass__Ljava_lang_ClassLoader_2Ljava_lang_String_2_3BII_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_ClassLoader *p0, struct java_lang_String *p1, JArray *p2, s32 p3, s32 p4) {
+    Utf8String *ustr = utf8_create();
+    jstring_2_utf8(p1, ustr);
+    utf8_replace_c(ustr, ".", "/");
+    JClass *cl = get_class_by_name(ustr);
+    utf8_destory(ustr);
+    if (cl && (cl->jclass_loader == (JObject *) p0)) {
+        return (java_lang_Class *) cl->ins_of_Class;
+    }
+    jvm_printf("java2c can't define Class by class data.");
+    return NULL;//
+}
+
+struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_findLoadedClass0__Ljava_lang_ClassLoader_2Ljava_lang_String_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_ClassLoader *p0, struct java_lang_String *p1) {
+    Utf8String *ustr = utf8_create();
+    jstring_2_utf8(p1, ustr);
+    utf8_replace_c(ustr, ".", "/");
+    JClass *cl = get_class_by_name(ustr);
+    utf8_destory(ustr);
+    if (cl && (cl->jclass_loader == (JObject *) p0)) {
+        return (java_lang_Class *) cl->ins_of_Class;
+    }
+    return NULL;
+}
+
+struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_getCallerClass___Ljava_lang_Class_2(JThreadRuntime *runtime) {
+    StackFrame *tail = runtime->tail;
+    if (tail->next) {
+        if (tail->next->next) {
+            return (java_lang_Class *) get_methodinfo_by_rawindex(tail->next->next->methodRawIndex)->clazz->ins_of_Class;
+        }
+    }
+
     return NULL;
 }
 
@@ -2256,7 +2299,7 @@ struct java_lang_Object *Java_org_mini_reflect_vm_RefNative_id2obj__J_Ljava_lang
 }
 
 struct java_lang_Object *Java_org_mini_reflect_vm_RefNative_newWithoutInit__Ljava_lang_Class_2_Ljava_lang_Object_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
-    JClass *cl = (__refer) (intptr_t) p0->classHandle_6;
+    JClass *cl = (__refer) (intptr_t) p0->classHandle_in_class;
     JObject *ins = NULL;
     if (cl && !cl->prop.arr_type) {//class exists and not array class
         ins = new_instance_with_class(runtime, cl);

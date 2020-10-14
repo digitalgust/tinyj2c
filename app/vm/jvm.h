@@ -286,6 +286,7 @@ struct _JClass {
     JClass *superclass;
     JClass *array_cell_class;
     JObject *ins_of_Class;
+    JObject *jclass_loader;
     s32 status;
     u8 array_cell_type;
     u8 primitive;
@@ -329,6 +330,7 @@ typedef void (*jthread_run_t)(__refer, __refer);
 
 struct _JThreadRuntime {
     JObject *jthread;
+    JObject *context_classloader;
     StackFrame *tail;
     StackFrame *cache;//cache the stackframe object
     MethodRaw *exec;

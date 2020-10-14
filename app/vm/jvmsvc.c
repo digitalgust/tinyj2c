@@ -12,7 +12,7 @@
  */
 
 void print_jstring(__refer jobj) {
-    struct java_lang_String *jstr = (struct java_lang_String *) jobj;
+    java_lang_String *jstr = (java_lang_String *) jobj;
     s32 offset = jstr->offset_1;
     s32 count = jstr->count_2;
     u16 *value = jstr->value_0->prop.as_u16_arr;

@@ -31,11 +31,11 @@ public class JSignature {
             javaArgsWithThis = "L" + m.getClassFile().getThisClassName() + ";" + javaArgsWithThis;
         }
         this.javaResult = javaSignature.substring(posB + 1);
-        this.args = Util.javaMethodSignature2Ctypes(javaArgsWithThis);
-        this.result = Util.javaSignature2Ctype(this.javaResult);
+        this.args = Util.getJavaMethodSignatureCtypes(javaArgsWithThis);
+        this.result = Util.getJavaSignatureCtype(this.javaResult);
 
         for (String s : args) {
-            slotSize += Util.getSlot_Ctype(s);
+            slotSize += Util.getSlot_by_Ctype(s);
         }
     }
 
@@ -61,7 +61,7 @@ public class JSignature {
     }
 
     public int getSlotSizeOfResult() {
-        return Util.getSlot_Ctype(result);
+        return Util.getSlot_by_Ctype(result);
     }
 
     public String getCTypeOfResult() {

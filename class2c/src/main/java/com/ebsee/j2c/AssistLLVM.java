@@ -74,15 +74,15 @@ public class AssistLLVM {
 
         class2c(classesPath, csrcPath);
 
-//        conv("java.lang.Object", classesPath, llvmPath);
-//        conv("java.io.PrintStream", classesPath, llvmPath);
-//        conv("java.lang.System", classesPath, llvmPath);
-//        conv("java.lang.Throwable", classesPath, llvmPath);
-//        conv("java.lang.NullPointerException", classesPath, llvmPath);
-//        conv("java.lang.String", classesPath, llvmPath);
-//        conv("java.lang.StringBuilder", classesPath, llvmPath);
-//        conv("test.Test", classesPath, llvmPath);
-//        conv("test.TestParent", classesPath, llvmPath);
+//        conv("java.lang.Object", classesPath, csrcPath);
+//        conv("java.io.PrintStream", classesPath, csrcPath);
+//        conv("java.lang.System", classesPath, csrcPath);
+//        conv("java.lang.Throwable", classesPath, csrcPath);
+//        conv("java.lang.NullPointerException", classesPath, csrcPath);
+//        conv("java.lang.String", classesPath, csrcPath);
+//        conv("java.lang.StringBuilder", classesPath, csrcPath);
+//        conv("test.Test", classesPath, csrcPath);
+//        conv("test.TestParent", classesPath, csrcPath);
 
         //gen clinit call
         AssistLLVM.genSourceFile(csrcPath);
@@ -102,7 +102,7 @@ public class AssistLLVM {
 
     }
 
-    static void class2c(String classesPath, String llvmPath) throws IOException {
+    static void class2c(String classesPath, String cPath) throws IOException {
         List<String> files = new ArrayList<>();
         MyCompiler.find(classesPath, files, null, ".class");
         Collections.sort(files);
@@ -112,23 +112,23 @@ public class AssistLLVM {
             String className = cp.substring(classesAbsPath.length() + 1);
             className = className.replaceAll("[\\\\/]{1,}", ".");
             className = className.replace(".class", "");
-            conv(className, classesPath, llvmPath);
+            conv(className, classesPath, cPath);
         }
         //process lambda
         for (String className : lambdaClasses) {
-            conv(className, classesPath, llvmPath);
+            conv(className, classesPath, cPath);
         }
         System.out.println("converted classes :" + (files.size() + lambdaClasses.size()));
     }
 
-    static void conv(String className, String classesPath, String llvmPath) throws IOException {
+    static void conv(String className, String classesPath, String cPath) throws IOException {
 
         String outFileName = className.replace("_", "_0005f").replace("$", "_") + ".c";
-        File outFileDir = new File(llvmPath);
+        File outFileDir = new File(cPath);
         if (!outFileDir.exists()) {
             outFileDir.mkdirs();
         }
-        PrintStream ps = new PrintStream(new File(llvmPath, outFileName));
+        PrintStream ps = new PrintStream(new File(cPath, outFileName));
         CV cv = new CV(ps);
 
         // read class
@@ -228,6 +228,10 @@ public class AssistLLVM {
             //declare
             ps.println("#include <stdlib.h>");
             ps.println("#include \"../../vm/jvm.h\"");
+            ps.println("\n");
+
+            genTypeDef(ps);
+            ps.println("\n");
 
             ps.println("//define class struct");
             for (String s : defines) {
@@ -253,6 +257,50 @@ public class AssistLLVM {
         }
     }
 
+    static private void genTypeDef(PrintStream ps) {
+        String[][] ctypeArr = {
+                {"java.lang.String", "java_lang_String"},
+                {"java.lang.Object", "java_lang_Object"},
+                {"java.lang.Class", "java_lang_Class"},
+                {"java.lang.ClassLoader", "java_lang_ClassLoader"},
+                {"java.lang.Thread", "java_lang_Thread"},
+                {"java.lang.StackTraceElement", "java_lang_StackTraceElement"},
+        };
+
+
+        ps.println("// typedef classname");
+        for (String[] pair : ctypeArr) {
+            ps.println("typedef " + Util.getClassStructType(pair[0]) + " " + pair[1] + ";");
+        }
+
+        String[][] staticFieldArr = {
+                {"java.lang.System", "java_lang_System_static"},
+        };
+        ps.println("// typedef static filed struct name ");
+        for (String[] pair : staticFieldArr) {
+            ps.println("typedef " + Util.getStaticFieldStructType(pair[0]) + " " + pair[1] + ";");
+        }
+
+        String[][] fieldArr = {
+                {"java.lang.String", "value", "[C", "value_in_string"},
+                {"java.lang.String", "count", "I", "count_in_string"},
+                {"java.lang.String", "offset", "I", "offset_in_string"},
+                {"java.lang.Class", "classHandle", "J", "classHandle_in_class"},
+                {"java.lang.Thread", "stackFrame", "J", "stackFrame_in_thread"},
+                {"java.lang.StackTraceElement", "declaringClass", "Ljava/lang/String;", "declaringClass_in_stacktraceelement"},
+                {"java.lang.StackTraceElement", "methodName", "Ljava/lang/String;", "methodName_in_stacktraceelement"},
+                {"java.lang.StackTraceElement", "fileName", "Ljava/lang/String;", "fileName_in_stacktraceelement"},
+                {"java.lang.StackTraceElement", "lineNumber", "I", "lineNumber_in_stacktraceelement"},
+                {"java.lang.StackTraceElement", "parent", "Ljava/lang/StackTraceElement;", "parent_in_stacktraceelement"},
+        };
+        ps.println("// define filed name ");
+        for (String[] pair : fieldArr) {
+            Field field = ClassManger.findField(pair[0].replace('.', '/'), pair[1], pair[2]);
+            ps.println("#define " + pair[3] + " " + Util.getFieldVarName(field));
+        }
+
+    }
+
     static private void genJNI(String outpath) {
         try {
             File f = new File(outpath + "/native_gen.txt");
@@ -270,8 +318,8 @@ public class AssistLLVM {
             });
             for (Method m : sorted) {
                 JSignature sig = new JSignature(m);
-                String rawName = Util.method2rawName(m.getClassFile().getThisClassName(), m.getMethodName(), sig.getJavaSignature());
-                ps.println(sig.getCTypeOfResult() + " " + rawName + "(" + sig.getCTypeArgsString() + "){\n    return " + Util.getDefValueByCType(sig.getCTypeOfResult()) + ";\n}");
+                String rawName = Util.getMethodRawName(m.getClassFile().getThisClassName(), m.getMethodName(), sig.getJavaSignature());
+                ps.println(sig.getCTypeOfResult() + " " + rawName + "(" + sig.getCTypeArgsString() + "){\n    return " + Util.getDefValue_by_Ctype(sig.getCTypeOfResult()) + ";\n}");
                 ps.println("\n");
             }
 
@@ -363,7 +411,7 @@ public class AssistLLVM {
         methodinfo += ", ";
         methodinfo += ca == null ? 0 : ca.getMaxLocals();
         methodinfo += ", ";
-        String rawName = Util.method2rawName(className, m.getMethodName(), sig.getJavaSignature());
+        String rawName = Util.getMethodRawName(className, m.getMethodName(), sig.getJavaSignature());
         declares.add("extern " + sig.getCTypeOfResult() + " " + rawName + "(" + sig.getCTypeArgsString() + ");");
         if (m.isNative()) {
             //nativemethod.add(sig.getCTypeOfResult() + " " + rawName + "(" + sig.getCTypeArgsString() + "){\n    return " + Util.getDefValueByCType(sig.getCTypeOfResult()) + ";\n}");
@@ -420,9 +468,9 @@ public class AssistLLVM {
         fieldinfo += f.getAccessFlags();
         fieldinfo += ", ";
         if ((f.getAccessFlags() & Modifier.STATIC) != 0) {
-            fieldinfo += "offsetof(" + Util.getStaticFieldType(className) + "," + Util.getFieldVarName(f) + ")";
+            fieldinfo += "offsetof(" + Util.getStaticFieldStructType(className) + "," + Util.getFieldVarName(f) + ")";
         } else {
-            fieldinfo += "offsetof(" + Util.asType(className) + "," + Util.getFieldVarName(f) + ")";
+            fieldinfo += "offsetof(" + Util.getClassStructType(className) + "," + Util.getFieldVarName(f) + ")";
         }
         fieldinfo += ", ";
         fieldinfo += "},";
@@ -501,7 +549,7 @@ public class AssistLLVM {
         classinfo += addGlobalStringDefine(class2dependence.get(className).toString());//
         classinfo += ", ";
 
-        classinfo += "sizeof(" + Util.asType(className) + ")";
+        classinfo += "sizeof(" + Util.getClassStructType(className) + ")";
         classinfo += ", ";
         classinfo += ClassManger.getMethodTree(className).size();//
         classinfo += ", ";
@@ -510,9 +558,9 @@ public class AssistLLVM {
         classinfo += declare1;
         classinfo += ", ";
         Method finalizeM = ClassManger.findFinalizeMethod(className);
-        classinfo += finalizeM == null ? "NULL" : Util.method2rawName(finalizeM.getClassFile().getThisClassName(), finalizeM.getMethodName(), finalizeM.getDescriptor());
+        classinfo += finalizeM == null ? "NULL" : Util.getMethodRawName(finalizeM.getClassFile().getThisClassName(), finalizeM.getMethodName(), finalizeM.getDescriptor());
         classinfo += ", ";
-        classinfo += "&" + Util.getStaticStructVarName(className);
+        classinfo += "&" + Util.getStaticFieldStructVarName(className);
         classinfo += "},";
         classinfo += "// ";
 

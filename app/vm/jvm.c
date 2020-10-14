@@ -91,11 +91,11 @@ JObject *ins_of_Class_create_get(JThreadRuntime *runtime, JClass *clazz) {
         if (clazz->ins_of_Class) {
             return clazz->ins_of_Class;
         } else {
-            struct java_lang_Class *ins = (struct java_lang_Class *) new_instance_with_class(runtime, java_lang_class);
+            java_lang_Class *ins = (java_lang_Class *) new_instance_with_class(runtime, java_lang_class);
             gc_refer_hold(ins);
             Java_java_lang_Class__init____V(runtime, ins);
             clazz->ins_of_Class = (__refer) ins;
-            ins->classHandle_6 = (s64) (intptr_t) clazz;//todo , find it use field refer
+            ins->classHandle_in_class = (s64) (intptr_t) clazz;
             return (JObject *) ins;
         }
     }
