@@ -1,7 +1,7 @@
 
 # java2c
 
-Convert java source to c source , then compile to standalone binary.    
+Convert java jar to c source code, then compile to standalone binary.    
 Source contains a minimal vm and gc support.
     
 # Requirement
