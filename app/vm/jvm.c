@@ -71,10 +71,10 @@ MethodInfo *methodinfo_create_with_raw(MethodRaw *methodRaw) {
     method->desc = get_utf8str(&g_strings[methodRaw->desc_name]);
     method->signature = methodRaw->signature_name < 0 ? NULL : get_utf8str(&g_strings[methodRaw->signature_name]);
     method->func_ptr = methodRaw->func_ptr;
-    method->paratype=utf8_create();
-    parseMethodPara(method->desc,method->paratype);
-    method->returntype=utf8_create();
-    utf8_append_part(method->returntype,method->desc,utf8_indexof_c(method->desc, ")") + 1,1);
+    method->paratype = utf8_create();
+    parseMethodPara(method->desc, method->paratype);
+    method->returntype = utf8_create();
+    utf8_append_part(method->returntype, method->desc, utf8_indexof_c(method->desc, ")") + 1, 1);
     return method;
 }
 
@@ -326,7 +326,6 @@ void class_clinit(JThreadRuntime *runtime, Utf8String *className) {
         if (methodRaw) {
             class_clinit_func_t func = (class_clinit_func_t) methodRaw->func_ptr;
             func(runtime);
-            JThreadRuntime *runtime = tss_get(TLS_KEY_JTHREADRUNTIME);
             if (runtime->tail) {
                 s32 debug = 1;
             }
@@ -480,13 +479,15 @@ Jvm *jvm_create() {
     g_jvm = jvm;
     printf("jvm created\n");
     sys_properties_load();
+    sys_properties_set_c("sun.boot.class.path", "");
+    sys_properties_set_c("java.class.path", "");
     fill_procache();
     garbage_start();
 
 
     //tsl
-    tss_create(&TLS_KEY_JTHREADRUNTIME, jthreadruntime_destroy);
-    tss_create(&TLS_KEY_UTF8STR_CACHE, (void (*)(void *)) utf8_destory);
+    tss_create(&TLS_KEY_JTHREADRUNTIME, NULL);
+    tss_create(&TLS_KEY_UTF8STR_CACHE, NULL);
 
     return jvm;
 }
@@ -721,7 +722,8 @@ s32 jthread_prepar(JThreadRuntime *runtime, MethodRaw *exec) {
 s32 jthread_run(__refer p) {
     JThreadRuntime *runtime = (JThreadRuntime *) p;
     tss_set(TLS_KEY_JTHREADRUNTIME, runtime);
-    tss_set(TLS_KEY_UTF8STR_CACHE, utf8_create());
+    Utf8String *ustr = utf8_create();
+    tss_set(TLS_KEY_UTF8STR_CACHE, ustr);
 
     runtime->thread_status = THREAD_STATUS_RUNNING;
     arraylist_push_back(g_jvm->thread_list, runtime);
@@ -737,6 +739,10 @@ s32 jthread_run(__refer p) {
     }
     arraylist_remove(g_jvm->thread_list, runtime);
     runtime->thread_status = THREAD_STATUS_DEAD;
+    jthreadruntime_destroy(runtime);
+    utf8_destory(ustr);
+    tss_set(TLS_KEY_JTHREADRUNTIME, NULL);
+    tss_set(TLS_KEY_UTF8STR_CACHE, NULL);
     return 0;
 }
 
@@ -824,7 +830,7 @@ s32 main(int argc, const char *argv[]) {
         utf8_append_c(mainClassName, (c8 *) argv[1]);
     } else {
         utf8_clear(mainClassName);
-        utf8_append_c(mainClassName, "test/Foo3");
+        utf8_append_c(mainClassName, "test.Foo3");
         jvm_printf("need main class name , eg: test.Test\n");
     }
     s32 ret = jvm_run_main(mainClassName);

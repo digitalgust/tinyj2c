@@ -60,6 +60,17 @@ typedef int socklen_t;
 
 #endif
 
+#if __JVM_OS_VS__
+#include "dirent_win.h"
+#else
+
+#include <dirent.h>
+#include <unistd.h>
+
+#endif
+
+#include "./https/ssl_client.h"
+
 //=================================  assist ====================================
 
 
@@ -99,7 +110,7 @@ s32 sock_option(s32 sockfd, s32 opType, s32 opValue, s32 opValue2) {
             //jvm_printf(" FIONBIO:%x\n", FIONBIO);
             ret = ioctlsocket(sockfd, FIONBIO, &ul);
             if (ret == SOCKET_ERROR) {
-                err("set socket non_block error: %s\n", strerror(errno));
+                //err("set socket non_block error: %s\n", strerror(errno));
                 s32 ec = WSAGetLastError();
                 //jvm_printf(" error code:%d\n", ec);
             }
@@ -716,13 +727,13 @@ s8 Java_java_lang_Class_isInstance__Ljava_lang_Object_2_Z(JThreadRuntime *runtim
 
 s8 Java_java_lang_Class_isInterface___Z(JThreadRuntime *runtime, struct java_lang_Class *p0) {
     ClassRaw *raw = ((JClass *) (__refer) (intptr_t) p0->classHandle_in_class)->raw;
-    if (raw)return raw->acc_flag & ACC_INTERFACE;
+    if (raw)return (s8) (raw->acc_flag & ACC_INTERFACE);
     return 0;//array
 }
 
 s8 Java_java_lang_Class_isPrimitive___Z(JThreadRuntime *runtime, struct java_lang_Class *p0) {
     JClass *clazz = ((JClass *) (__refer) (intptr_t) p0->classHandle_in_class);
-    return clazz->primitive;
+    return (s8) (clazz->primitive);
 }
 
 struct java_lang_Object *Java_java_lang_Class_newInstance___Ljava_lang_Object_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
@@ -1050,7 +1061,7 @@ void Java_java_lang_System_loadLibrary0___3B_V(JThreadRuntime *runtime, JArray *
         jni_fun f;
 #if defined(__JVM_OS_MINGW__) || defined(__JVM_OS_CYGWIN__) || defined(__JVM_OS_VS__)
         utf8_append_c(libname, "/lib");
-        utf8_append_c(libname, name_arr->arr_body);
+        utf8_append_c(libname, p0->prop.as_c8_arr);
         utf8_append_c(libname, ".dll");
         utf8_replace_c(libname, "//", "/");
         HINSTANCE hInstLibrary = LoadLibrary(utf8_cstr(libname));
@@ -1062,7 +1073,7 @@ void Java_java_lang_System_loadLibrary0___3B_V(JThreadRuntime *runtime, JArray *
                 jvm_printf(note2, onload);
             } else {
                 f = (jni_fun) fp;
-                f(&jnienv);
+                f(&g_jvm->env);
             }
         }
 
@@ -1371,7 +1382,7 @@ s32 Java_org_mini_fs_InnerFile_mkdir0___3B_I(JThreadRuntime *runtime, JArray *p0
     s32 ret = -1;
     if (p0) {
 #if __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__ || __JVM_OS_VS__
-        ret = mkdir(path_arr->arr_body);
+        ret = mkdir(p0->prop.as_s8_arr);
 #else
         ret = mkdir(p0->prop.as_s8_arr, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 #endif
@@ -1620,6 +1631,39 @@ s32 Java_org_mini_net_SocketNative_setOption0__IIII_I(JThreadRuntime *runtime, s
     }
     return 0;
 }
+
+
+s32 Java_org_mini_net_SocketNative_sslc_1close___3B_I(JThreadRuntime *runtime, JArray *p0) {
+    return sslc_close((SSLC_Entry *) p0->prop.as_c8_arr);
+}
+
+
+s32 Java_org_mini_net_SocketNative_sslc_1connect___3B_3B_3B_I(JThreadRuntime *runtime, JArray *p0, JArray *p1, JArray *p2) {
+    return sslc_connect((SSLC_Entry *) p0->prop.as_c8_arr, p1->prop.as_c8_arr, p2->prop.as_c8_arr);
+}
+
+
+JArray *Java_org_mini_net_SocketNative_sslc_1construct_1entry____3B(JThreadRuntime *runtime) {
+    int dimm = 0;
+    JArray *arr = multi_array_create_by_typename(runtime, &dimm, 1, "[B");
+    return arr;
+}
+
+
+s32 Java_org_mini_net_SocketNative_sslc_1init___3B_I(JThreadRuntime *runtime, JArray *p0) {
+    return sslc_init((SSLC_Entry *) p0->prop.as_c8_arr);
+}
+
+
+s32 Java_org_mini_net_SocketNative_sslc_1read___3B_3BII_I(JThreadRuntime *runtime, JArray *p0, JArray *p1, s32 p2, s32 p3) {
+    return sslc_read((SSLC_Entry *) p0->prop.as_c8_arr, p1->prop.as_c8_arr + p2, p3);
+}
+
+
+s32 Java_org_mini_net_SocketNative_sslc_1write___3B_3BII_I(JThreadRuntime *runtime, JArray *p0, JArray *p1, s32 p2, s32 p3) {
+    return sslc_write((SSLC_Entry *) p0->prop.as_c8_arr, p1->prop.as_c8_arr + p2, p3);
+}
+
 
 s32 Java_org_mini_net_SocketNative_writeBuf__I_3BII_I(JThreadRuntime *runtime, s32 p0, JArray *p1, s32 p2, s32 p3) {
     s32 sockfd = p0;
@@ -2227,7 +2271,7 @@ s64 Java_org_mini_reflect_vm_RefNative_heap_1calloc__I_J(JThreadRuntime *runtime
 }
 
 void Java_org_mini_reflect_vm_RefNative_heap_1copy__JIJII_V(JThreadRuntime *runtime, s64 p0, s32 p1, s64 p2, s32 p3, s32 p4) {
-    memcpy((s8 *) p2 + p3, (s8 *) p0 + p1, p4);
+    memcpy((s8 *) (intptr_t) p2 + p3, (s8 *) (intptr_t) p0 + p1, p4);
 }
 
 s32 Java_org_mini_reflect_vm_RefNative_heap_1endian___I(JThreadRuntime *runtime) {
@@ -2239,59 +2283,59 @@ void Java_org_mini_reflect_vm_RefNative_heap_1free__J_V(JThreadRuntime *runtime,
 }
 
 s8 Java_org_mini_reflect_vm_RefNative_heap_1get_1byte__JI_B(JThreadRuntime *runtime, s64 p0, s32 p1) {
-    return *(s8 *) ((c8 *) p0 + p1);
+    return *(s8 *) ((c8 *) (intptr_t) p0 + p1);
 }
 
 f64 Java_org_mini_reflect_vm_RefNative_heap_1get_1double__JI_D(JThreadRuntime *runtime, s64 p0, s32 p1) {
-    return *(f64 *) ((c8 *) p0 + p1);
+    return *(f64 *) ((c8 *) (intptr_t) p0 + p1);
 }
 
 f32 Java_org_mini_reflect_vm_RefNative_heap_1get_1float__JI_F(JThreadRuntime *runtime, s64 p0, s32 p1) {
-    return *(f32 *) ((c8 *) p0 + p1);
+    return *(f32 *) ((c8 *) (intptr_t) p0 + p1);
 }
 
 s32 Java_org_mini_reflect_vm_RefNative_heap_1get_1int__JI_I(JThreadRuntime *runtime, s64 p0, s32 p1) {
-    return *(s32 *) ((c8 *) p0 + p1);
+    return *(s32 *) ((c8 *) (intptr_t) p0 + p1);
 }
 
 s64 Java_org_mini_reflect_vm_RefNative_heap_1get_1long__JI_J(JThreadRuntime *runtime, s64 p0, s32 p1) {
-    return *(s64 *) ((c8 *) p0 + p1);
+    return *(s64 *) ((c8 *) (intptr_t) p0 + p1);
 }
 
 struct java_lang_Object *Java_org_mini_reflect_vm_RefNative_heap_1get_1ref__JI_Ljava_lang_Object_2(JThreadRuntime *runtime, s64 p0, s32 p1) {
-    return *(__refer *) ((c8 *) p0 + p1);
+    return *(__refer *) ((c8 *) (intptr_t) p0 + p1);
 }
 
 s16 Java_org_mini_reflect_vm_RefNative_heap_1get_1short__JI_S(JThreadRuntime *runtime, s64 p0, s32 p1) {
-    return *(s16 *) ((c8 *) p0 + p1);
+    return *(s16 *) ((c8 *) (intptr_t) p0 + p1);
 }
 
 void Java_org_mini_reflect_vm_RefNative_heap_1put_1byte__JIB_V(JThreadRuntime *runtime, s64 p0, s32 p1, s8 p2) {
-    *(s8 *) ((c8 *) p0 + p1) = p2;
+    *(s8 *) ((c8 *) (intptr_t) p0 + p1) = p2;
 }
 
 void Java_org_mini_reflect_vm_RefNative_heap_1put_1double__JID_V(JThreadRuntime *runtime, s64 p0, s32 p1, f64 p2) {
-    *(f64 *) ((c8 *) p0 + p1) = p2;
+    *(f64 *) ((c8 *) (intptr_t) p0 + p1) = p2;
 }
 
 void Java_org_mini_reflect_vm_RefNative_heap_1put_1float__JIF_V(JThreadRuntime *runtime, s64 p0, s32 p1, f32 p2) {
-    *(f32 *) ((c8 *) p0 + p1) = p2;
+    *(f32 *) ((c8 *) (intptr_t) p0 + p1) = p2;
 }
 
 void Java_org_mini_reflect_vm_RefNative_heap_1put_1int__JII_V(JThreadRuntime *runtime, s64 p0, s32 p1, s32 p2) {
-    *(s32 *) ((c8 *) p0 + p1) = p2;
+    *(s32 *) ((c8 *) (intptr_t) p0 + p1) = p2;
 }
 
 void Java_org_mini_reflect_vm_RefNative_heap_1put_1long__JIJ_V(JThreadRuntime *runtime, s64 p0, s32 p1, s64 p2) {
-    *(s64 *) ((c8 *) p0 + p1) = p2;
+    *(s64 *) ((c8 *) (intptr_t) p0 + p1) = p2;
 }
 
 void Java_org_mini_reflect_vm_RefNative_heap_1put_1ref__JILjava_lang_Object_2_V(JThreadRuntime *runtime, s64 p0, s32 p1, struct java_lang_Object *p2) {
-    *(__refer *) ((c8 *) p0 + p1) = p2;
+    *(__refer *) ((c8 *) (intptr_t) p0 + p1) = p2;
 }
 
 void Java_org_mini_reflect_vm_RefNative_heap_1put_1short__JIS_V(JThreadRuntime *runtime, s64 p0, s32 p1, s16 p2) {
-    *(s16 *) ((c8 *) p0 + p1) = p2;
+    *(s16 *) ((c8 *) (intptr_t) p0 + p1) = p2;
 }
 
 struct java_lang_Object *Java_org_mini_reflect_vm_RefNative_id2obj__J_Ljava_lang_Object_2(JThreadRuntime *runtime, s64 p0) {
