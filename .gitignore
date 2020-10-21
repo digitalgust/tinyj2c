@@ -6,3 +6,5 @@ app/out/c/*
 a.out
 .svn
 cmake-*
+CMakeFiles
+cmake_*

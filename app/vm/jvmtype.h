@@ -6,15 +6,14 @@
 #define CCJVM_JVMTYPE_H
 
 #include <unistd.h>
-
-#define MEM_ALLOC_LTALLOC
+#include <stdlib.h>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 //define something for Windows (32-bit and 64-bit, this part is common)
 #ifdef _WIN64
-      //define something for Windows (64-bit only)
+//define something for Windows (64-bit only)
 #else
-      //define something for Windows (32-bit only)
+//define something for Windows (32-bit only)
 #endif
 #if defined(_MSC_VER)
 #define __JVM_OS_VS__ 1
@@ -77,31 +76,6 @@ typedef void *__returnaddress;
 //void *jvm_realloc(__refer ptr, u32 size);
 
 
-#ifdef MEM_ALLOC_LTALLOC
-
-#include "ltalloc.h"
-
-static inline void *jvm_calloc(u32 size) {
-    return ltcalloc(1, size);
-}
-
-static inline void *jvm_malloc(u32 size) {
-    return ltmalloc(size);
-}
-
-static inline void jvm_free(void *ptr) {
-    ltfree(ptr);
-}
-
-static inline void *jvm_realloc(void *pPtr, u32 size) {
-    return ltrealloc(pPtr, size);
-}
-
-static inline void jvm_squeeze(u32 padsz) {
-    ltsqueeze(padsz);
-}
-
-#else
 
 static inline void *jvm_calloc(u32 size) {
     return calloc(size, 1);
@@ -119,8 +93,6 @@ static inline void *jvm_realloc(__refer pPtr, u32 size) {
     return realloc(pPtr, size);
 
 }
-
-#endif
 
 
 #endif //CCJVM_JVMTYPE_H

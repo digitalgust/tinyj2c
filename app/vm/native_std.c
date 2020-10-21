@@ -1644,7 +1644,7 @@ s32 Java_org_mini_net_SocketNative_sslc_1connect___3B_3B_3B_I(JThreadRuntime *ru
 
 
 JArray *Java_org_mini_net_SocketNative_sslc_1construct_1entry____3B(JThreadRuntime *runtime) {
-    int dimm = 0;
+    int dimm = sizeof(SSLC_Entry);
     JArray *arr = multi_array_create_by_typename(runtime, &dimm, 1, "[B");
     return arr;
 }

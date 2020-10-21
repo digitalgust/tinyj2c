@@ -3,7 +3,7 @@
 //
 #include <stdio.h>
 #include <string.h>
-#include <zconf.h>
+
 #include <stdarg.h>
 #include "jvm.h"
 #include "bytebuf.h"

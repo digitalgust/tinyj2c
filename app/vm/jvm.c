@@ -830,7 +830,7 @@ s32 main(int argc, const char *argv[]) {
         utf8_append_c(mainClassName, (c8 *) argv[1]);
     } else {
         utf8_clear(mainClassName);
-        utf8_append_c(mainClassName, "test.Foo3");
+        utf8_append_c(mainClassName, "test.HttpServer");
         jvm_printf("need main class name , eg: test.Test\n");
     }
     s32 ret = jvm_run_main(mainClassName);
