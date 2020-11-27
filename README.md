@@ -1,8 +1,7 @@
 
 # java2c
 
-Convert java jar to c source code, then compile to standalone binary.    
-Source contains a minimal vm and gc support.
+Convert [miniJVM](https://github.com/digitalgust/miniJVM.git) java source to c source, generte standlone binary, with out any class file.
     
 # Requirement
      
