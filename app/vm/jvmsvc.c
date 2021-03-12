@@ -144,13 +144,13 @@ JObject *construct_string_with_ustr(JThreadRuntime *runtime, Utf8String *str) {
 }
 
 
-static JArray *multi_array_create_impl(JThreadRuntime *runtime, s32 *dimm, s32 dimm_count, s32 index, JClass *clazz) {  // create array  [[[Ljava/lang/Object;  para: [3,2,1],3,8
-    s32 arr_len = *(dimm + index);
+static JArray *multi_array_create_impl(JThreadRuntime *runtime, s32 *dimm, s32 dimm_count, s32 deep, JClass *clazz) {  // create array  [[[Ljava/lang/Object;  para: [3,2,1],3,8
+    s32 arr_len = *(dimm + deep);
     //printf("multiarray :%d %d %d %d %d %d\n", dimm[0], dimm[1], dimm_count, index, cellBytes, arr_len);
     JClass *cell_class = clazz->array_cell_class;
     c8 typetag = utf8_char_at(clazz->name, 1);
     s32 cellBytes = data_type_bytes[getDataTypeIndex(typetag)];
-    if (cellBytes != 0 && index == dimm_count - 1) {// none object array
+    if (cellBytes != 0 && deep == dimm_count - 1) {// none object array
         s32 totalBytes = arr_len * cellBytes + sizeof(JArray);
         JArray *arr = jvm_calloc(totalBytes);
         arr->prop.clazz = clazz;
@@ -162,7 +162,7 @@ static JArray *multi_array_create_impl(JThreadRuntime *runtime, s32 *dimm, s32 d
         gc_refer_reg(runtime, arr);
         return arr;
     } else {
-        index++;
+        deep++;
         s32 totalBytes = arr_len * sizeof(char *) + sizeof(JArray);
         JArray *arr = jvm_calloc(totalBytes);
         arr->prop.clazz = cell_class;
@@ -174,7 +174,7 @@ static JArray *multi_array_create_impl(JThreadRuntime *runtime, s32 *dimm, s32 d
         s32 i = 0;
         for (i = 0; i < arr_len; i++) {
             //printf("multiarray sub :%d %d\n", i, index);
-            arr->prop.as_obj_arr[i] = (JObject *) multi_array_create_impl(runtime, dimm, dimm_count, index, cell_class);
+            arr->prop.as_obj_arr[i] = (JObject *) multi_array_create_impl(runtime, dimm, dimm_count, deep, cell_class);
         }
         gc_refer_reg(runtime, arr);
         return arr;

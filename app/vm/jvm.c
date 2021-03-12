@@ -477,7 +477,7 @@ Jvm *jvm_create() {
     jvm->sys_prop = hashtable_create(UNICODE_STR_HASH_FUNC, UNICODE_STR_EQUALS_FUNC);
 
     g_jvm = jvm;
-    printf("jvm created\n");
+    jvm_printf("[INFO]jvm created\n");
     sys_properties_load();
     sys_properties_set_c("sun.boot.class.path", "");
     sys_properties_set_c("java.class.path", "");
@@ -512,6 +512,7 @@ void jvm_destroy(Jvm *jvm) {
     hashtable_destory(jvm->table_jstring_const);
     hashtable_destory(jvm->sys_prop);
     jvm_free(jvm);
+    jvm_printf("[INFO]jvm destroied\n");
 }
 
 StackFrame *stackframe_create() {
@@ -725,12 +726,12 @@ s32 jthread_run(__refer p) {
     Utf8String *ustr = utf8_create();
     tss_set(TLS_KEY_UTF8STR_CACHE, ustr);
 
-    runtime->thread_status = THREAD_STATUS_RUNNING;
-    arraylist_push_back(g_jvm->thread_list, runtime);
-    jthread_prepar(runtime, runtime->exec);
-
-
     if (runtime->exec) {
+        runtime->thread_status = THREAD_STATUS_RUNNING;
+        arraylist_push_back(g_jvm->thread_list, runtime);
+        jthread_prepar(runtime, runtime->exec);
+
+
         jthread_run_t run = (jthread_run_t) runtime->exec->func_ptr;
         s64 startAt = currentTimeMillis();
         run(runtime, runtime->jthread);
@@ -782,11 +783,15 @@ s32 jvm_run_main(Utf8String *mainClass) {
     c8 *signature = "([Ljava/lang/String;)V";
     MethodRaw *method = find_methodraw(utf8_cstr(mainClass), methodName, signature);
 //    MethodInfo *method = find_methodInfo_by_name(utf8_cstr(mainClass), methodName, signature);
-    JThreadRuntime *runtime = jthreadruntime_create();
-    runtime->exec = method;
-    //thrd_create(&runtime->thread, jthread_run, runtime);
-    runtime->thread = thrd_current();
-    jthread_run(runtime);
+    if (method) {
+        JThreadRuntime *runtime = jthreadruntime_create();
+        runtime->exec = method;
+        //thrd_create(&runtime->thread, jthread_run, runtime);
+        runtime->thread = thrd_current();
+        jthread_run(runtime);
+    } else {
+        jvm_printf("[ERROR]can not found %s.%s%s\n", utf8_cstr(mainClass), methodName, signature);
+    }
     //
     //
     //printf("threads count %d\n", g_jvm->thread_list->length);
@@ -830,8 +835,9 @@ s32 main(int argc, const char *argv[]) {
         utf8_append_c(mainClassName, (c8 *) argv[1]);
     } else {
         utf8_clear(mainClassName);
-        utf8_append_c(mainClassName, "test.HttpServer");
-        jvm_printf("need main class name , eg: test.Test\n");
+//        utf8_append_c(mainClassName, "test.HttpServer");
+        utf8_append_c(mainClassName, "test.Foo3");
+        jvm_printf("[INFO]ccjvm test.Test\n");
     }
     s32 ret = jvm_run_main(mainClassName);
     utf8_destory(mainClassName);

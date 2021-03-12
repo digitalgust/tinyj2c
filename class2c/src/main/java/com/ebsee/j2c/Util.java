@@ -385,6 +385,7 @@ public final class Util {
     public static String getFieldVarName(Field field) {
         if (field == null) {
             int debug = 1;
+            System.out.println("field is null");
         }
         return regulString(field.getFieldName()) + "_" + ClassManger.getFieldIndexInFieldTable(field);
     }

@@ -136,6 +136,7 @@ public class ClassManger {
         ClassFile c = helper.getClassFile(className);
         if (c == null) {
             int debug = 1;
+            System.out.println("Class not found:" + className);
         }
         List<Method> list = new ArrayList<>();
         list.addAll(Arrays.asList(c.getVirtualMethods()));
@@ -208,6 +209,7 @@ public class ClassManger {
         ClassFile c = helper.getClassFile(className);
         if (c == null) {
             int debug = 1;
+            System.out.println("Class not found:" + className);
         }
 
         ClassFile sc = getClassFile(c.getSuperClassName());
@@ -261,6 +263,10 @@ public class ClassManger {
         while (cname != null) {
             int mhdidx, imax;
             ClassFile cf = getClassFile(cname);
+            if (cf == null) {
+                int debug = 1;
+                System.out.println("Class not found:" + className);
+            }
             List<Method> methods = map.get(cname);
             if (methods != null) {
                 for (mhdidx = 0, imax = methods.size(); mhdidx < imax; mhdidx++) {

@@ -77,6 +77,14 @@ typedef int socklen_t;
 
 //=================================  socket  ====================================
 
+typedef struct _VmSock {
+    mbedtls_net_context contex;
+    //
+    s32 rcv_time_out;
+    u8 non_block;
+    u8 reuseaddr;
+} VmSock;
+
 #define  SOCK_OP_TYPE_NON_BLOCK   0
 #define  SOCK_OP_TYPE_REUSEADDR   1
 #define  SOCK_OP_TYPE_RCVBUF   2
@@ -90,66 +98,42 @@ typedef int socklen_t;
 #define  SOCK_OP_VAL_NON_REUSEADDR   1
 #define  SOCK_OP_VAL_REUSEADDR   0
 
-s32 sock_option(s32 sockfd, s32 opType, s32 opValue, s32 opValue2) {
+s32 sock_option(VmSock *vmsock, s32 opType, s32 opValue, s32 opValue2) {
     s32 ret = 0;
     switch (opType) {
         case SOCK_OP_TYPE_NON_BLOCK: {//阻塞设置
-
-#if __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__ || __JVM_OS_VS__
-#if __JVM_OS_CYGWIN__
-            __ms_u_long ul = 1;
-//fix cygwin bug ,cygwin FIONBIO = 0x8008667E
-#undef FIONBIO
-#define FIONBIO 0x8004667E
-#else
-            u_long ul = 1;
-#endif
-            if (!opValue) {
-                ul = 0;
-            }
-            //jvm_printf(" FIONBIO:%x\n", FIONBIO);
-            ret = ioctlsocket(sockfd, FIONBIO, &ul);
-            if (ret == SOCKET_ERROR) {
-                //err("set socket non_block error: %s\n", strerror(errno));
-                s32 ec = WSAGetLastError();
-                //jvm_printf(" error code:%d\n", ec);
-            }
-#else
             if (opValue) {
-                s32 flags = fcntl(sockfd, F_GETFL, 0);
-                ret = fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
-                if (ret) {
-                    //err("set socket non_block error.\n");
-                    //printf("errno.%02d is: %s\n", errno, strerror(errno));
-                }
+                mbedtls_net_set_nonblock(&vmsock->contex);
+                vmsock->non_block = 1;
             } else {
-                //fcntl(sockfd, F_SETFL, O_BLOCK);
+                mbedtls_net_set_block(&vmsock->contex);
             }
-#endif
             break;
         }
         case SOCK_OP_TYPE_REUSEADDR: {//
             s32 x = 1;
-            ret = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (char *) &x, sizeof(x));
+            ret = setsockopt(vmsock->contex.fd, SOL_SOCKET, SO_REUSEADDR, (char *) &x, sizeof(x));
+            vmsock->reuseaddr = 1;
             break;
         }
         case SOCK_OP_TYPE_RCVBUF: {//缓冲区设置
             int nVal = opValue;//设置为 opValue K
-            ret = setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, (const char *) &nVal, sizeof(nVal));
+            ret = setsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVBUF, (const char *) &nVal, sizeof(nVal));
             break;
         }
         case SOCK_OP_TYPE_SNDBUF: {//缓冲区设置
             s32 nVal = opValue;//设置为 opValue K
-            ret = setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, (const char *) &nVal, sizeof(nVal));
+            ret = setsockopt(vmsock->contex.fd, SOL_SOCKET, SO_SNDBUF, (const char *) &nVal, sizeof(nVal));
             break;
         }
         case SOCK_OP_TYPE_TIMEOUT: {
-#if __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__ || __JVM_OS_VS__
+            vmsock->rcv_time_out = opValue;
+#if __JVM_OS_MINGW__ || __JVM_OS_VS__
             s32 nTime = opValue;
-            ret = setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &nTime, sizeof(nTime));
+            ret = setsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &nTime, sizeof(nTime));
 #else
             struct timeval timeout = {opValue / 1000, (opValue % 1000) * 1000};
-            ret = setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+            ret = setsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 #endif
             break;
         }
@@ -162,30 +146,31 @@ s32 sock_option(s32 sockfd, s32 opType, s32 opValue, s32 opValue2) {
             // 如果m_sLinger.l_onoff=0;则功能和2.)作用相同;
             m_sLinger.l_onoff = opValue;
             m_sLinger.l_linger = opValue2;//(容许逗留的时间为5秒)
-            ret = setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &m_sLinger, sizeof(m_sLinger));
+            ret = setsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &m_sLinger, sizeof(m_sLinger));
             break;
         }
         case SOCK_OP_TYPE_KEEPALIVE: {
             s32 val = opValue;
-            ret = setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &val, sizeof(val));
+            ret = setsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &val, sizeof(val));
             break;
         }
     }
     return ret;
 }
 
-s32 sock_get_option(s32 sockfd, s32 opType) {
+
+s32 sock_get_option(VmSock *vmsock, s32 opType) {
     s32 ret = 0;
     socklen_t len;
 
     switch (opType) {
         case SOCK_OP_TYPE_NON_BLOCK: {//阻塞设置
-#if __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__ || __JVM_OS_VS__
+#if __JVM_OS_MINGW__ || __JVM_OS_VS__
             u_long flags = 1;
-            ret = NO_ERROR == ioctlsocket(sockfd, FIONBIO, &flags);
+            ret = NO_ERROR == ioctlsocket(vmsock->contex.fd, FIONBIO, &flags);
 #else
             int flags;
-            if ((flags = fcntl(sockfd, F_GETFL, NULL)) < 0) {
+            if ((flags = fcntl(vmsock->contex.fd, F_GETFL, NULL)) < 0) {
                 ret = -1;
             } else {
                 ret = (flags & O_NONBLOCK);
@@ -195,29 +180,29 @@ s32 sock_get_option(s32 sockfd, s32 opType) {
         }
         case SOCK_OP_TYPE_REUSEADDR: {//
             len = sizeof(ret);
-            getsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (void *) &ret, &len);
+            getsockopt(vmsock->contex.fd, SOL_SOCKET, SO_REUSEADDR, (void *) &ret, &len);
 
             break;
         }
         case SOCK_OP_TYPE_RCVBUF: {
             len = sizeof(ret);
-            getsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, (void *) &ret, &len);
+            getsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVBUF, (void *) &ret, &len);
             break;
         }
         case SOCK_OP_TYPE_SNDBUF: {//缓冲区设置
             len = sizeof(ret);
-            getsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, (void *) &ret, &len);
+            getsockopt(vmsock->contex.fd, SOL_SOCKET, SO_SNDBUF, (void *) &ret, &len);
             break;
         }
         case SOCK_OP_TYPE_TIMEOUT: {
 
-#if __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__ || __JVM_OS_VS__
+#if __JVM_OS_MINGW__ || __JVM_OS_VS__
             len = sizeof(ret);
-            getsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (void *) &ret, &len);
+            getsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVTIMEO, (void *) &ret, &len);
 #else
             struct timeval timeout = {0, 0};
             len = sizeof(timeout);
-            getsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &timeout, &len);
+            getsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, &len);
             ret = timeout.tv_sec * 1000 + timeout.tv_usec / 1000;
 #endif
             break;
@@ -232,201 +217,110 @@ s32 sock_get_option(s32 sockfd, s32 opType) {
             m_sLinger.l_onoff = 0;
             m_sLinger.l_linger = 0;//(容许逗留的时间为5秒)
             len = sizeof(m_sLinger);
-            getsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (void *) &m_sLinger, &len);
+            getsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVTIMEO, (void *) &m_sLinger, &len);
             ret = *((s32 *) &m_sLinger);
             break;
         }
         case SOCK_OP_TYPE_KEEPALIVE: {
             len = sizeof(ret);
-            getsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (void *) &ret, &len);
+            getsockopt(vmsock->contex.fd, SOL_SOCKET, SO_RCVTIMEO, (void *) &ret, &len);
             break;
         }
     }
     return ret;
 }
 
-s32 sock_recv(s32 sockfd, c8 *buf, s32 count) {
-    s32 len = (s32) recv(sockfd, buf, count, 0);
 
-    if (len == 0) {//如果是正常断开，返回-1
-        len = -1;
-    } else if (len == -1) {//如果发生错误
-        len = -1;
-#if __JVM_OS_VS__ || __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__
-        if (WSAEWOULDBLOCK == WSAGetLastError()) {//但是如果是非阻塞端口，说明连接仍正常
-            //jvm_printf("sc send error client time = %f ;\n", (f64)clock());
-            len = -2;
-        }
-#else
-        if (errno == EWOULDBLOCK || errno == EAGAIN) {
-            len = -2;
-        }
-#endif
-    }
-    return len;
-}
-
-
-s32 sock_send(s32 sockfd, c8 *buf, s32 count) {
-    s32 len = (s32) send(sockfd, buf, count, 0);
-
-    if (len == 0) {//如果是正常断开，返回-1
-        len = -1;
-    } else if (len == -1) {//如果发生错误
-#if __JVM_OS_VS__ || __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__
-        if (WSAEWOULDBLOCK == WSAGetLastError()) {//但是如果是非阻塞端口，说明连接仍正常
-            //jvm_printf("sc send error server time = %f ;\n", (f64)clock());
-            len = -2;
-        }
-#else
-        if (errno == EWOULDBLOCK || errno == EAGAIN) {
-            len = -2;
-        }
-#endif
-
-    }
-    return len;
-}
-
-s32 sock_open() {
-    s32 sockfd = -1;
-
-#if __JVM_OS_VS__ || __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__
+s32 host_2_ip(c8 *hostname, char *buf, s32 buflen) {
+#if __JVM_OS_VS__ || __JVM_OS_MINGW__
     WSADATA wsaData;
     WSAStartup(MAKEWORD(1, 1), &wsaData);
 #endif  /*  WIN32  */
-    if ((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1) {
-        //err(strerror(errno));
-        //err("socket init error: %s\n", strerror(errno));
-    }
-    return sockfd;
-}
+    struct addrinfo hints;
+    struct addrinfo *result, *rp;
+    int s;
+    struct sockaddr_in *ipv4;
+    struct sockaddr_in6 *ipv6;
 
+    /* Obtain address(es) matching host/port */
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_CANONNAME;
+    hints.ai_protocol = IPPROTO_TCP;
 
-s32 sock_connect(s32 sockfd, Utf8String *remote_ip, s32 remote_port) {
-    s32 ret = 0;
-
-    struct hostent *host;
-    if ((host = gethostbyname(utf8_cstr(remote_ip))) == NULL) { /* get the host info */
-        //err("get host by name error: %s\n", strerror(errno));
-        ret = -1;
-    } else {
-
-
-        s32 x = 1;
-        if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (char *) &x, sizeof(x)) == -1) {
-            //err("socket reuseaddr error: %s\n", strerror(errno));
-            ret = -1;
-        } else {
-            struct sockaddr_in sock_addr; /* connector's address information */
-            memset((char *) &sock_addr, 0, sizeof(sock_addr));
-            sock_addr.sin_family = AF_INET; /* host byte order */
-            sock_addr.sin_port = htons((u16) remote_port); /* short, network byte order */
-#if __JVM_OS_MAC__ || __JVM_OS_LINUX__
-            sock_addr.sin_addr = *((struct in_addr *) host->h_addr_list[0]);
-#else
-            sock_addr.sin_addr = *((struct in_addr *) host->h_addr);
-#endif
-            memset(&(sock_addr.sin_zero), 0, sizeof((sock_addr.sin_zero))); /* zero the rest of the struct */
-            if (connect(sockfd, (struct sockaddr *) &sock_addr, sizeof(sock_addr)) == -1) {
-                //err("socket connect error: %s\n", strerror(errno));
-                ret = -1;
-            }
-        }
-    }
-    return ret;
-}
-
-s32 sock_bind(s32 sockfd, Utf8String *local_ip, s32 local_port) {
-    s32 ret = 0;
-    struct sockaddr_in addr;
-
-    struct hostent *host;
-
-    memset((char *) &addr, 0, sizeof(addr));//清0
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(local_port);
-    if (local_ip->length) {//如果指定了ip
-        if ((host = gethostbyname(utf8_cstr(local_ip))) == NULL) { /* get the host info */
-            //err("get host by name error: %s\n", strerror(errno));
-            ret = -1;
-        }
-#if __JVM_OS_VS__ || __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__
-        addr.sin_addr = *((struct in_addr *) host->h_addr);
-#else
-        //server_addr.sin_len = sizeof(struct sockaddr_in);
-        addr.sin_addr = *((struct in_addr *) host->h_addr_list[0]);
-#endif
-    } else {
-        addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    }
-
-    s32 on = 1;
-    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on));
-    if ((bind(sockfd, (struct sockaddr *) &addr, sizeof(addr))) < 0) {
-        //err("Error binding serversocket: %s\n", strerror(errno));
-        closesocket(sockfd);
-        ret = -1;
-    }
-    return ret;
-}
-
-
-s32 sock_listen(s32 listenfd) {
-    u16 MAX_LISTEN = 64;
-    if ((listen(listenfd, MAX_LISTEN)) < 0) {
-        //err("Error listening on serversocket: %s\n", strerror(errno));
+    s = getaddrinfo(hostname, NULL, &hints, &result);
+    if (s != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
         return -1;
     }
+
+    for (rp = result; rp != NULL; rp = rp->ai_next) {
+        switch (rp->ai_family) {
+            case AF_INET:
+                ipv4 = (struct sockaddr_in *) rp->ai_addr;
+                inet_ntop(rp->ai_family, &ipv4->sin_addr, buf, buflen);
+                break;
+            case AF_INET6:
+                ipv6 = (struct sockaddr_in6 *) rp->ai_addr;
+                inet_ntop(rp->ai_family, &ipv6->sin6_addr, buf, buflen);
+                break;
+        }
+
+        //printf("[IPv%d]%s\n", rp->ai_family == AF_INET ? 4 : 6, buf);
+    }
+
+    /* No longer needed */
+    freeaddrinfo(result);
     return 0;
 }
 
-s32 sock_accept(s32 listenfd) {
-    struct sockaddr_in clt_addr;
-    memset(&clt_addr, 0, sizeof(clt_addr)); //清0
-    s32 clt_addr_length = sizeof(clt_addr);
-    s32 clt_socket_fd = accept(listenfd, (struct sockaddr *) &clt_addr, (socklen_t *) &clt_addr_length);
-    if (clt_socket_fd == -1) {
-        if (errno != EINTR) {
-            //err("Error accepting on serversocket: %s\n", strerror(errno));
+
+/**
+ * non_block and block socket both not block
+ * if vm notify destroy then terminate read and return -1
+ * if receive timeout is set, then timeout return -2
+ * if error return -1
+ * if receive bytes return len
+ *
+ * @param vmsock
+ * @param buf
+ * @param count
+ * @param runtime
+ * @return
+ */
+static s32 sock_recv(VmSock *vmsock, u8 *buf, s32 count, JThreadRuntime *runtime) {
+    s32 ret;
+    while (1) {
+        if (vmsock->non_block) {
+            ret = mbedtls_net_recv(&vmsock->contex, buf, count);
+        } else {
+            ret = mbedtls_net_recv_timeout(&vmsock->contex, buf, count, vmsock->rcv_time_out ? vmsock->rcv_time_out : 100);
+        }
+        if (runtime->is_interrupt) {//vm waiting for destroy
+            ret = -1;
+            break;
+        }
+        if (ret == MBEDTLS_ERR_SSL_TIMEOUT) {
+            if (vmsock->rcv_time_out) {
+                ret = -2;
+                break;
+            }
+            thrd_yield();
+            continue;
+        } else if (ret == MBEDTLS_ERR_SSL_WANT_READ) {//nonblock
+            ret = 0;
+            break;
+        } else if (ret <= 0) {
+            ret = -1;
+            break;
+        } else {
+            break;
         }
     }
-
-    return clt_socket_fd;
+    return ret;
 }
 
-s32 sock_close(s32 listenfd) {
-    shutdown(listenfd, SHUT_RDWR);
-    closesocket(listenfd);
-#if __JVM_OS_VS__ || __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__
-    //can not cleanup , maybe other socket is alive
-//        WSACancelBlockingCall();
-//        WSACleanup();
-#endif
-
-    return 0;
-}
-
-
-s32 host_2_ip4(Utf8String *hostname) {
-    s32 addr;
-
-#if __JVM_OS_VS__ || __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__
-    WSADATA wsaData;
-    WSAStartup(MAKEWORD(1, 1), &wsaData);
-#endif  /*  WIN32  */
-    struct hostent *host;
-    if ((host = gethostbyname(utf8_cstr(hostname))) == NULL) { /* get the host info */
-        //err("get host by name error: %s\n", strerror(errno));
-        addr = -1;
-    }
-#if __JVM_OS_MAC__ || __JVM_OS_LINUX__
-    addr = ((struct in_addr *) host->h_addr_list[0])->s_addr;
-#else
-    addr = ((struct in_addr *) host->h_addr)->s_addr;
-#endif
-    return addr;
-}
 
 /**
  * load file less than 4G bytes
@@ -636,14 +530,6 @@ void Java_com_sun_cldc_io_Waiter_waitForIO___V(JThreadRuntime *runtime) {
     return;
 }
 
-struct java_lang_Class *Java_java_lang_ClassLoader_getCaller___Ljava_lang_Class_2(JThreadRuntime *runtime) {
-    return NULL;
-}
-
-void Java_java_lang_ClassLoader_load__Ljava_lang_String_2Ljava_lang_Class_2Z_V(JThreadRuntime *runtime, struct java_lang_String *p0, struct java_lang_Class *p1, s8 p2) {
-    return;
-}
-
 struct java_lang_Class *Java_java_lang_Class_forName__Ljava_lang_String_2ZLjava_lang_ClassLoader_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_String *p0, s8 p1, struct java_lang_ClassLoader *p2) {
     JClass *cl = NULL;
     if (p0) {
@@ -666,10 +552,6 @@ struct java_lang_Class *Java_java_lang_Class_forName__Ljava_lang_String_2ZLjava_
         instance_init(runtime, exception);
         throw_exception(runtime, exception);
     }
-    return NULL;
-}
-
-struct java_lang_ClassLoader *Java_java_lang_Class_getClassLoader0___Ljava_lang_ClassLoader_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
     return NULL;
 }
 
@@ -868,35 +750,6 @@ s64 Java_java_lang_Runtime_totalMemory___J(JThreadRuntime *runtime, struct java_
     return g_jvm->collector->MAX_HEAP_SIZE;
 }
 
-//struct java_lang_StringBuilder *Java_java_lang_StringBuilder_append__Ljava_lang_String_2_Ljava_lang_StringBuilder_2(struct java_lang_StringBuilder *p0, struct java_lang_String *p1) {
-//    struct java_lang_StringBuilder *jbuilder = p0;
-//    struct java_lang_String *jstr = p1;
-//
-//    if (jstr) {
-//        s32 scount = jstr->count_2;
-//        if (scount) {
-//            JArray *bvalue = jbuilder->value_0;
-//            s32 bcount = jbuilder->count_1;
-//
-//            s32 soffset = jstr->offset_1;
-//            JArray *svalue = jstr->value_0;
-//            s32 bytes = data_type_bytes[DATATYPE_JCHAR];
-//            if (bvalue->prop.arr_length - bcount < scount) {//need expand stringbuilder
-//                s32 n_count = bcount + scount + 1;
-//                n_count = n_count > bcount * 2 ? n_count : bcount * 2;
-//                JArray *b_new_v = multi_array_create_by_typename(&n_count, 1, "[C");
-//                memcpy(b_new_v->prop.as_s8_arr, bvalue->prop.as_s8_arr, bcount * bytes);
-//                jbuilder->value_0 = b_new_v;
-//                bvalue = b_new_v;
-//            }
-//            c8 *b_body = bvalue->prop.as_s8_arr + (bcount * bytes);
-//            c8 *s_body = svalue->prop.as_s8_arr + (soffset * bytes);
-//            memcpy(b_body, s_body, scount * bytes);
-//            jbuilder->count_1 = bcount + scount;
-//        }
-//    }
-//    return jbuilder;
-//}
 
 u16 Java_java_lang_String_charAt0__I_C(JThreadRuntime *runtime, struct java_lang_String *p0, s32 p1) {
     JArray *carr = p0->value_in_string;
@@ -1023,10 +876,6 @@ struct java_lang_String *Java_java_lang_System_doubleToString__D_Ljava_lang_Stri
     return (__refer) jstr;
 }
 
-struct java_lang_String *Java_java_lang_System_getClassPath___Ljava_lang_String_2(JThreadRuntime *runtime) {
-    return NULL;
-}
-
 struct java_lang_String *Java_java_lang_System_getProperty0__Ljava_lang_String_2_Ljava_lang_String_2(JThreadRuntime *runtime, struct java_lang_String *p0) {
     Utf8String *key = utf8_create();
     jstring_2_utf8(p0, key);
@@ -1129,13 +978,13 @@ s32 Java_java_lang_Thread_activeCount___I(JThreadRuntime *runtime) {
     return g_jvm->thread_list->length;
 }
 
-struct java_lang_ClassLoader *Java_java_lang_Thread_getContextClassLoader___Ljava_lang_ClassLoader_2(JThreadRuntime *runtime, struct java_lang_Thread *p0) {
-    JThreadRuntime *tr = (JThreadRuntime *) (intptr_t) p0->stackFrame_in_thread;
-    return (struct java_lang_ClassLoader *) tr->context_classloader;
-}
-
 struct java_lang_Thread *Java_java_lang_Thread_currentThread___Ljava_lang_Thread_2(JThreadRuntime *runtime) {
     return (__refer) runtime->jthread;
+}
+
+struct java_lang_ClassLoader *Java_java_lang_Thread_getContextClassLoader0___Ljava_lang_ClassLoader_2(JThreadRuntime *runtime, struct java_lang_Thread *p0) {
+    JThreadRuntime *tr = (JThreadRuntime *) (intptr_t) p0->stackFrame_in_thread;
+    return (struct java_lang_ClassLoader *) tr->context_classloader;
 }
 
 void Java_java_lang_Thread_interrupt0___V(JThreadRuntime *runtime, struct java_lang_Thread *p0) {
@@ -1155,7 +1004,7 @@ s8 Java_java_lang_Thread_isAlive___Z(JThreadRuntime *runtime, struct java_lang_T
     return 0;
 }
 
-void Java_java_lang_Thread_setContextClassLoader__Ljava_lang_ClassLoader_2_V(JThreadRuntime *runtime, struct java_lang_Thread *p0, struct java_lang_ClassLoader *p1) {
+void Java_java_lang_Thread_setContextClassLoader0__Ljava_lang_ClassLoader_2_V(JThreadRuntime *runtime, struct java_lang_Thread *p0, struct java_lang_ClassLoader *p1) {
     JThreadRuntime *tr = (JThreadRuntime *) (intptr_t) p0->stackFrame_in_thread;
     tr->context_classloader = (JObject *) p1;
     return;
@@ -1281,10 +1130,6 @@ s32 Java_org_mini_fs_InnerFile_flush0__J_I(JThreadRuntime *runtime, s64 p0) {
         ret = fflush(fd);
     }
     return ret;
-}
-
-s32 Java_org_mini_fs_InnerFile_fullpath___3B_3B_I(JThreadRuntime *runtime, JArray *p0, JArray *p1) {
-    return 0;
 }
 
 s32 Java_org_mini_fs_InnerFile_getOS___I(JThreadRuntime *runtime) {
@@ -1496,142 +1341,195 @@ s32 Java_org_mini_fs_InnerFile_writebuf__J_3BII_I(JThreadRuntime *runtime, s64 p
     return ret;
 }
 
-s32 Java_org_mini_net_SocketNative_accept0__I_I(JThreadRuntime *runtime, s32 p0) {
-    s32 ret = 0;
+JArray *Java_org_mini_net_SocketNative_accept0___3B__3B(JThreadRuntime *runtime, JArray *p0) {
     if (p0) {
-        jthread_block_enter(runtime);
-        ret = sock_accept(p0);
-        jthread_block_exit(runtime);
-    }
-    return ret;
-}
-
-s32 Java_org_mini_net_SocketNative_available0__I_I(JThreadRuntime *runtime, s32 p0) {
-    return 0;
-}
-
-s32 Java_org_mini_net_SocketNative_bind0__I_3BI_I(JThreadRuntime *runtime, s32 p0, JArray *p1, s32 p2) {
-    s32 sockfd = p0;
-    s32 port = p2;
-    Utf8String *ip = utf8_create_part_c(p1->prop.as_s8_arr, 0, p1->prop.arr_length);
-
-    jthread_block_enter(runtime);
-    s32 ret = sock_bind(sockfd, ip, port);
-    jthread_block_exit(runtime);
-    utf8_destory(ip);
-    return ret;
-}
-
-void Java_org_mini_net_SocketNative_close0__I_V(JThreadRuntime *runtime, s32 p0) {
-    sock_close(p0);
-}
-
-s32 Java_org_mini_net_SocketNative_connect0__I_3BI_I(JThreadRuntime *runtime, s32 p0, JArray *p1, s32 p2) {
-    s32 sockfd = p0;
-    s32 port = p2;
-    Utf8String *ip = utf8_create_part_c(p1->prop.as_s8_arr, 0, p1->prop.arr_length);
-
-    jthread_block_enter(runtime);
-    s32 ret = sock_connect(sockfd, ip, port);
-    jthread_block_exit(runtime);
-    utf8_destory(ip);
-    return ret;
-}
-
-s32 Java_org_mini_net_SocketNative_getOption0__II_I(JThreadRuntime *runtime, s32 p0, s32 p1) {
-    return sock_get_option(p0, p1);
-}
-
-struct java_lang_String *Java_org_mini_net_SocketNative_getSockAddr__II_Ljava_lang_String_2(JThreadRuntime *runtime, s32 p0, s32 p1) {
-    s32 sockfd = p0;
-    s32 mode = p1;
-    if (sockfd) {
-        struct sockaddr_in sock;
-        socklen_t slen = sizeof(sock);
-        if (mode == 0) {
-            getpeername(sockfd, (struct sockaddr *) &sock, &slen);
-        } else if (mode == 1) {
-            getsockname(sockfd, (struct sockaddr *) &sock, &slen);
+        mbedtls_net_context *ctx = &((VmSock *) p0->prop.as_c8_arr)->contex;
+        s32 arrlen = sizeof(VmSock);
+        JArray *cltarr = multi_array_create_by_typename(runtime, &arrlen, 1, "[B");
+        VmSock *cltsock = (VmSock *) cltarr->prop.as_c8_arr;
+        gc_refer_hold(cltarr);
+        s32 ret = 0;
+        while (1) {
+            jthread_block_enter(runtime);
+            ret = mbedtls_net_accept(ctx, &cltsock->contex, NULL, 0, NULL);
+            jthread_block_exit(runtime);
+            if (runtime->is_interrupt) {//vm notify thread destroy
+                ret = -1;
+                break;
+            }
+            if (ret == MBEDTLS_ERR_SSL_WANT_READ) {
+                thrd_yield();
+                mbedtls_net_usleep(10000);//10ms
+                continue;
+            } else if (ret < 0) {
+                ret = -1;
+                break;
+            } else {
+                break;
+            }
         }
-#if __JVM_OS_MAC__ || __JVM_OS_LINUX__
-#else
-#endif
-        char ipAddr[INET_ADDRSTRLEN];//保存点分十进制的地址
-        Utf8String *ustr = utf8_create();
-#if __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__
-        c8 *ipstr = inet_ntoa(sock.sin_addr);
-        strcpy(ipAddr, ipstr);
-#else
-        inet_ntop(AF_INET, &sock.sin_addr, ipAddr, sizeof(ipAddr));
-#endif
-        int port = ntohs(sock.sin_port);
-        utf8_append_c(ustr, ipAddr);
-        utf8_append_c(ustr, ":");
-        utf8_append_s64(ustr, port, 10);
-        JObject *jstr = construct_string_with_cstr(runtime, utf8_cstr(ustr));
-        utf8_destory(ustr);
-        return (__refer) jstr;
+        gc_refer_release(cltarr);
+        return ret < 0 ? NULL : cltarr;
     }
     return NULL;
 }
 
-s32 Java_org_mini_net_SocketNative_host2ip4___3B_I(JThreadRuntime *runtime, JArray *p0) {
-    s32 addr = -1;
-    if (p0) {
-        Utf8String *ip = utf8_create_part_c(p0->prop.as_s8_arr, 0, p0->prop.arr_length);
-        addr = host_2_ip4(ip);
-        utf8_destory(ip);
-    }
-    return addr;
-}
-
-s32 Java_org_mini_net_SocketNative_listen0__I_I(JThreadRuntime *runtime, s32 p0) {
-    if (p0) {
-        jthread_block_enter(runtime);
-        s32 ret = sock_listen(p0);
-        jthread_block_exit(runtime);
-        return ret;
-    }
+s32 Java_org_mini_net_SocketNative_available0___3B_I(JThreadRuntime *runtime, JArray *p0) {
     return 0;
 }
 
-s32 Java_org_mini_net_SocketNative_open0___I(JThreadRuntime *runtime) {
+s32 Java_org_mini_net_SocketNative_bind0___3B_3B_3BI_I(JThreadRuntime *runtime, JArray *p0, JArray *p1, JArray *p2, s32 p3) {
+    JArray *vmarr = p0;
+    JArray *host = p1;
+    JArray *port = p2;
+    s32 proto = p3;
+
+    VmSock *vmsock = (VmSock *) vmarr->prop.as_c8_arr;
+    mbedtls_net_context *ctx = &vmsock->contex;
     jthread_block_enter(runtime);
-    s32 sockfd = sock_open();
+    s32 ret = mbedtls_net_bind(ctx, strlen(host->prop.as_c8_arr) == 0 ? NULL : host->prop.as_c8_arr, port->prop.as_c8_arr, proto);
+    if (ret >= 0)ret = mbedtls_net_set_nonblock(ctx);//set as non_block , for vm destroy
     jthread_block_exit(runtime);
-    return sockfd;
+
+    return ret < 0 ? -1 : 0;
 }
 
-s32 Java_org_mini_net_SocketNative_readBuf__I_3BII_I(JThreadRuntime *runtime, s32 p0, JArray *p1, s32 p2, s32 p3) {
-    s32 sockfd = p0;
+void Java_org_mini_net_SocketNative_close0___3B_V(JThreadRuntime *runtime, JArray *p0) {
+    JArray *vmarr = p0;
+    VmSock *vmsock = (VmSock *) vmarr->prop.as_c8_arr;
+    mbedtls_net_context *ctx = &vmsock->contex;
+    mbedtls_net_free(ctx);
+}
+
+s32 Java_org_mini_net_SocketNative_connect0___3B_3B_3BI_I(JThreadRuntime *runtime, JArray *p0, JArray *p1, JArray *p2, s32 p3) {
+    JArray *vmarr = p0;
+    JArray *host = p1;
+    JArray *port = p2;
+    s32 proto = p3;
+
+    VmSock *vmsock = (VmSock *) vmarr->prop.as_c8_arr;
+    mbedtls_net_context *ctx = &vmsock->contex;
+    jthread_block_enter(runtime);
+    s32 ret = mbedtls_net_connect(ctx, host->prop.as_c8_arr, port->prop.as_c8_arr, proto);
+    jthread_block_exit(runtime);
+    return ret < 0 ? -1 : 0;
+}
+
+s32 Java_org_mini_net_SocketNative_getOption0___3BI_I(JThreadRuntime *runtime, JArray *p0, s32 p1) {
+    JArray *vmarr = p0;
+    s32 type = p1;
+
+    s32 ret = 0;
+    if (vmarr) {
+        ret = sock_get_option((VmSock *) vmarr->prop.as_c8_arr, type);
+    }
+    return ret;
+}
+
+struct java_lang_String *Java_org_mini_net_SocketNative_getSockAddr___3BI_Ljava_lang_String_2(JThreadRuntime *runtime, JArray *p0, s32 p1) {
+    JArray *vmarr = p0;
+    s32 mode = p1;
+    if (vmarr) {
+        VmSock *vmsock = (VmSock *) vmarr->prop.as_c8_arr;
+        struct sockaddr_storage sock;
+        socklen_t slen = sizeof(sock);
+        if (mode == 0) {
+            getpeername(vmsock->contex.fd, (struct sockaddr *) &sock, &slen);
+        } else if (mode == 1) {
+            getsockname(vmsock->contex.fd, (struct sockaddr *) &sock, &slen);
+        }
+
+        struct sockaddr_in *ipv4 = NULL;
+        struct sockaddr_in6 *ipv6 = NULL;
+        char ipAddr[INET6_ADDRSTRLEN];//保存点分十进制的地址
+        int port = -1;
+        if (sock.ss_family == AF_INET) {// IPv4 address
+            ipv4 = ((struct sockaddr_in *) &sock);
+            port = ipv4->sin_port;
+            inet_ntop(AF_INET, &ipv4->sin_addr, ipAddr, sizeof(ipAddr));
+        } else {//IPv6 address
+            ipv6 = ((struct sockaddr_in6 *) &sock);
+            port = ipv6->sin6_port;
+            inet_ntop(AF_INET6, &ipv6->sin6_addr, ipAddr, sizeof(ipAddr));
+        }
+
+        Utf8String *ustr = utf8_create();
+        utf8_append_c(ustr, ipAddr);
+        utf8_append_c(ustr, ":");
+        utf8_append_s64(ustr, port, 10);
+        JObject *jstr = construct_string_with_ustr(runtime, ustr);
+        utf8_destory(ustr);
+        return (struct java_lang_String *) jstr;
+    }
+
+    return NULL;
+}
+
+JArray *Java_org_mini_net_SocketNative_host2ip___3B__3B(JThreadRuntime *runtime, JArray *p0) {
+    JArray *host = p0;
+
+    JArray *jbyte_arr = NULL;
+    if (host) {
+
+        char buf[50];
+        s32 ret = host_2_ip(host->prop.as_c8_arr, buf, sizeof(buf));
+        if (ret >= 0) {
+            s32 buflen = strlen(buf);
+            jbyte_arr = multi_array_create_by_typename(runtime, &buflen, 1, "[B");
+            memmove(jbyte_arr->prop.as_c8_arr, buf, buflen);
+        }
+    }
+    return jbyte_arr;
+}
+
+
+JArray *Java_org_mini_net_SocketNative_open0____3B(JThreadRuntime *runtime) {
+    jthread_block_enter(runtime);
+    s32 arrlen = sizeof(VmSock);
+    JArray *vmarr = multi_array_create_by_typename(runtime, &arrlen, 1, "[B");
+    mbedtls_net_context *ctx = &((VmSock *) vmarr->prop.as_c8_arr)->contex;
+    mbedtls_net_init(ctx);
+    jthread_block_exit(runtime);
+    return vmarr;
+}
+
+s32 Java_org_mini_net_SocketNative_readBuf___3B_3BII_I(JThreadRuntime *runtime, JArray *p0, JArray *p1, s32 p2, s32 p3) {
+    JArray *vmarr = p0;
+    JArray *jbyte_arr = p1;
     s32 offset = p2;
     s32 count = p3;
 
+    VmSock *vmsock = (VmSock *) vmarr->prop.as_c8_arr;
+
     jthread_block_enter(runtime);
-    s32 len = sock_recv(sockfd, p1->prop.as_s8_arr + offset, count);
+    s32 ret = sock_recv(vmsock, (u8 *) jbyte_arr->prop.as_c8_arr + offset, count, runtime);
     jthread_block_exit(runtime);
-    return len;
+    return ret;
 }
 
-s32 Java_org_mini_net_SocketNative_readByte__I_I(JThreadRuntime *runtime, s32 p0) {
-    s32 sockfd = p0;
-    c8 b = 0;
+s32 Java_org_mini_net_SocketNative_readByte___3B_I(JThreadRuntime *runtime, JArray *p0) {
+    JArray *vmarr = p0;
+
+    VmSock *vmsock = (VmSock *) vmarr->prop.as_c8_arr;
+    u8 b = 0;
     jthread_block_enter(runtime);
-    s32 len = sock_recv(sockfd, &b, 1);
+    s32 ret = sock_recv(vmsock, &b, 1, runtime);
     jthread_block_exit(runtime);
-    if (len < 0) {
-        return len;
-    }
-    return b;
+    return ret < 0 ? ret : (u8) b;
+
 }
 
-s32 Java_org_mini_net_SocketNative_setOption0__IIII_I(JThreadRuntime *runtime, s32 p0, s32 p1, s32 p2, s32 p3) {
-    if (p0) {
-        return sock_option(p0, p1, p2, p3);
+s32 Java_org_mini_net_SocketNative_setOption0___3BIII_I(JThreadRuntime *runtime, JArray *p0, s32 p1, s32 p2, s32 p3) {
+    JArray *vmarr = p0;
+    s32 type = p1;
+    s32 val = p2;
+    s32 val2 = p3;
+    s32 ret = 0;
+    if (vmarr) {
+        ret = sock_option((VmSock *) vmarr->prop.as_c8_arr, type, val, val2);
     }
-    return 0;
+    return ret;
 }
-
 
 s32 Java_org_mini_net_SocketNative_sslc_1close___3B_I(JThreadRuntime *runtime, JArray *p0) {
     return sslc_close((SSLC_Entry *) p0->prop.as_c8_arr);
@@ -1665,23 +1563,42 @@ s32 Java_org_mini_net_SocketNative_sslc_1write___3B_3BII_I(JThreadRuntime *runti
 }
 
 
-s32 Java_org_mini_net_SocketNative_writeBuf__I_3BII_I(JThreadRuntime *runtime, s32 p0, JArray *p1, s32 p2, s32 p3) {
-    s32 sockfd = p0;
+s32 Java_org_mini_net_SocketNative_writeBuf___3B_3BII_I(JThreadRuntime *runtime, JArray *p0, JArray *p1, s32 p2, s32 p3) {
+    JArray *vmarr = p0;
+    JArray *jbyte_arr = p1;
     s32 offset = p2;
     s32 count = p3;
+
+    VmSock *vmsock = (VmSock *) vmarr->prop.as_c8_arr;
+    mbedtls_net_context *ctx = &vmsock->contex;
     jthread_block_enter(runtime);
-    s32 len = sock_send(sockfd, p1->prop.as_s8_arr + offset, count);
+    s32 ret = mbedtls_net_send(ctx, (const u8 *) jbyte_arr->prop.as_c8_arr + offset, count);
     jthread_block_exit(runtime);
-    return len;
+    if (ret == MBEDTLS_ERR_SSL_WANT_WRITE) {
+        ret = 0;
+    } else if (ret < 0) {
+        ret = -1;
+    }
+
+    return ret;
 }
 
-s32 Java_org_mini_net_SocketNative_writeByte__II_I(JThreadRuntime *runtime, s32 p0, s32 p1) {
-    s32 sockfd = p0;
-    c8 b = (u8) p1;
+s32 Java_org_mini_net_SocketNative_writeByte___3BI_I(JThreadRuntime *runtime, JArray *p0, s32 p1) {
+    JArray *vmarr = p0;
+    s32 val = p1;
+    u8 b = (u8) val;
+
+    VmSock *vmsock = (VmSock *) vmarr->prop.as_c8_arr;
+    mbedtls_net_context *ctx = &vmsock->contex;
     jthread_block_enter(runtime);
-    s32 len = sock_send(sockfd, &b, 1);
+    s32 ret = mbedtls_net_send(ctx, &b, 1);
     jthread_block_exit(runtime);
-    return len;
+    if (ret == MBEDTLS_ERR_SSL_WANT_WRITE) {
+        ret = 0;
+    } else if (ret < 0) {
+        ret = -1;
+    }
+    return ret;
 }
 
 void Java_org_mini_reflect_DirectMemObj_copyFrom0__ILjava_lang_Object_2II_V(JThreadRuntime *runtime, struct org_mini_reflect_DirectMemObj *p0, s32 p1, struct java_lang_Object *p2, s32 p3, s32 p4) {
@@ -1866,7 +1783,7 @@ struct java_lang_Object *Java_org_mini_reflect_ReflectArray_newArray__Ljava_lang
     return (__refer) arr;
 }
 
-void Java_org_mini_reflect_ReflectClass_mapReference__J_V(JThreadRuntime *runtime, struct org_mini_reflect_ReflectClass *p0, s64 p1) {
+void Java_org_mini_reflect_ReflectClass_mapClass__J_V(JThreadRuntime *runtime, struct org_mini_reflect_ReflectClass *p0, s64 p1) {
     if (!p0)return;
     JClass *target = (__refer) (intptr_t) p1;
     p0->className_5 = (__refer) construct_string_with_ustr(runtime, target->name);
@@ -2008,8 +1925,25 @@ void Java_org_mini_reflect_ReflectField_setFieldVal__Ljava_lang_Object_2JJ_V(JTh
     }
 }
 
-s64 Java_org_mini_reflect_ReflectMethod_findMethod0__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2_J(JThreadRuntime *runtime, struct java_lang_String *p0, struct java_lang_String *p1, struct java_lang_String *p2) {
-    return 0;
+s64 Java_org_mini_reflect_ReflectMethod_findMethod0__Ljava_lang_ClassLoader_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2_J(JThreadRuntime *runtime, struct java_lang_ClassLoader *p0, struct java_lang_String *p1, struct java_lang_String *p2, struct java_lang_String *p3) {
+    JObject *jloader = (JObject *) p0;
+    struct java_lang_String *jstr_clsName = p1;
+    struct java_lang_String *jstr_methodName = p2;
+    struct java_lang_String *jstr_methodDesc = p3;
+    Utf8String *ustr_clsName = utf8_create();
+    Utf8String *ustr_methodName = utf8_create();
+    Utf8String *ustr_methodDesc = utf8_create();
+
+    jstring_2_utf8(jstr_clsName, ustr_clsName);
+    jstring_2_utf8(jstr_methodName, ustr_methodName);
+    jstring_2_utf8(jstr_methodDesc, ustr_methodDesc);
+
+    MethodInfo *mi = find_methodInfo_by_name(utf8_cstr(ustr_clsName), utf8_cstr(ustr_methodName), utf8_cstr(ustr_methodDesc));
+
+    utf8_destory(ustr_clsName);
+    utf8_destory(ustr_methodName);
+    utf8_destory(ustr_methodDesc);
+    return (s64) (intptr_t) mi;
 }
 
 struct org_mini_reflect_DataWrap *Java_org_mini_reflect_ReflectMethod_invokeMethod__JLjava_lang_Object_2_3J_Lorg_mini_reflect_DataWrap_2(JThreadRuntime *runtime, struct org_mini_reflect_ReflectMethod *p0, s64 p1, struct java_lang_Object *p2, JArray *p3) {
@@ -2173,6 +2107,10 @@ struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_defineClass__Ljava_la
     return NULL;//
 }
 
+void Java_org_mini_reflect_vm_RefNative_destroyNativeClassLoader__Ljava_lang_ClassLoader_2_V(JThreadRuntime *runtime, struct java_lang_ClassLoader *p0) {
+    return;
+}
+
 struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_findLoadedClass0__Ljava_lang_ClassLoader_2Ljava_lang_String_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_ClassLoader *p0, struct java_lang_String *p1) {
     Utf8String *ustr = utf8_create();
     jstring_2_utf8(p1, ustr);
@@ -2182,6 +2120,10 @@ struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_findLoadedClass0__Lja
     if (cl && (cl->jclass_loader == (JObject *) p0)) {
         return (java_lang_Class *) cl->ins_of_Class;
     }
+    return NULL;
+}
+
+struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_getBootstrapClassByName__Ljava_lang_String_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_String *p0) {
     return NULL;
 }
 
@@ -2196,15 +2138,6 @@ struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_getCallerClass___Ljav
     return NULL;
 }
 
-struct java_lang_Class *Java_org_mini_reflect_vm_RefNative_getClassByName__Ljava_lang_String_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_String *p0) {
-    Utf8String *ustr = utf8_create();
-    jstring_2_utf8(p0, ustr);
-    utf8_replace_c(ustr, ".", "/");
-    class_clinit(runtime, ustr);
-    JClass *cl = get_class_by_name(ustr);
-    utf8_destory(ustr);
-    return (__refer) ins_of_Class_create_get(runtime, cl);
-}
 
 JArray *Java_org_mini_reflect_vm_RefNative_getClasses____3Ljava_lang_Class_2(JThreadRuntime *runtime) {
     s32 size = (s32) g_jvm->classes->entries;
@@ -2227,9 +2160,10 @@ s32 Java_org_mini_reflect_vm_RefNative_getFrameCount__Ljava_lang_Thread_2_I(JThr
     return 0;
 }
 
-JArray *Java_org_mini_reflect_vm_RefNative_getGarbageReferedObjs____3Ljava_lang_Object_2(JThreadRuntime *runtime) {
-    return NULL;
+s32 Java_org_mini_reflect_vm_RefNative_getGarbageMarkCounter___I(JThreadRuntime *runtime) {
+    return 0;
 }
+
 
 s32 Java_org_mini_reflect_vm_RefNative_getGarbageStatus___I(JThreadRuntime *runtime) {
     return g_jvm->collector->_garbage_thread_status;
@@ -2340,6 +2274,10 @@ void Java_org_mini_reflect_vm_RefNative_heap_1put_1short__JIS_V(JThreadRuntime *
 
 struct java_lang_Object *Java_org_mini_reflect_vm_RefNative_id2obj__J_Ljava_lang_Object_2(JThreadRuntime *runtime, s64 p0) {
     return (__refer) (intptr_t) p0;
+}
+
+void Java_org_mini_reflect_vm_RefNative_initNativeClassLoader__Ljava_lang_ClassLoader_2Ljava_lang_ClassLoader_2_V(JThreadRuntime *runtime, struct java_lang_ClassLoader *p0, struct java_lang_ClassLoader *p1) {
+    return;
 }
 
 struct java_lang_Object *Java_org_mini_reflect_vm_RefNative_newWithoutInit__Ljava_lang_Class_2_Ljava_lang_Object_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
@@ -2493,6 +2431,45 @@ s32 Java_org_mini_zip_Zip_putEntry0___3B_3B_3B_I(JThreadRuntime *runtime, JArray
     return ret;
 }
 
+
+s8 Java_sun_misc_Unsafe_compareAndSwapInt__Ljava_lang_Object_2JII_Z(JThreadRuntime *runtime, struct sun_misc_Unsafe *p0, struct java_lang_Object *p1, s64 p2, s32 p4, s32 p5) {
+    return 0;
+}
+
+
+s8 Java_sun_misc_Unsafe_compareAndSwapLong__Ljava_lang_Object_2JJJ_Z(JThreadRuntime *runtime, struct sun_misc_Unsafe *p0, struct java_lang_Object *p1, s64 p2, s64 p4, s64 p6) {
+    return 0;
+}
+
+
+s8 Java_sun_misc_Unsafe_compareAndSwapObject__Ljava_lang_Object_2JLjava_lang_Object_2Ljava_lang_Object_2_Z(JThreadRuntime *runtime, struct sun_misc_Unsafe *p0, struct java_lang_Object *p1, s64 p2, struct java_lang_Object *p4, struct java_lang_Object *p5) {
+    return 0;
+}
+
+
+s64 Java_sun_misc_Unsafe_getAddress__J_J(JThreadRuntime *runtime, struct sun_misc_Unsafe *p0, s64 p1) {
+    return 0;
+}
+
+
+s64 Java_sun_misc_Unsafe_objectFieldBase__Ljava_lang_Object_2_J(JThreadRuntime *runtime, struct sun_misc_Unsafe *p0, struct java_lang_Object *p1) {
+    return 0;
+}
+
+
+s64 Java_sun_misc_Unsafe_objectFieldOffset__J_J(JThreadRuntime *runtime, struct sun_misc_Unsafe *p0, s64 p1) {
+    return 0;
+}
+
+
+void Java_sun_misc_Unsafe_putAddress__JJ_V(JThreadRuntime *runtime, struct sun_misc_Unsafe *p0, s64 p1, s64 p3) {
+    return;
+}
+
+
+s64 Java_sun_misc_Unsafe_staticFieldOffset__J_J(JThreadRuntime *runtime, struct sun_misc_Unsafe *p0, s64 p1) {
+    return 0;
+}
 
 
 

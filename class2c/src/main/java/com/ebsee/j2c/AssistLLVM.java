@@ -220,8 +220,9 @@ public class AssistLLVM {
     }
 
     static private void genMetaDataH(String outpath) {
+        String genfile = "/metadata.h";
         try {
-            File f = new File(outpath + "/metadata.h");
+            File f = new File(outpath + genfile);
             FileOutputStream fos = new FileOutputStream(f);
             PrintStream ps = new PrintStream(fos);
 
@@ -253,7 +254,7 @@ public class AssistLLVM {
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("generate clinits.ll error");
+            throw new RuntimeException("generate " + genfile + " error");
         }
     }
 
@@ -296,6 +297,9 @@ public class AssistLLVM {
         ps.println("// define filed name ");
         for (String[] pair : fieldArr) {
             Field field = ClassManger.findField(pair[0].replace('.', '/'), pair[1], pair[2]);
+            if (field == null) {
+                System.out.println("field not found:" + pair[0] + " " + pair[1] + " " + pair[2]);
+            }
             ps.println("#define " + pair[3] + " " + Util.getFieldVarName(field));
         }
 

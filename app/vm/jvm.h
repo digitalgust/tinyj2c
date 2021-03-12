@@ -345,6 +345,7 @@ struct _JThreadRuntime {
     u8 volatile no_pause;  //can't pause when clinit
     u8 volatile thread_status;
     u8 volatile is_suspend;
+    u8 volatile is_interrupt;
 
 
     spinlock_t lock;

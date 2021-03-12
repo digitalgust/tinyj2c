@@ -1071,7 +1071,7 @@ public class MV extends MethodVisitor {
 
     @Override
     public void visitLdcInsn(Object o) {
-//        if (methodName.equals("isInfinite")) {
+//        if (methodName.equals("<init>") && cv.className.equals("java/util/OptionalDouble")) {
 //            int debug = 1;
 //        }
 
@@ -1093,6 +1093,8 @@ public class MV extends MethodVisitor {
                 add("stack[sp++].f = 1.0 / 0.0;");
             } else if (Float.intBitsToFloat(0xff800000) == value) {
                 add("stack[sp++].f = -1.0 / 0.0;");
+            } else if (Float.isNaN(value)) {
+                add("stack[sp++].f = 0.0 / 0.0;");
             } else {
                 add("stack[sp++].f = " + value + ";");
             }
@@ -1102,6 +1104,8 @@ public class MV extends MethodVisitor {
                 add("stack[sp].d = 1.0 / 0.0;");
             } else if (Double.longBitsToDouble(0xfff0000000000000L) == value) {
                 add("stack[sp].d = -1.0 / 0.0;");
+            } else if (Double.isNaN(value)) {
+                add("stack[sp].d = 0.0 / 0.0;");
             } else {
                 add("stack[sp].d = " + value + ";");
             }
@@ -1423,6 +1427,7 @@ public class MV extends MethodVisitor {
         Method m = ClassManger.findMethod(className, methodName, descritp);
         if (m == null) {
             int debug = 1;
+            System.out.println("Method not found:" + className + "." + methodName + descritp);
         }
         JSignature sig = new JSignature(m);
         if (isMethodEmpty(m)) {//do nothing
