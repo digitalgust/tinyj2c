@@ -5,22 +5,12 @@
 #include <string.h>
 #include "jvm.h"
 #include "garbage.h"
-#include "../out/c/metadata.h"
 
 /**
  * all method would call by llvm method
  */
 
-void print_jstring(__refer jobj) {
-    java_lang_String *jstr = (java_lang_String *) jobj;
-    s32 offset = jstr->offset_1;
-    s32 count = jstr->count_2;
-    u16 *value = jstr->value_0->prop.as_u16_arr;
-    s32 i;
-    for (i = 0; i < count; i++) {
-        printf("%c", (c8) value[offset + i]);
-    }
-}
+
 
 void print_debug(s32 v) {
     printf("lldebug: %d \n", v);

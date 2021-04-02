@@ -288,11 +288,12 @@ public class AssistLLVM {
                 {"java.lang.String", "offset", "I", "offset_in_string"},
                 {"java.lang.Class", "classHandle", "J", "classHandle_in_class"},
                 {"java.lang.Thread", "stackFrame", "J", "stackFrame_in_thread"},
-                {"java.lang.StackTraceElement", "declaringClass", "Ljava/lang/String;", "declaringClass_in_stacktraceelement"},
-                {"java.lang.StackTraceElement", "methodName", "Ljava/lang/String;", "methodName_in_stacktraceelement"},
-                {"java.lang.StackTraceElement", "fileName", "Ljava/lang/String;", "fileName_in_stacktraceelement"},
-                {"java.lang.StackTraceElement", "lineNumber", "I", "lineNumber_in_stacktraceelement"},
-                {"java.lang.StackTraceElement", "parent", "Ljava/lang/StackTraceElement;", "parent_in_stacktraceelement"},
+//                {"java.lang.StackTraceElement", "declaringClass", "Ljava/lang/String;", "declaringClass_in_stacktraceelement"},
+//                {"java.lang.StackTraceElement", "methodName", "Ljava/lang/String;", "methodName_in_stacktraceelement"},
+//                {"java.lang.StackTraceElement", "fileName", "Ljava/lang/String;", "fileName_in_stacktraceelement"},
+//                {"java.lang.StackTraceElement", "lineNumber", "I", "lineNumber_in_stacktraceelement"},
+//                {"java.lang.StackTraceElement", "parent", "Ljava/lang/StackTraceElement;", "parent_in_stacktraceelement"},
+//                {"java.lang.StackTraceElement", "declaringClazz", "Ljava/lang/Class;", "declaringClazz_in_stacktraceelement"},
         };
         ps.println("// define filed name ");
         for (String[] pair : fieldArr) {

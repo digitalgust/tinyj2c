@@ -1447,7 +1447,8 @@ public class MV extends MethodVisitor {
         add("{");
         add("    sp -= " + argsSlotSize + ";");
         if (!m.isStatic()) {
-            add("    if (!rstack[sp + 0].obj) {");
+            add("    " + Util.STR_JOBJECT_TYPE_NAME + " *__ins = rstack[sp + 0].ins;");
+            add("    if (!__ins) {");
             add("        rstack[sp++].obj = " + AssistLLVM.FUNC_NEW_INSTANCE_WITH_RAWINDEX + "(runtime, " + AssistLLVM.getClassIndex(CLASS_JAVA_LANG_NULL_POINTER_EXCEPTION) + ");");
             add("        __frame->bytecodeIndex = " + curLabel.getOffsetInMethod() + ";//" + curLabel);
             add("        __frame->lineNo = " + curLineNo + ";");
@@ -1475,7 +1476,7 @@ public class MV extends MethodVisitor {
             if (m.isStatic()) {
                 add("    " + AssistLLVM.FUNC_JTHREAD_LOCK + "(runtime, (JObject *)g_classes[" + AssistLLVM.getClassIndex(className) + "].clazz);");
             } else {
-                add("    " + AssistLLVM.FUNC_JTHREAD_LOCK + "(runtime, rstack[sp + 0].obj);");
+                add("    " + AssistLLVM.FUNC_JTHREAD_LOCK + "(runtime, __ins);");
             }
         }
         add("    " + ret + Util.getMethodRawName(m) + "(" + sb.toString() + ");");
@@ -1483,7 +1484,7 @@ public class MV extends MethodVisitor {
             if (m.isStatic()) {
                 add("    " + AssistLLVM.FUNC_JTHREAD_UNLOCK + "(runtime, (JObject *)g_classes[" + AssistLLVM.getClassIndex(className) + "].clazz);");
             } else {
-                add("    " + AssistLLVM.FUNC_JTHREAD_UNLOCK + "(runtime, rstack[sp + 0].obj);");
+                add("    " + AssistLLVM.FUNC_JTHREAD_UNLOCK + "(runtime, __ins);");
             }
         }
         add("    sp += " + sig.getSlotSizeOfResult() + ";");
@@ -1545,7 +1546,7 @@ public class MV extends MethodVisitor {
             if (m.isStatic()) {
                 add("    " + AssistLLVM.FUNC_JTHREAD_LOCK + "(runtime, (JObject *)g_classes[" + AssistLLVM.getClassIndex(className) + "].clazz);");
             } else {
-                add("    " + AssistLLVM.FUNC_JTHREAD_LOCK + "(runtime, rstack[sp + 0].obj);");
+                add("    " + AssistLLVM.FUNC_JTHREAD_LOCK + "(runtime, __ins);");
             }
         }
         add("    " + ret + "__func_p(" + sb.toString() + ");");
@@ -1553,7 +1554,7 @@ public class MV extends MethodVisitor {
             if (m.isStatic()) {
                 add("    " + AssistLLVM.FUNC_JTHREAD_UNLOCK + "(runtime, (JObject *)g_classes[" + AssistLLVM.getClassIndex(className) + "].clazz);");
             } else {
-                add("    " + AssistLLVM.FUNC_JTHREAD_UNLOCK + "(runtime, rstack[sp + 0].obj);");
+                add("    " + AssistLLVM.FUNC_JTHREAD_UNLOCK + "(runtime, __ins);");
             }
         }
         add("    sp += " + sig.getSlotSizeOfResult() + ";");

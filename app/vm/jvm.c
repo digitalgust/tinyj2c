@@ -8,7 +8,6 @@
 
 #include "jvm.h"
 #include "garbage.h"
-#include "../out/c/metadata.h"
 #include "bytebuf.h"
 
 c8 *STR_JAVA_LANG_CLASS = "java/lang/Class";
@@ -91,11 +90,11 @@ JObject *ins_of_Class_create_get(JThreadRuntime *runtime, JClass *clazz) {
         if (clazz->ins_of_Class) {
             return clazz->ins_of_Class;
         } else {
-            java_lang_Class *ins = (java_lang_Class *) new_instance_with_class(runtime, java_lang_class);
+            JObject *ins = new_instance_with_class(runtime, java_lang_class);
             gc_refer_hold(ins);
-            Java_java_lang_Class__init____V(runtime, ins);
+            jclass_init_insOfClass(runtime, ins);
             clazz->ins_of_Class = (__refer) ins;
-            ins->classHandle_in_class = (s64) (intptr_t) clazz;
+            jclass_set_classHandle(ins, clazz);
             return (JObject *) ins;
         }
     }
@@ -279,8 +278,8 @@ void class_clinit(JThreadRuntime *runtime, Utf8String *className) {
     ClassRaw *classRaw = find_classraw(utf8_cstr(className));
     if (!classRaw)return;
 
-    garbage_collection_pause();
     garbage_thread_lock();
+    runtime->no_pause++;
     //load this
     class_load(className);
     JClass *clazz = classes_get(className);
@@ -335,8 +334,8 @@ void class_clinit(JThreadRuntime *runtime, Utf8String *className) {
         clazz->status = CLASS_STATUS_CLINITED;
     }
 
+    runtime->no_pause--;
     garbage_thread_unlock();
-    garbage_collection_resume();
 }
 
 
@@ -467,11 +466,12 @@ void class_prepar(JClass *clazz) {
     utf8_destory(num);
 }
 
-Jvm *jvm_create() {
+Jvm *jvm_create(c8 *bootclasspath, c8 *classpath) {
     Jvm *jvm = jvm_calloc(sizeof(Jvm));
     jvm->classes = hashtable_create(UNICODE_STR_HASH_FUNC, UNICODE_STR_EQUALS_FUNC);
     jvm->thread_list = arraylist_create(32);
     jvm->collector = garbage_collector_create();
+    jvm->classloaders = arraylist_create(4);
     //创建jstring 相关容器
     jvm->table_jstring_const = hashtable_create(UNICODE_STR_HASH_FUNC, UNICODE_STR_EQUALS_FUNC);
     jvm->sys_prop = hashtable_create(UNICODE_STR_HASH_FUNC, UNICODE_STR_EQUALS_FUNC);
@@ -479,8 +479,8 @@ Jvm *jvm_create() {
     g_jvm = jvm;
     jvm_printf("[INFO]jvm created\n");
     sys_properties_load();
-    sys_properties_set_c("sun.boot.class.path", "");
-    sys_properties_set_c("java.class.path", "");
+    sys_properties_set_c("sun.boot.class.path", bootclasspath);
+    sys_properties_set_c("java.class.path", classpath);
     fill_procache();
     garbage_start();
 
@@ -509,6 +509,7 @@ void jvm_destroy(Jvm *jvm) {
     }
     hashtable_destory(jvm->classes);
     arraylist_destory(jvm->thread_list);
+    arraylist_destory(jvm->classloaders);
     hashtable_destory(jvm->table_jstring_const);
     hashtable_destory(jvm->sys_prop);
     jvm_free(jvm);
@@ -583,13 +584,14 @@ void jthread_lock(JThreadRuntime *runtime, JObject *jobj) {
     if (!mb->thread_lock) {
         jthreadlock_create(mb);
     }
+
+
     ThreadLock *jtl = mb->thread_lock;
     //can pause when lock
     while (mtx_trylock(&jtl->mutex_lock) != thrd_success) {
         check_suspend_and_pause(runtime);
         jthread_yield();
     }
-
 #if _JVM_DEBUG_BYTECODE_DETAIL > 5
     invoke_deepth(runtime);
     jvm_printf("  lock: %llx   lock holder: %s \n", (s64) (intptr_t) (runtime->threadInfo->jthread),
@@ -603,8 +605,10 @@ void jthread_unlock(JThreadRuntime *runtime, JObject *jobj) {
     if (!mb->thread_lock) {
         jthreadlock_create(mb);
     }
+
     ThreadLock *jtl = mb->thread_lock;
     mtx_unlock(&jtl->mutex_lock);
+
 #if _JVM_DEBUG_BYTECODE_DETAIL > 5
     invoke_deepth(runtime);
     jvm_printf("unlock: %llx   lock holder: %s, \n", (s64) (intptr_t) (runtime->threadInfo->jthread),
@@ -689,7 +693,7 @@ s32 jthread_sleep(JThreadRuntime *runtime, s64 ms) {
 }
 
 
-s32 jthread_prepar(JThreadRuntime *runtime, MethodRaw *exec) {
+s32 jthread_prepar(JThreadRuntime *runtime) {
 
     Utf8String *ustr = utf8_create();
 
@@ -713,7 +717,6 @@ s32 jthread_prepar(JThreadRuntime *runtime, MethodRaw *exec) {
         runtime->jthread = jthread;
     }
 
-    class_clinit(runtime, get_utf8str_by_utfraw_index(exec->class_name));
 
     utf8_destory(ustr);
 
@@ -722,14 +725,10 @@ s32 jthread_prepar(JThreadRuntime *runtime, MethodRaw *exec) {
 
 s32 jthread_run(__refer p) {
     JThreadRuntime *runtime = (JThreadRuntime *) p;
-    tss_set(TLS_KEY_JTHREADRUNTIME, runtime);
-    Utf8String *ustr = utf8_create();
-    tss_set(TLS_KEY_UTF8STR_CACHE, ustr);
 
     if (runtime->exec) {
-        runtime->thread_status = THREAD_STATUS_RUNNING;
-        arraylist_push_back(g_jvm->thread_list, runtime);
-        jthread_prepar(runtime, runtime->exec);
+        jthread_bound(runtime);
+        class_clinit(runtime, get_utf8str_by_utfraw_index(runtime->exec->class_name));
 
 
         jthread_run_t run = (jthread_run_t) runtime->exec->func_ptr;
@@ -738,17 +737,12 @@ s32 jthread_run(__refer p) {
         jvm_printf("thread over, %lld\n", (currentTimeMillis() - startAt));
         exception_check_print(runtime);
     }
-    arraylist_remove(g_jvm->thread_list, runtime);
-    runtime->thread_status = THREAD_STATUS_DEAD;
-    jthreadruntime_destroy(runtime);
-    utf8_destory(ustr);
-    tss_set(TLS_KEY_JTHREADRUNTIME, NULL);
-    tss_set(TLS_KEY_UTF8STR_CACHE, NULL);
+    jthread_unbound(runtime);
     return 0;
 }
 
 
-void jthread_start(JObject *jthread) {
+JThreadRuntime *jthread_start(JObject *jthread) {
 
 //    MethodInfo *method = find_methodInfo_by_name(utf8_cstr(jthread->prop.clazz->name), "run", "()V");
     MethodRaw *method = find_methodraw(utf8_cstr(jthread->prop.clazz->name), "run", "()V");
@@ -757,15 +751,37 @@ void jthread_start(JObject *jthread) {
     runtime->jthread = jthread;
     runtime->exec = method;
     runtime->thread_status = THREAD_STATUS_NEW;
+    jthread_set_stackFrame(jthread, runtime);
     thrd_create(&runtime->thread, jthread_run, runtime);
+    return runtime;
 }
 
 void jthread_bound(JThreadRuntime *runtime) {
-
+    tss_set(TLS_KEY_JTHREADRUNTIME, runtime);
+    Utf8String *ustr = utf8_create();
+    tss_set(TLS_KEY_UTF8STR_CACHE, ustr);
+    jthread_prepar(runtime);
+    if (!runtime->jthread) {
+        JObject *jthread = runtime->jthread ? runtime->jthread : new_instance_with_name(runtime, STR_JAVA_LANG_THREAD);
+        gc_refer_hold(jthread);
+        instance_init(runtime, jthread);
+        runtime->jthread = jthread;
+        jthread_set_stackFrame(jthread, runtime);
+    }
+    arraylist_push_back(g_jvm->thread_list, runtime);
+    runtime->thread_status = THREAD_STATUS_RUNNING;
 }
 
 void jthread_unbound(JThreadRuntime *runtime) {
-
+    arraylist_remove(g_jvm->thread_list, runtime);
+    runtime->thread_status = THREAD_STATUS_DEAD;
+    if (runtime->context_classloader)gc_refer_release(runtime->context_classloader);
+    gc_refer_release(runtime->jthread);
+    jthreadruntime_destroy(runtime);
+    tss_set(TLS_KEY_JTHREADRUNTIME, NULL);
+    Utf8String *ustr = tss_get(TLS_KEY_UTF8STR_CACHE);
+    utf8_destory(ustr);
+    tss_set(TLS_KEY_UTF8STR_CACHE, NULL);
 }
 
 /**
@@ -776,7 +792,7 @@ void jthread_unbound(JThreadRuntime *runtime) {
 
 
 s32 jvm_run_main(Utf8String *mainClass) {
-    g_jvm = jvm_create();
+    g_jvm = jvm_create("", "");
 
     utf8_replace_c(mainClass, ".", "/");
     c8 *methodName = "main";
@@ -812,35 +828,4 @@ s32 jvm_run_main(Utf8String *mainClass) {
     printf("jvm destroied\n");
     g_jvm = NULL;
     return 0;
-}
-
-
-void _on_jvm_sig(int no) {
-
-    printf("[ERROR]jvm signo:%d  errno: %d , %s\n", no, errno, strerror(errno));
-    exit(no);
-}
-
-s32 main(int argc, const char *argv[]) {
-//    signal(SIGABRT, _on_jvm_sig);
-//    signal(SIGFPE, _on_jvm_sig);
-//    signal(SIGSEGV, _on_jvm_sig);
-//    signal(SIGTERM, _on_jvm_sig);
-//#ifdef SIGPIPE
-//    signal(SIGPIPE, _on_jvm_sig);
-//#endif
-
-    Utf8String *mainClassName = utf8_create();
-    if (argc > 1) {
-        utf8_append_c(mainClassName, (c8 *) argv[1]);
-    } else {
-        utf8_clear(mainClassName);
-//        utf8_append_c(mainClassName, "test.HttpServer");
-        utf8_append_c(mainClassName, "test.Foo3");
-        jvm_printf("[INFO]ccjvm test.Test\n");
-    }
-    s32 ret = jvm_run_main(mainClassName);
-    utf8_destory(mainClassName);
-    return ret;
-
 }

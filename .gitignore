@@ -4,8 +4,9 @@ class2c/target
 class2c/.idea
 app/out/classes
 app/out/c/*
-a.out
+*.out
 .svn
+tools
 cmake-*
 CMakeFiles
 cmake_*

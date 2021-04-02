@@ -7,7 +7,7 @@
 
 #include "jni.h"
 #include "jvm.h"
-#include "../out/c/metadata.h"
+#include "metadata.h"
 
 struct _jobject {
     JObject obj;

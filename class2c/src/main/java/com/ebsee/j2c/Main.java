@@ -11,13 +11,11 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-        String jsrcPath = "../miniJVM/minijvm/java/src/main/java/"
-                + File.pathSeparator + "../miniJVM/test/minijvm_test/src/main/java/"//
-//                + File.pathSeparator + "../miniJVM/mobile/java/glfm_gui/src/main/java"//
-//                + File.pathSeparator + "../g3d/src/main/java/"//
+        String jsrcPath = "../app/java/"
+//                + File.pathSeparator + "../app/java/"//
                 ;
-        String classesPath = "./app/out/classes/";
-        String csrcPath = "./app/out/c/";
+        String classesPath = "../app/out/classes/";
+        String csrcPath = "../app/out/c/";
 
 
         if (args.length < 3) {
@@ -34,18 +32,34 @@ public class Main {
         System.out.println("classes *.class output path  : " + classesPath);
         System.out.println("c *.c output path            : " + csrcPath);
 
-        File f = new File(classesPath);
-        f.delete();
-        f.mkdirs();
+        File f;
+        boolean res;
+        f = new File(classesPath);
+        System.out.println(f.getAbsolutePath() + (f.exists() ? " exists " : " not exists"));
+        res = deleteTree(f);
+        res = f.mkdirs();
         f = new File(csrcPath);
-        f.delete();
-        f.mkdirs();
+        System.out.println(f.getAbsolutePath() + (f.exists() ? " exists " : " not exists"));
+        res = deleteTree(f);
+        res = f.mkdirs();
 
         long startAt = System.currentTimeMillis();
         AssistLLVM.convert(jsrcPath, classesPath, csrcPath);
         System.out.println("convert success , cost :" + (System.currentTimeMillis() - startAt));
     }
 
+    static boolean deleteTree(File f) {
+        if (f.isDirectory()) {
+            File[] files = f.listFiles();
+            for (File sf : files) {
+                //System.out.println("file:" + sf.getAbsolutePath());
+                deleteTree(sf);
+            }
+        }
+        boolean s = f.delete();
+        //System.out.println("delete " + f.getAbsolutePath() + " state:" + s);
+        return s;
+    }
 }
 
 

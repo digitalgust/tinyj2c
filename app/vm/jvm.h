@@ -389,6 +389,7 @@ struct _Jvm {
     GcCollector *collector;
     Hashtable *table_jstring_const;
     Hashtable *sys_prop;
+    ArrayList *classloaders;
 };
 
 struct _ProCache {
@@ -424,7 +425,7 @@ static inline __refer find_method(VMTable *table, s32 class_idx, s32 method_idx)
 }
 //=====================================================================
 
-Jvm *jvm_create();
+Jvm *jvm_create(c8 *bootclasspath, c8 *classpath);
 
 void jvm_destroy(Jvm *jvm);
 
@@ -436,7 +437,7 @@ void jthreadruntime_destroy(__refer jthreadruntime);
 
 JObject *new_jthread(JThreadRuntime *runtime);
 
-s32 jthread_prepar(JThreadRuntime *runtime, MethodRaw *exec);
+s32 jthread_prepar(JThreadRuntime *runtime);
 
 s32 jthread_run(__refer p);
 
@@ -490,11 +491,15 @@ s32 utf8_2_unicode(c8 *pInput, u16 *arr, s32 limit);
 
 int unicode_2_utf8(u16 *jchar_arr, Utf8String *ustr, s32 u16arr_len);
 
+void jthread_bound(JThreadRuntime *runtime);
+
+void jthread_unbound(JThreadRuntime *runtime);
+
 void jthread_lock(JThreadRuntime *runtime, JObject *jobj);
 
 void jthread_unlock(JThreadRuntime *runtime, JObject *jobj);
 
-void jthread_start(JObject *jthread);
+JThreadRuntime *jthread_start(JObject *jthread);
 
 void thread_lock_init(ThreadLock *lock);
 
@@ -603,6 +608,16 @@ void check_suspend_and_pause(JThreadRuntime *runtime);
 void sys_properties_set_c(c8 *key, c8 *val);
 
 s32 sys_properties_load();
+//=====================================================================
+//require jni implementation
+
+void jthread_set_stackFrame(JObject *jobj, JThreadRuntime *runtime);
+
+void jclass_set_classHandle(JObject *jobj, JClass *clazz);
+
+void jclass_init_insOfClass(JThreadRuntime *runtime, JObject *jobj);
+
+void jstring_debug_print(JObject *jobj, c8 *appendix);
 //=====================================================================
 
 static inline StackFrame *method_enter(JThreadRuntime *runtime, s32 methodRawIndex, RStackItem *stack, RStackItem *local, s32 *spPtr) {
