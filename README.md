@@ -1,25 +1,28 @@
 
 # java2c
 
-Convert java source to c source, generte standlone binary, with out any class file.
+Translate JAVA source to C source, generate standlone binary, with out any class file.
     
 # Requirement
      
 1. Jetbrain Idea for compile and run converter.    
 2. cmake for compile c source , recommend Jetbrain Clion.     
-3. JDK 8+.     
-4. miniJVM for runtime java classes, Convert need only.       
-5. clang.     
+3. JDK 8+.         
+5. clang/gcc.     
 
      
 # Steps    
 
 * git clone https://github.com/digitalgust/java2c.git        
-* Idea open /java2c/class2c , run converter.    
+* Idea open /java2c/class2c , run translator.    
 * Clion open /java2c/app , compile c source and run .      
-* Run binary no java classes dependence.     
+* Run binary no java classes dependence.   
+
+Or 
+ 
+ run build script : /java2c/posix_build.sh  
      
-# Example   
+# Translated java file Example   
     
 * Java code:
 
