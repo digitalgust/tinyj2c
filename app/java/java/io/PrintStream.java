@@ -9,7 +9,6 @@ import java.lang.Integer;
 import java.lang.String;
 
 /**
- *
  * @author gust
  */
 public class PrintStream {
@@ -18,52 +17,50 @@ public class PrintStream {
 
     }
 
+    public void println() {
+        printImpl(null, 1);
+    }
+
     public void print(String s) {
-        printImpl(s);
+        printImpl(s, 0);
     }
 
     public void println(String s) {
-        printImpl(s + "\n");
+        printImpl(s, 1);
     }
 
     public void print(int v) {
-        printImpl(Integer.toString(v));
+        printImpl(Integer.toString(v), 0);
     }
 
     public void println(int v) {
-        printImpl(Integer.toString(v) + "\n");
+        printImpl(Integer.toString(v), 1);
     }
 
     public void print(long v) {
-        printImpl(Long.toString(v));
+        printImpl(Long.toString(v), 0);
     }
 
     public void println(long v) {
-        printImpl(Long.toString(v) + "\n");
+        printImpl(Long.toString(v), 1);
     }
 
     public void print(float d) {
-        printImpl(Double.toString(d));
+        printImpl(Double.toString(d), 0);
     }
 
     public void println(float d) {
-        printImpl(Double.toString(d) + "\n");
+        printImpl(Double.toString(d), 1);
     }
 
     public void print(double d) {
-        printImpl(Double.toString(d));
+        printImpl(Double.toString(d), 0);
     }
 
     public void println(double d) {
-        printImpl(Double.toString(d) + "\n");
+        printImpl(Double.toString(d), 1);
     }
 
-    public void println() {
-        printImpl(new String("\n"));
-    }
 
-//    void printImpl(String s){
-//        java.lang.System.out.println("");
-//    }
-    static native void printImpl(String s);
+    static native void printImpl(String s, int cr);
 }

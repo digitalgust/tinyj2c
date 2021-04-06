@@ -909,7 +909,7 @@ public class MV extends MethodVisitor {
     @Override
     public void visitJumpInsn(int opcode, Label label) {
 
-        usedLabels.add(label.toString());
+        addUsedLabel(label.toString());
         switch (opcode) {
             case Opcodes.IFEQ: // 153
                 if (labels.contains(label.toString())) {
@@ -1135,10 +1135,10 @@ public class MV extends MethodVisitor {
 
     @Override
     public void visitTableSwitchInsn(int from, int to, Label label, Label... labels) {
-        usedLabels.add(label.toString());
+        addUsedLabel(label.toString());
         add("switch(stack[--sp].i){");
         for (Label l : labels) {
-            usedLabels.add(l.toString());
+            addUsedLabel(l.toString());
             add("    case " + from + ":");
             add("        goto " + l.toString() + ";");
             from++;
@@ -1150,10 +1150,10 @@ public class MV extends MethodVisitor {
 
     @Override
     public void visitLookupSwitchInsn(Label label, int[] values, Label[] labels) {
-        usedLabels.add(label.toString());
+        addUsedLabel(label.toString());
         add("switch(stack[--sp].i){");
         for (int i = 0; i < values.length; i++) {
-            usedLabels.add(labels[i].toString());
+            addUsedLabel(labels[i].toString());
             add("    case " + values[i] + ":");
             add("        goto " + labels[i] + ";");
         }
@@ -1180,9 +1180,9 @@ public class MV extends MethodVisitor {
 //            System.out.println("visitTryCatchBlock " + start + " " + end + " " + type);
 //        }
         comment("try catch :" + start + " " + end + " " + handler + " (" + start.getOffsetInMethod() + "," + end.getOffsetInMethod() + ")->" + handler.getOffsetInMethod());
-        usedLabels.add(start.toString());
-        usedLabels.add(end.toString());
-        usedLabels.add(handler.toString());
+        addUsedLabel(start.toString());
+        addUsedLabel(end.toString());
+        addUsedLabel(handler.toString());
 
         ExceptionItem item = new ExceptionItem();
         item.startLabel = start;
@@ -1222,12 +1222,12 @@ public class MV extends MethodVisitor {
     @Override
     public void visitEnd() {
         if (!canSkipCodeTrack()) {
-            usedLabels.add(EXCEPTION_HANDLER);
+            addUsedLabel(EXCEPTION_HANDLER);
             add(EXCEPTION_HANDLER + ":");
             String call = AssistLLVM.FUNC_FIND_EXCEPTION_HANDLER_INDEX + "(runtime, &" + Util.getLabelTableRawName() + ", &&" + EXCEPTION_HANDLER_NOT_FOUND + ")";
 
             add("goto  *" + call + ";");
-            usedLabels.add(EXCEPTION_HANDLER_NOT_FOUND);
+            addUsedLabel(EXCEPTION_HANDLER_NOT_FOUND);
             add(EXCEPTION_HANDLER_NOT_FOUND + ":");
             String rtype = signature.getResult();
             String returnValue = getDefValue_by_Ctype(rtype);
@@ -1341,6 +1341,12 @@ public class MV extends MethodVisitor {
                 }
             }
 
+        }
+    }
+
+    public void addUsedLabel(String lab){
+        if (!usedLabels.contains(lab)) {
+            usedLabels.add(lab);
         }
     }
 

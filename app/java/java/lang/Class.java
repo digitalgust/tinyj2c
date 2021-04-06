@@ -11,4 +11,6 @@ public final class Class<T>{
     public static native Class<?> forName(String className) throws ClassNotFoundException;
 
     public native boolean isAssignableFrom(Class cls);
+
+    public native T newInstance() throws InstantiationException;
 }

@@ -96,12 +96,16 @@ JObject *buildStackElement(JThreadRuntime *runtime, StackFrame *target) {
 //=================================  assist ====================================
 
 //native methods
-void Java_java_io_PrintStream_printImpl__Ljava_lang_String_2_V(JThreadRuntime *runtime, struct java_lang_String *p0) {
-    jstring_debug_print((JObject *) p0, "");
+void Java_java_io_PrintStream_printImpl__Ljava_lang_String_2I_V(JThreadRuntime *runtime, struct java_lang_String *p0, s32 p1) {
+    if (p0) {
+        jstring_debug_print((JObject *) p0, p1 ? "\n" : "");
+    } else {
+        if (p1)printf("\n");
+    }
 }
 
 
-struct java_lang_Class* Java_java_lang_Class_forName__Ljava_lang_String_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_String* p0){
+struct java_lang_Class *Java_java_lang_Class_forName__Ljava_lang_String_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_String *p0) {
     JClass *cl = NULL;
     if (p0) {
         Utf8String *ustr = utf8_create();
@@ -141,7 +145,7 @@ struct java_lang_String *Java_java_lang_Class_getName___Ljava_lang_String_2(JThr
 }
 
 
-struct java_lang_Class* Java_java_lang_Class_getSuperclass___Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_Class* p0){
+struct java_lang_Class *Java_java_lang_Class_getSuperclass___Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
     if (p0) {
         JClass *scl = getSuperClass((__refer) (intptr_t) p0->classHandle_in_class);
         if (!scl) return NULL;
@@ -155,7 +159,22 @@ struct java_lang_Class* Java_java_lang_Class_getSuperclass___Ljava_lang_Class_2(
 
 struct java_lang_Class *Java_java_lang_Object_getClass___Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_Object *p0) {
     JClass *cl = (__refer) p0->prop.clazz;
-    return (__refer)ins_of_Class_create_get(runtime, cl);
+    return (__refer) ins_of_Class_create_get(runtime, cl);
+}
+
+
+struct java_lang_Object *Java_java_lang_Class_newInstance___Ljava_lang_Object_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
+    JClass *cl = ((JClass *) (__refer) (intptr_t) p0->classHandle_in_class);
+    if (cl && !cl->prop.arr_type) {//class exists and not array class
+        JObject *ins = new_instance_with_class(runtime, cl);
+        instance_init(runtime, ins);
+        return (__refer) ins;
+    } else {
+        JObject *exception = new_instance_with_name(runtime, STR_JAVA_LANG_INSTANTIATION_EXCEPTION);
+        instance_init(runtime, exception);
+        throw_exception(runtime, exception);
+    }
+    return NULL;
 }
 
 
@@ -181,7 +200,7 @@ void Java_java_lang_Object_wait__J_V(JThreadRuntime *runtime, struct java_lang_O
 }
 
 
-s8 Java_java_lang_Class_isAssignableFrom__Ljava_lang_Class_2_Z(JThreadRuntime *runtime, struct java_lang_Class* p0, struct java_lang_Class* p1){
+s8 Java_java_lang_Class_isAssignableFrom__Ljava_lang_Class_2_Z(JThreadRuntime *runtime, struct java_lang_Class *p0, struct java_lang_Class *p1) {
     JClass *c0 = (__refer) (intptr_t) p0->classHandle_in_class;
     JClass *c1 = (__refer) (intptr_t) p1->classHandle_in_class;
 
@@ -289,7 +308,7 @@ void Java_java_lang_Thread_yield___V(JThreadRuntime *runtime) {
 }
 
 
-struct java_lang_StackTraceElement* Java_java_lang_Throwable_buildStackElement___Ljava_lang_StackTraceElement_2(JThreadRuntime *runtime, struct java_lang_Throwable* p0){
+struct java_lang_StackTraceElement *Java_java_lang_Throwable_buildStackElement___Ljava_lang_StackTraceElement_2(JThreadRuntime *runtime, struct java_lang_Throwable *p0) {
     return (__refer) buildStackElement(runtime, runtime->tail);
 }
 

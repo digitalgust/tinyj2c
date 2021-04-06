@@ -25,7 +25,7 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             val[i] = (byte) (5 % f0 - 2 * (9 + 5) / 2);
         }
-        System.out.println("strs.length=" + val.length);
+        System.out.println("byte.length=" + val.length);
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
@@ -49,7 +49,7 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             val[i] = (short) (5 % f0 - 2 * (9 + 5) / 2);
         }
-        System.out.println("strs.length=" + val.length);
+        System.out.println("short.length=" + val.length);
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
@@ -74,7 +74,7 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             val[i] = 5 % f0 - 2 * (9 + 5) / 2;
         }
-        System.out.println("strs.length=" + val.length);
+        System.out.println("int.length=" + val.length);
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
@@ -99,7 +99,7 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             val[i] = 5 % f0 - 2 * (9 + 5) / 2;
         }
-        System.out.println("strs.length=" + val.length);
+        System.out.println("long.length=" + val.length);
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
@@ -122,7 +122,7 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             val[i] = i % f0 - 0.6f * (0.5f + 5) / 9.8f;
         }
-        System.out.println("strs.length=" + val.length);
+        System.out.println("float.length=" + val.length);
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
@@ -145,7 +145,7 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             val[i] = i % f0 - 0.6f * (0.5f + 5) / 9.8f;
         }
-        System.out.println("strs.length=" + val.length);
+        System.out.println("double.length=" + val.length);
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
@@ -186,6 +186,7 @@ class Foo1 {
         i = 3;
 
         System.out.println("i=" + i);
+        System.out.println();
     }
 
     void t9() {
@@ -264,6 +265,15 @@ class Foo1 {
         }
     }
 
+    public void t13(){
+        try {
+            Class c=Class.forName("com.egls.test.Foo2");
+            Object o = c.newInstance();
+            System.out.println("forName and newInstance :" + o);
+        } catch (Exception e) {
+        }
+    }
+
     public static void main(String args[]) {
         Foo1 obj = new Foo1();
         obj.t0();
@@ -279,5 +289,6 @@ class Foo1 {
         obj.t10();
         obj.t11();
         obj.t12();
+        obj.t13();
     }
 }
