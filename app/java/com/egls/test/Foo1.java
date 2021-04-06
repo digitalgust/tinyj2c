@@ -58,7 +58,8 @@ class Foo1 {
     public void t3() {
 
         int f0 = 100;
-        int f1 = 5 % f0 - 2 * (9 + 5) / 2;;
+        int f1 = 5 % f0 - 2 * (9 + 5) / 2;
+        ;
         System.out.println("+ = " + (f0 + f1));
         System.out.println("- = " + (f0 - f1));
         System.out.println("* = " + (f0 * f1));
@@ -82,7 +83,8 @@ class Foo1 {
     public void t4() {
 
         long f0 = 100;
-        long f1 = 5 % f0 - 2 * (9 + 5) / 2;;
+        long f1 = 5 % f0 - 2 * (9 + 5) / 2;
+        ;
         System.out.println("+ = " + (f0 + f1));
         System.out.println("- = " + (f0 - f1));
         System.out.println("* = " + (f0 * f1));
@@ -233,34 +235,35 @@ class Foo1 {
     }
 
 
-    void t12(){
+    void t12() {
         final Object lock = new Object();
-        Thread t=new Thread(new Runnable(){
-            public void run(){
-                System.out.println("Second Thread start.");
-                try{
-                    for(int i=0;i<10;i++){
-                        System.out.println("count= "+i);
-                        Thread.sleep(100);
-                        if(i==5){
-                            synchronized(lock){
-                                lock.notify();
-                                System.out.println("second notify.");
-                            }
+        Thread t = new Thread(() -> {
+            System.out.println("Second Thread start.");
+            try {
+                for (int i = 0; i < 10; i++) {
+                    System.out.println("count= " + i);
+                    Thread.sleep(100);
+                    if (i == 5) {
+                        synchronized (lock) {
+                            lock.notify();
+                            System.out.println("second notify.");
                         }
                     }
-                }catch(Exception e){}
-                System.out.println("Second Thread over.");
+                }
+            } catch (Exception e) {
             }
+            System.out.println("Second Thread over.");
         });
         t.start();
-        try{
-            synchronized(lock){
+        try {
+            synchronized (lock) {
                 lock.wait();
                 System.out.println("Main thread weakup.");
             }
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
     }
+
     public static void main(String args[]) {
         Foo1 obj = new Foo1();
         obj.t0();
