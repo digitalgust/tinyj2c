@@ -1,7 +1,7 @@
 
 # java2c
 
-Translate JAVA source to C source, build as standlone binary, and run without any class file. It's so small can be used to embed device.
+Translate JAVA source to C source, build as standlone binary, and run without any class file. It's so small can be used to embedded device.
 
 # Feature  
 * garbage collection  
