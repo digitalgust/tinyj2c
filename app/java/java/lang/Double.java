@@ -11,7 +11,7 @@ package java.lang;
  */
 public class Double {
     
-    private final double value = 0.0f;
+    private final double value = 0.0d;
     
     static public  String toString(double val) {
         return System.doubleToString(val);

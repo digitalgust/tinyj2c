@@ -8,7 +8,6 @@
 
 #include "jvmtype.h"
 #include "utf8string.h"
-#include "jni.h"
 #include "bytebuf.h"
 //=====================================================================
 
@@ -383,7 +382,6 @@ struct _GcCollectorType {
 };
 
 struct _Jvm {
-    JNIEnv env;
     Hashtable *classes;
     ArrayList *thread_list;
     GcCollector *collector;

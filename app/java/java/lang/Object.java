@@ -15,9 +15,21 @@ import java.lang.String;
  */
 public class Object {
     
-    String toString(){
-        return "";
+    public String toString() {
+        return getClass().getName() + "@" + Integer.toHexString(hashCode());
     }
+
+    public final void wait() throws InterruptedException {
+        wait(0);
+    }
+
+    public final native Class getClass();
     
-    native void wait(long ms);
+    public final native void wait(long ms);
+
+    public final native void notify();
+
+    public final native void notifyAll();
+
+    public native int hashCode();
 }

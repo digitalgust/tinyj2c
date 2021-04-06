@@ -53,6 +53,12 @@ public class StringBuilder {
         count++;
         return this;
     }
+
+    public StringBuilder append(Object o) {
+        if(o!=null)append(o.toString());
+        else append("null");
+        return this;
+    }
 //=============================================================
 
     public String toString() {

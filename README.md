@@ -3,12 +3,9 @@
 
 Translate JAVA source to C source, generate standlone binary, with out any class file.
     
-# Requirement
-     
-1. Jetbrain Idea for compile and run converter.    
-2. cmake for compile c source , recommend Jetbrain Clion.     
-3. JDK 8+.         
-5. clang/gcc.     
+# Requirement 
+1. JDK 8+.         
+2. clang/gcc.     
 
      
 # Steps    

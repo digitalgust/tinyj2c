@@ -10,5 +10,5 @@ package java.lang;
  * @author gust
  */
 public class Character {
-    
+    char value;
 }

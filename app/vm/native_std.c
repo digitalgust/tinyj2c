@@ -18,7 +18,7 @@
 #include "jvm.h"
 #include "metadata.h"
 
-#include "jni.h"
+
 #include "bytebuf.h"
 #include "miniz_wrapper.h"
 #include "garbage.h"
@@ -66,6 +66,30 @@ void jclass_init_insOfClass(JThreadRuntime *runtime, JObject *jobj) {
     Java_java_lang_Class__init____V(runtime, ins);
 }
 //----------------------------------------------------------------
+
+
+JObject *buildStackElement(JThreadRuntime *runtime, StackFrame *target) {
+    JClass *clazz = get_class_by_name_c(STR_JAVA_LANG_STACKTRACEELEMENT);
+    if (clazz) {
+        struct java_lang_StackTraceElement *ins = (__refer) new_instance_with_class(runtime, clazz);
+        instance_hold_to_thread(runtime, ins);
+        instance_init(runtime, (__refer) ins);
+        MethodInfo *method = get_methodinfo_by_rawindex(target->methodRawIndex);
+
+        //
+        ins->declaringClass_in_stacktraceelement = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->clazz->name));
+        ins->methodName_in_stacktraceelement = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->name));
+        ins->fileName_in_stacktraceelement = (__refer) construct_string_with_cstr(runtime, utf8_cstr(method->clazz->source_name));
+        ins->lineNumber_in_stacktraceelement = target->lineNo;
+        if (target->next) {
+            ins->parent_in_stacktraceelement = (__refer) buildStackElement(runtime, target->next);
+        }
+        ins->declaringClazz_in_stacktraceelement = (__refer) ins_of_Class_create_get(runtime, method->clazz);
+        instance_release_from_thread(runtime, ins);
+        return (__refer) ins;
+    }
+    return NULL;
+}
 //----------------------------------------------------------------
 
 
@@ -77,8 +101,91 @@ void Java_java_io_PrintStream_printImpl__Ljava_lang_String_2_V(JThreadRuntime *r
 }
 
 
+struct java_lang_Class* Java_java_lang_Class_forName__Ljava_lang_String_2_Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_String* p0){
+    JClass *cl = NULL;
+    if (p0) {
+        Utf8String *ustr = utf8_create();
+        jstring_2_utf8(p0, ustr);
+        utf8_replace_c(ustr, ".", "/");
+        class_clinit(runtime, ustr);
+        cl = get_class_by_name(ustr);
+        utf8_destory(ustr);
+        if (!cl) {
+            JObject *exception = new_instance_with_name(runtime, STR_JAVA_LANG_CLASS_NOT_FOUND_EXCEPTION);
+            instance_init(runtime, exception);
+            throw_exception(runtime, exception);
+        } else {
+            JObject *ins = ins_of_Class_create_get(runtime, cl);
+            return (__refer) ins;
+        }
+    } else {
+        JObject *exception = new_instance_with_name(runtime, STR_JAVA_LANG_NULL_POINTER_EXCEPTION);
+        instance_init(runtime, exception);
+        throw_exception(runtime, exception);
+    }
+    return NULL;
+}
+
+
+struct java_lang_String *Java_java_lang_Class_getName___Ljava_lang_String_2(JThreadRuntime *runtime, struct java_lang_Class *p0) {
+    JClass *cl = (__refer) (intptr_t) p0->classHandle_in_class;
+    if (cl) {
+        Utf8String *ustr = utf8_create_copy(cl->name);
+        utf8_replace_c(ustr, "/", ".");
+        JObject *ins = construct_string_with_cstr(runtime, utf8_cstr(ustr));
+        utf8_destory(ustr);
+        return (__refer) ins;
+    } else {
+        return NULL;
+    }
+}
+
+
+struct java_lang_Class* Java_java_lang_Class_getSuperclass___Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_Class* p0){
+    if (p0) {
+        JClass *scl = getSuperClass((__refer) (intptr_t) p0->classHandle_in_class);
+        if (!scl) return NULL;
+        JObject *ins = ins_of_Class_create_get(runtime, scl);
+        return (__refer) ins;
+    } else {
+        return NULL;
+    }
+}
+
+
+struct java_lang_Class *Java_java_lang_Object_getClass___Ljava_lang_Class_2(JThreadRuntime *runtime, struct java_lang_Object *p0) {
+    JClass *cl = (__refer) p0->prop.clazz;
+    return (__refer)ins_of_Class_create_get(runtime, cl);
+}
+
+
+s32 Java_java_lang_Object_hashCode___I(JThreadRuntime *runtime, struct java_lang_Object *p0) {
+    u64 a = (u64) (intptr_t) p0;
+    s32 h = (s32) (a ^ (a >> 32));
+    return h;
+}
+
+
+void Java_java_lang_Object_notify___V(JThreadRuntime *runtime, struct java_lang_Object *p0) {
+    jthread_notify(&p0->prop);
+}
+
+
+void Java_java_lang_Object_notifyAll___V(JThreadRuntime *runtime, struct java_lang_Object *p0) {
+    jthread_notifyAll(&p0->prop);
+}
+
+
 void Java_java_lang_Object_wait__J_V(JThreadRuntime *runtime, struct java_lang_Object *p0, s64 p1) {
-    jthread_waitTime((InstProp *) p0, runtime, p1);
+    jthread_waitTime(&p0->prop, runtime, p1);
+}
+
+
+s8 Java_java_lang_Class_isAssignableFrom__Ljava_lang_Class_2_Z(JThreadRuntime *runtime, struct java_lang_Class* p0, struct java_lang_Class* p1){
+    JClass *c0 = (__refer) (intptr_t) p0->classHandle_in_class;
+    JClass *c1 = (__refer) (intptr_t) p1->classHandle_in_class;
+
+    return assignable_from(c1, c0);
 }
 
 
@@ -182,6 +289,9 @@ void Java_java_lang_Thread_yield___V(JThreadRuntime *runtime) {
 }
 
 
+struct java_lang_StackTraceElement* Java_java_lang_Throwable_buildStackElement___Ljava_lang_StackTraceElement_2(JThreadRuntime *runtime, struct java_lang_Throwable* p0){
+    return (__refer) buildStackElement(runtime, runtime->tail);
+}
 
 
 

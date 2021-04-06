@@ -177,6 +177,7 @@ class Foo1 {
             i = 0;
         } catch (Exception e) {
             i = 2;
+            e.printStackTrace();
         }
         System.out.println("i=" + i);
 
@@ -233,6 +234,7 @@ class Foo1 {
 
 
     void t12(){
+        final Object lock = new Object();
         Thread t=new Thread(new Runnable(){
             public void run(){
                 System.out.println("Second Thread start.");
@@ -240,13 +242,24 @@ class Foo1 {
                     for(int i=0;i<10;i++){
                         System.out.println("count= "+i);
                         Thread.sleep(100);
+                        if(i==5){
+                            synchronized(lock){
+                                lock.notify();
+                                System.out.println("second notify.");
+                            }
+                        }
                     }
                 }catch(Exception e){}
                 System.out.println("Second Thread over.");
             }
         });
         t.start();
-        try{Thread.sleep(1000);}catch(Exception e){}
+        try{
+            synchronized(lock){
+                lock.wait();
+                System.out.println("Main thread weakup.");
+            }
+        }catch(Exception e){}
     }
     public static void main(String args[]) {
         Foo1 obj = new Foo1();
