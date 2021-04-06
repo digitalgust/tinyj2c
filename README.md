@@ -1,7 +1,15 @@
 
 # java2c
 
-Translate JAVA source to C source, generate standlone binary, with out any class file.
+Translate JAVA source to C source, build as standlone binary, and run without any class file. It's so small can be used to embed device.
+
+# Feature  
+* garbage collection  
+* minimize memory footprint   
+* exception stack trace    
+* thread support  
+* lambda support  
+
     
 # Requirement 
 1. JDK 8+.         
