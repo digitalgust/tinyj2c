@@ -6,23 +6,28 @@
 package java.lang;
 
 /**
- *
  * @author gust
  */
 public final class String {
 
     int hash = 0;
-    private final char[] value;
-    int offset,count;
+    char[] value;
+    int offset, count;
 
     public String() {
         this.value = new char[0];
     }
 
-    public String(char[] buf) {
-        value = new char[buf.length];
-        count =  buf.length;
-        System.arraycopy(buf, 0, value, 0, buf.length);
+    public String(String value) {
+        count = value.length();
+        this.value = new char[count];
+        value.getChars(0, count, this.value, 0);
+    }
+
+    public String(char value[]) {
+        this.count = value.length;
+        this.value = new char[count];
+        System.arraycopy(value, 0, this.value, 0, count);
     }
 
     public String(char[] v, int offset, int count) {
@@ -35,29 +40,84 @@ public final class String {
         System.arraycopy(v, offset, this.value, 0, count);
     }
 
-    public String(String original) {
-        this.value = original.value;
-        this.hash = original.hash;
+    public String(byte bytes[]) {
+        this(bytes, 0, bytes.length, "utf-8");
+    }
+
+    public String(byte bytes[], int off, int len, String enc) {
+        if (enc.equalsIgnoreCase("utf-8")) {
+            if (bytes == null || off < 0 || off + len > bytes.length) {
+                throw new IllegalArgumentException();
+            }
+            String s = System.utf8ToUtf16(bytes, off, len);
+            count = s.count;
+            this.value = s.value;
+        } else {
+            throw new IllegalArgumentException("not support encode :" + enc);
+        }
+    }
+
+    String(int offset, int count, char value[]) {
+        this.value = value;
+        this.offset = offset;
+        this.count = count;
     }
 
     public int length() {
-        return value.length;
+        return count;
     }
 
     public boolean isEmpty() {
-        return value.length == 0;
+        return count == 0;
+    }
+
+    public int indexOf(int ch) {
+        return indexOf(ch, 0);
+    }
+
+    public int indexOf(int ch, int fromIndex) {
+        int max = offset + count;
+        char v[] = value;
+
+        if (fromIndex < 0) {
+            fromIndex = 0;
+        } else if (fromIndex >= count) { // Note: fromIndex might be near -1>>>1.
+            return -1;
+        }
+        for (int i = offset + fromIndex; i < max; i++) {
+            if (v[i] == ch) {
+                return i - offset;
+            }
+        }
+        return -1;
+    }
+
+    public int lastIndexOf(int ch) {
+        return lastIndexOf(ch, count - 1);
+    }
+
+    public int lastIndexOf(int ch, int fromIndex) {
+        int min = offset;
+        char v[] = value;
+
+        for (int i = offset + ((fromIndex >= count) ? count - 1 : fromIndex); i >= min; i--) {
+            if (v[i] == ch) {
+                return i - offset;
+            }
+        }
+        return -1;
     }
 
     public char charAt(int index) {
         if ((index < 0) || (index >= value.length)) {
-           throw new ArrayIndexOutOfBoundsException(Integer.toString(index));
+            throw new ArrayIndexOutOfBoundsException(Integer.toString(index));
         }
-        return value[index];
+        return value[offset + index];
     }
 
     public char[] toCharArray() {
-        char result[] = new char[value.length];
-        getChars(0, value.length, result, 0);
+        char result[] = new char[count];
+        getChars(0, count, result, 0);
         return result;
     }
 
@@ -65,7 +125,42 @@ public final class String {
         if (srcBegin < 0 || srcEnd > value.length || srcBegin > srcEnd) {
             return;
         }
-        System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);
+        System.arraycopy(value, offset + srcBegin, dst, dstBegin, srcEnd - srcBegin);
+    }
+
+    public boolean regionMatches(boolean ignoreCase,
+                                 int toffset,
+                                 String other, int ooffset, int len) {
+        char ta[] = value;
+        int to = offset + toffset;
+        int tlim = offset + count;
+        char pa[] = other.value;
+        int po = other.offset + ooffset;
+
+        // Note: toffset, ooffset, or len might be near -1>>>1.
+        if ((ooffset < 0) || (toffset < 0) || (toffset > (long) count - len)
+                || (ooffset > (long) other.count - len)) {
+            return false;
+        }
+        while (len-- > 0) {
+            char c1 = ta[to++];
+            char c2 = pa[po++];
+            if (c1 == c2) {
+                continue;
+            }
+            if (ignoreCase) {
+                char u1 = Character.toUpperCase(c1);
+                char u2 = Character.toUpperCase(c2);
+                if (u1 == u2) {
+                    continue;
+                }
+                if (Character.toLowerCase(u1) == Character.toLowerCase(u2)) {
+                    continue;
+                }
+            }
+            return false;
+        }
+        return true;
     }
 
     public boolean equals(Object anObject) {
@@ -89,6 +184,11 @@ public final class String {
             }
         }
         return false;
+    }
+
+    public boolean equalsIgnoreCase(String anotherString) {
+        return (anotherString != null) && (anotherString.count == count)
+                && regionMatches(true, 0, anotherString, 0, count);
     }
 
     public int compareTo(String anotherString) {
@@ -159,15 +259,15 @@ public final class String {
     }
 
     static int indexOf(char[] source, int sourceOffset, int sourceCount,
-            String target, int fromIndex) {
+                       String target, int fromIndex) {
         return indexOf(source, sourceOffset, sourceCount,
                 target.value, 0, target.value.length,
                 fromIndex);
     }
 
     static int indexOf(char[] source, int sourceOffset, int sourceCount,
-            char[] target, int targetOffset, int targetCount,
-            int fromIndex) {
+                       char[] target, int targetOffset, int targetCount,
+                       int fromIndex) {
         if (fromIndex >= sourceCount) {
             return (targetCount == 0 ? sourceCount : -1);
         }
@@ -184,7 +284,7 @@ public final class String {
         for (int i = sourceOffset + fromIndex; i <= max; i++) {
             /* Look for first character. */
             if (source[i] != first) {
-                while (++i <= max && source[i] != first);
+                while (++i <= max && source[i] != first) ;
             }
 
             /* Found first character, now look at the rest of v2 */
@@ -192,7 +292,8 @@ public final class String {
                 int j = i + 1;
                 int end = j + targetCount - 1;
                 for (int k = targetOffset + 1; j < end && source[j]
-                        == target[k]; j++, k++);
+                        == target[k]; j++, k++)
+                    ;
 
                 if (j == end) {
                     /* Found whole string. */
@@ -213,15 +314,15 @@ public final class String {
     }
 
     static int lastIndexOf(char[] source, int sourceOffset, int sourceCount,
-            String target, int fromIndex) {
+                           String target, int fromIndex) {
         return lastIndexOf(source, sourceOffset, sourceCount,
                 target.value, 0, target.value.length,
                 fromIndex);
     }
 
     static int lastIndexOf(char[] source, int sourceOffset, int sourceCount,
-            char[] target, int targetOffset, int targetCount,
-            int fromIndex) {
+                           char[] target, int targetOffset, int targetCount,
+                           int fromIndex) {
         /*
          * Check arguments; return immediately where possible. For
          * consistency, don't check for null str.
@@ -265,129 +366,130 @@ public final class String {
         }
     }
 
-   public String substring(int beginIndex) {
-       if (beginIndex < 0) {
-           throw new ArrayIndexOutOfBoundsException(Integer.toString(beginIndex));
-       }
-       int subLen = value.length - beginIndex;
-       if (subLen < 0) {
-           throw new ArrayIndexOutOfBoundsException(Integer.toString(subLen));
-       }
-       String s = new String();
-       for (int i = beginIndex; i < value.length; i++) {
-           s += value[i];
-       }
-       return (beginIndex == 0) ? this : s;
-   }
+    public String substring(int beginIndex) {
+        return substring(beginIndex, count);
+    }
 
-   public String substring(int beginIndex, int endIndex) {
-       if (beginIndex < 0) {
-           throw new ArrayIndexOutOfBoundsException(Integer.toString(beginIndex));
-       }
-       if (endIndex > value.length) {
-           throw new ArrayIndexOutOfBoundsException(Integer.toString(endIndex));
-       }
-       int subLen = endIndex - beginIndex;
-       if (subLen < 0) {
-           throw new ArrayIndexOutOfBoundsException(Integer.toString(subLen));
-       }
-       String s = new String();
-       for (int i = beginIndex; i < value.length && i < endIndex; i++) {
-           s += value[i];
-       }
-       return ((beginIndex == 0) && (endIndex == value.length)) ? this
-               : s;
-   }
+    public String substring(int beginIndex, int endIndex) {
+        if (beginIndex < 0) {
+            throw new ArrayIndexOutOfBoundsException(Integer.toString(beginIndex));
+        }
+        if (endIndex > count) {
+            throw new ArrayIndexOutOfBoundsException(Integer.toString(endIndex));
+        }
+        int subLen = endIndex - beginIndex;
+        if (subLen < 0) {
+            throw new ArrayIndexOutOfBoundsException(Integer.toString(subLen));
+        }
+        String s = new String();
+        return ((beginIndex == 0) && (endIndex == count)) ? this :
+                new String(offset + beginIndex, endIndex - beginIndex, value);
+    }
 
     public String replace(char oldChar, char newChar) {
         if (oldChar != newChar) {
-            int len = value.length;
+            int len = count;
             int i = -1;
-            char[] val = value;
-            /* avoid getfield opcode */
+            char[] val = value; /* avoid getfield opcode */
+            int off = offset;   /* avoid getfield opcode */
 
             while (++i < len) {
-                if (val[i] == oldChar) {
+                if (val[off + i] == oldChar) {
                     break;
                 }
             }
             if (i < len) {
                 char buf[] = new char[len];
                 for (int j = 0; j < i; j++) {
-                    buf[j] = val[j];
+                    buf[j] = val[off + j];
                 }
                 while (i < len) {
-                    char c = val[i];
+                    char c = val[off + i];
                     buf[i] = (c == oldChar) ? newChar : c;
                     i++;
                 }
-                return new String(buf);
+                return new String(0, len, buf);
             }
         }
         return this;
     }
 
+    public byte[] getBytes() throws IllegalArgumentException {
+        return getBytes("utf-8");
+    }
+
+    public byte[] getBytes(String enc) throws IllegalArgumentException {
+        if (enc.equalsIgnoreCase("utf-8")) {
+            return System.utf16ToUtf8(this);
+        }
+        throw new IllegalArgumentException("not support encode :" + enc);
+    }
+
+
     public boolean contains(String s) {
         return indexOf(s.toString()) > -1;
     }
 
-//      public String[] split(String splitor) {
-//        return split(splitor, 0);
-//      }
-//
-//      public String[] split(String splitor, int limit) {
-//        String[] result = new String[0];
-//        int startAt = 0;
-//        for (int i = 0; i < count;) {
-//            char ch = value[offset + i];
-//            boolean match = false;
-//            if (ch == splitor.charAt(0)) {
-//                match = true;
-//                for (int j = 1; j < splitor.count; j++) {
-//                    if (offset + i + j >= count || value[offset + i + j] != splitor.charAt(j)) {
-//                        match = false;
-//                        break;
-//                    }
-//                }
-//            }
-//            if (match) {
-//                result = expandArr(result);
-//                result[result.length - 1] = new String(value, startAt + offset, i - startAt);
-//                i += splitor.count;
-//                startAt = i;
-//                if (limit > 0 && result.length >= limit) {
-//                    return result;
-//                }
-//            } else {
-//                i++;
-//            }
-//        }
-//        String last = new String(value, startAt + offset, count - startAt);
-//        result = expandArr(result);
-//        result[result.length - 1] = last;
-//        return result;
-//      }
+    public String[] split(String splitor) {
+        return split(splitor, 0);
+    }
 
-   public String trim() {
-       int len = value.length;
-       int st = 0;
-       char[] val = value;
-       /* avoid getfield opcode */
+    public String[] split(String splitor, int limit) {
+        String[] result = new String[0];
+        int startAt = 0;
+        for (int i = 0; i < count; ) {
+            char ch = value[offset + i];
+            boolean match = false;
+            if (ch == splitor.charAt(0)) {
+                match = true;
+                for (int j = 1; j < splitor.count; j++) {
+                    if (offset + i + j >= count || value[offset + i + j] != splitor.charAt(j)) {
+                        match = false;
+                        break;
+                    }
+                }
+            }
+            if (match) {
+                result = expandArr(result);
+                result[result.length - 1] = new String(value, startAt + offset, i - startAt);
+                i += splitor.count;
+                startAt = i;
+                if (limit > 0 && result.length >= limit) {
+                    return result;
+                }
+            } else {
+                i++;
+            }
+        }
+        String last = new String(value, startAt + offset, count - startAt);
+        result = expandArr(result);
+        result[result.length - 1] = last;
+        return result;
+    }
 
-       while ((st < len) && (val[st] <= ' ')) {
-           st++;
-       }
-       while ((st < len) && (val[len - 1] <= ' ')) {
-           len--;
-       }
-       return ((st > 0) || (len < value.length)) ? substring(st, len) : this;
-   }
+    String[] expandArr(String[] arr) {
+        String[] nsa = new String[arr.length + 1];
+        System.arraycopy(arr, 0, nsa, 0, arr.length);
+        return nsa;
+    }
 
-    /**
-     * This object (which is already a string!) is itself returned.
-     *
-     * @return the string itself.
-     */
+
+    public String trim() {
+        int len = value.length;
+        int st = 0;
+        char[] val = value;
+        /* avoid getfield opcode */
+
+        while ((st < len) && (val[st] <= ' ')) {
+            st++;
+        }
+        while ((st < len) && (val[len - 1] <= ' ')) {
+            len--;
+        }
+        return ((st > 0) || (len < value.length)) ? substring(st, len) : this;
+    }
+
+
     public String toString() {
         return this;
     }
@@ -404,25 +506,25 @@ public final class String {
         return b ? "true" : "false";
     }
 
-   public static String valueOf(char c) {
-       char data[] = {c};
-       return new String(data);
-   }
+    public static String valueOf(char c) {
+        char data[] = {c};
+        return new String(0, 1, data);
+    }
 
-   public static String valueOf(int i) {
-       return Integer.toString(i);
-   }
+    public static String valueOf(int i) {
+        return Integer.toString(i);
+    }
 
-   public static String valueOf(long l) {
-       return Long.toString(l);
-   }
+    public static String valueOf(long l) {
+        return Long.toString(l);
+    }
 
-   public static String valueOf(float f) {
-       return Float.toString(f);
-   }
+    public static String valueOf(float f) {
+        return Float.toString(f);
+    }
 
-   public static String valueOf(double d) {
-       return Double.toString(d);
-   }
+    public static String valueOf(double d) {
+        return Double.toString(d);
+    }
 //    public native String intern();
 }

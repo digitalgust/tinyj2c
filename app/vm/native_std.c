@@ -245,7 +245,7 @@ s64 Java_java_lang_System_currentTimeMillis___J(JThreadRuntime *runtime) {
 
 
 struct java_lang_String *Java_java_lang_System_doubleToString__D_Ljava_lang_String_2(JThreadRuntime *runtime, f64 p0) {
-    char buf[100] = {0};
+    char buf[100];
     sprintf(buf, "%lf", p0);
     Utf8String *ustr = utf8_create_c(buf);
     JObject *jstr = construct_string_with_ustr(runtime, ustr);
@@ -254,8 +254,36 @@ struct java_lang_String *Java_java_lang_System_doubleToString__D_Ljava_lang_Stri
 }
 
 
+JArray *Java_java_lang_System_utf16ToUtf8__Ljava_lang_String_2__3B(JThreadRuntime *runtime, struct java_lang_String *p0) {
+    Utf8String *ustr = utf8_create();
+    jstring_2_utf8(p0, ustr);
+    s32 len = ustr->length;
+    JArray *jarr = multi_array_create_by_typename(runtime, &len, 1, "[B");
+    memcpy(jarr->prop.as_c8_arr, ustr->data, ustr->length);
+    utf8_destory(ustr);
+    return jarr;
+}
+
+
+struct java_lang_String *Java_java_lang_System_utf8ToUtf16___3BII_Ljava_lang_String_2(JThreadRuntime *runtime, JArray *p0, s32 p1, s32 p2) {
+    Utf8String *ustr = utf8_create_part_c(p0->prop.as_c8_arr, p1, p2);
+    JObject *jstr = construct_string_with_ustr(runtime, ustr);
+    utf8_destory(ustr);
+    return (struct java_lang_String *) jstr;
+}
+
+
 s64 Java_java_lang_System_nanoTime___J(JThreadRuntime *runtime) {
     return nanoTime();
+}
+
+
+f64 Java_java_lang_System_stringToDouble__Ljava_lang_String_2_D(JThreadRuntime *runtime, struct java_lang_String *p0) {
+    Utf8String *ustr = utf8_create();
+    jstring_2_utf8(p0, ustr);
+    double d = atof(utf8_cstr(ustr));
+    utf8_destory(ustr);
+    return d;
 }
 
 

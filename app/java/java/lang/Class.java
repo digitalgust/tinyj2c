@@ -1,6 +1,6 @@
 package java.lang;
 
-public final class Class<T>{
+public final class Class<T> {
     /*native vm class*/
     long classHandle;
 

@@ -32,9 +32,9 @@ public class Thread implements Runnable {
     public final static int MAX_PRIORITY = 10;
 
     ThreadLocal.ThreadLocalMap threadLocals;
-    
+
     /* Whether or not the thread is a daemon thread. */
-    private boolean     daemon = false;
+    private boolean daemon = false;
 
     /**
      * Returns a reference to the currently executing <code>Thread</code>
@@ -63,9 +63,9 @@ public class Thread implements Runnable {
      * lose ownership of any monitors.
      *
      * @param millis the length of time to sleep in milliseconds.
-     * @exception InterruptedException if another thread has interrupted the
-     * current thread. The <i>interrupted status</i> of the current thread is
-     * cleared when this exception is thrown.
+     * @throws InterruptedException if another thread has interrupted the
+     *                              current thread. The <i>interrupted status</i> of the current thread is
+     *                              cleared when this exception is thrown.
      * @see java.lang.Object#notify()
      */
     public static native void sleep(long millis) throws InterruptedException;
@@ -74,7 +74,7 @@ public class Thread implements Runnable {
      * Initialize a Thread.
      *
      * @param target the object whose run() method gets called
-     * @param name the name of the new thread
+     * @param name   the name of the new thread
      */
     private void init(Runnable target, String name) {
         Thread parent = currentThread();
@@ -98,7 +98,7 @@ public class Thread implements Runnable {
 
     /**
      * Allocates a new <code>Thread</code> object with the given name.
-     *
+     * <p>
      * Threads created this way must have overridden their <code>run()</code>
      * method to actually do anything.
      *
@@ -123,7 +123,7 @@ public class Thread implements Runnable {
      * name.
      *
      * @param target the object whose <code>run</code> method is called.
-     * @param name the name of the new thread.
+     * @param name   the name of the new thread.
      */
     public Thread(Runnable target, String name) {
         init(target, name);
@@ -137,7 +137,7 @@ public class Thread implements Runnable {
      * thread (which returns from the call to the <code>start</code> method) and
      * the other thread (which executes its <code>run</code> method).
      *
-     * @exception IllegalThreadStateException if the thread was already started.
+     * @throws IllegalThreadStateException if the thread was already started.
      * @see java.lang.Thread#run()
      */
     public synchronized native void start();
@@ -173,7 +173,7 @@ public class Thread implements Runnable {
      * Tests if this thread is alive. A thread is alive if it has been started
      * and has not yet died.
      *
-     * @return  <code>true</code> if this thread is alive; <code>false</code>
+     * @return <code>true</code> if this thread is alive; <code>false</code>
      * otherwise.
      */
     public final native boolean isAlive();
@@ -182,8 +182,8 @@ public class Thread implements Runnable {
      * Changes the priority of this thread.
      *
      * @param newPriority priority to set this thread to
-     * @exception IllegalArgumentException If the priority is not in the range
-     * <code>MIN_PRIORITY</code> to <code>MAX_PRIORITY</code>.
+     * @throws IllegalArgumentException If the priority is not in the range
+     *                                  <code>MIN_PRIORITY</code> to <code>MAX_PRIORITY</code>.
      * @see java.lang.Thread#getPriority()
      * @see java.lang.Thread#MAX_PRIORITY
      * @see java.lang.Thread#MIN_PRIORITY
@@ -217,7 +217,8 @@ public class Thread implements Runnable {
 
     /**
      * setup thread name
-     * @param tname 
+     *
+     * @param tname
      */
     public final void setName(String tname) {
         if (tname != null) {
@@ -235,15 +236,16 @@ public class Thread implements Runnable {
     /**
      * Waits for this thread to die.
      *
-     * @exception InterruptedException if another thread has interrupted the
-     * current thread. The <i>interrupted status</i> of the current thread is
-     * cleared when this exception is thrown.
+     * @throws InterruptedException if another thread has interrupted the
+     *                              current thread. The <i>interrupted status</i> of the current thread is
+     *                              cleared when this exception is thrown.
      */
     public synchronized final void join() throws InterruptedException {
         while (isAlive()) {
             wait(1000);
         }
     }
+
     /**
      * Marks this thread as either a {@linkplain #isDaemon daemon} thread
      * or a user thread. The Java Virtual Machine exits when the only
@@ -251,15 +253,10 @@ public class Thread implements Runnable {
      *
      * <p> This method must be invoked before the thread is started.
      *
-     * @param  on
-     *         if {@code true}, marks this thread as a daemon thread
-     *
-     * @throws  IllegalThreadStateException
-     *          if this thread is {@linkplain #isAlive alive}
-     *
-     * @throws  SecurityException
-     *          if {@link #checkAccess} determines that the current
-     *          thread cannot modify this thread
+     * @param on if {@code true}, marks this thread as a daemon thread
+     * @throws IllegalThreadStateException if this thread is {@linkplain #isAlive alive}
+     * @throws SecurityException           if {@link #checkAccess} determines that the current
+     *                                     thread cannot modify this thread
      */
     public final void setDaemon(boolean on) {
         if (isAlive()) {
@@ -271,9 +268,9 @@ public class Thread implements Runnable {
     /**
      * Tests if this thread is a daemon thread.
      *
-     * @return  <code>true</code> if this thread is a daemon thread;
-     *          <code>false</code> otherwise.
-     * @see     #setDaemon(boolean)
+     * @return <code>true</code> if this thread is a daemon thread;
+     * <code>false</code> otherwise.
+     * @see #setDaemon(boolean)
      */
     public final boolean isDaemon() {
         return daemon;

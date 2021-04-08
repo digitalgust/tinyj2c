@@ -103,6 +103,11 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
+
+        String s = Long.toString(f1, 16);
+        System.out.println("hex:" + s);
+        long v1 = Long.parseLong(s, 16);
+        System.out.println("hex to long :" + v1);
     }
 
     public void t5() {
@@ -162,6 +167,14 @@ class Foo1 {
 
         t7.obj_r = new Integer(2);
 
+        String s = "中国";
+        System.out.println(s);
+        byte[] b = s.getBytes("utf-8");
+        if (b != null) {
+            System.out.println(s + " bytes:" + b.length);
+            String s1 = new String(b, 0, b.length, "utf-8");
+            System.out.println(s1);
+        }
     }
 
     void t7() {
@@ -265,9 +278,9 @@ class Foo1 {
         }
     }
 
-    public void t13(){
+    public void t13() {
         try {
-            Class c=Class.forName("com.egls.test.Foo2");
+            Class c = Class.forName("com.egls.test.Foo2");
             Object o = c.newInstance();
             System.out.println("forName and newInstance :" + o);
         } catch (Exception e) {

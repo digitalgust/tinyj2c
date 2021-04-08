@@ -6,22 +6,21 @@
 package java.lang;
 
 /**
- *
  * @author gust
  */
 public class Throwable {
     String detailMessage;
 
     StackTraceElement backtrace = buildStackElement();
-    
-    public Throwable(){
-        detailMessage="";
+
+    public Throwable() {
+        detailMessage = "";
     }
-    
-    public Throwable(String s){
-        detailMessage=s;
+
+    public Throwable(String s) {
+        detailMessage = s;
     }
-    
+
     public String getMessage() {
         return detailMessage;
     }

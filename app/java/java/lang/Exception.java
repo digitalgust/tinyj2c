@@ -6,7 +6,6 @@
 package java.lang;
 
 /**
- *
  * @author gust
  */
 public class Exception extends Throwable {

@@ -6,9 +6,41 @@
 package java.lang;
 
 /**
- *
  * @author gust
  */
 public class Short {
-        private final short value=0;
+    public static final short   MIN_VALUE = -32768;
+    public static final short   MAX_VALUE = 32767;
+
+
+    final short value;
+
+    public Short(short p) {
+        value = p;
+    }
+
+    static public String toString(short v) {
+        return Long.toString(v);
+    }
+
+    public static String toHexString(short v) {
+        return Long.toString(v, 16);
+    }
+
+    public String toString() {
+        return toString(value);
+    }
+
+    static public String toString(short v, int radix) {
+        return Long.toString(v, 10);
+    }
+
+    public static int parseShort(String s) {
+        return (int) Long.parseLong(s, 10);
+    }
+
+    public static int parseShort(String s, int radix) {
+        return (int) Long.parseLong(s, radix);
+    }
+
 }

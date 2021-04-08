@@ -6,18 +6,27 @@
 package java.lang;
 
 /**
- *
  * @author gust
  */
 public class Long {
+    public static final long MIN_VALUE = 0x8000000000000000L;
+    public static final long MAX_VALUE = 0x7fffffffffffffffL;
 
-    private long value = 0;
+    long value;
 
     public Long(long p) {
         value = p;
     }
 
     static public String toString(long v) {
+        return toString(v, 10);
+    }
+
+    static public String toString(long v, int radix) {
+
+        if (radix >= DIGI.length) {
+            throw new IllegalArgumentException();
+        }
         StringBuilder sb = new StringBuilder();
         boolean neg = false;
         if (v < 0) {
@@ -25,9 +34,9 @@ public class Long {
             v = -v;
         }
         while (true) {
-            long n = v % 10;
-            sb.append("0123456789".charAt((int) n));
-            v = v / 10;
+            long n = v % radix;
+            sb.append(DIGI[(int) n]);
+            v = v / radix;
             if (v == 0) {
                 break;
             }
@@ -40,20 +49,39 @@ public class Long {
     }
 
     public static String toHexString(long v) {
-        StringBuilder sb = new StringBuilder();
-        if (v < 0) {
-            v = -v;
-        }
-        while (true) {
-            long n = v % 16;
-            sb.append("0123456789ABCDEF".charAt((int) n));
-            v = v / 16;
-            if (v == 0) {
-                break;
+        return toString(v, 16);
+    }
+
+    static char[] DIGI = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+    static private int indexOfDigi(char ch) {
+        for (int i = 0, imax = DIGI.length; i < imax; i++) {
+            if (DIGI[i] == ch) {
+                return i;
             }
         }
-        sb.reverse();
-        return sb.toString();
+        return -1;
+    }
+
+    public static long parseLong(String s, int radix) {
+        long v = 0;
+        boolean neg = false;
+        int idx = 0;
+        if (s.length() > 0) {
+            if (s.value[idx] == '-') {
+                neg = true;
+                idx++;
+            }
+        }
+        for (int i = idx, imax = s.length(); i < imax; i++) {
+            int ci = indexOfDigi(s.value[i]);
+            if (ci >= 0 && ci < radix) {
+                v = v * radix + ci;
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+        return neg ? -v : v;
     }
 
     public String toString() {

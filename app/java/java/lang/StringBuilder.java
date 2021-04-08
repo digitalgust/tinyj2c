@@ -7,14 +7,22 @@ import java.lang.String;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
- *
  * @author gust
  */
 public class StringBuilder {
 
-    char[] value = new char[16];
+    char[] value;
     int count = 0;
+
+    public StringBuilder() {
+        this(16);
+    }
+
+    public StringBuilder(int len) {
+        value = new char[len];
+    }
 
     public int length() {
         return count;
@@ -48,14 +56,14 @@ public class StringBuilder {
     }
 
     public StringBuilder append(char c) {
-        expand(1);
+        expand(16);
         value[count] = c;
         count++;
         return this;
     }
 
     public StringBuilder append(Object o) {
-        if(o!=null)append(o.toString());
+        if (o != null) append(o.toString());
         else append("null");
         return this;
     }

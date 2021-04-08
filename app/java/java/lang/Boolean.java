@@ -6,9 +6,20 @@
 package java.lang;
 
 /**
- *
  * @author gust
  */
 public class Boolean {
-    private final boolean value=false;
+    final boolean value;
+
+    public Boolean(boolean value) {
+        this.value = value;
+    }
+
+    public String toString() {
+        return value ? "true" : "false";
+    }
+
+    public static boolean parseBoolean(String name) {
+        return ((name != null) && name.equalsIgnoreCase("true"));
+    }
 }

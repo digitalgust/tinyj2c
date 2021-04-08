@@ -10,11 +10,10 @@ package java.lang;
 import java.lang.String;
 
 /**
- *
  * @author gust
  */
 public class Object {
-    
+
     public String toString() {
         return getClass().getName() + "@" + Integer.toHexString(hashCode());
     }
@@ -24,7 +23,7 @@ public class Object {
     }
 
     public final native Class getClass();
-    
+
     public final native void wait(long ms);
 
     public final native void notify();

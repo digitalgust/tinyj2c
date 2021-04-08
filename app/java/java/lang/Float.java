@@ -6,14 +6,38 @@
 package java.lang;
 
 /**
- *
  * @author gust
  */
 public class Float {
+    public static final float POSITIVE_INFINITY = 1.0f / 0.0f;
+    public static final float NEGATIVE_INFINITY = -1.0f / 0.0f;
+    public static final float NaN = 0.0f / 0.0f;
+    public static final float MAX_VALUE = 3.40282346638528860e+38f;
+    public static final float MIN_VALUE = 1.40129846432481707e-45f;
 
-    private final float value = 0.0f;
+    private final float value;
+
+    public Float(float value) {
+        this.value = value;
+    }
+
+    public String toString() {
+        return toString(value);
+    }
 
     static public String toString(float val) {
         return System.doubleToString(val);
+    }
+
+    public static float parseFloat(String s) {
+        return (float) System.stringToDouble(s);
+    }
+
+    static public boolean isNaN(float v) {
+        return (v != v);
+    }
+
+    static public boolean isInfinite(float v) {
+        return (v == POSITIVE_INFINITY) || (v == NEGATIVE_INFINITY);
     }
 }

@@ -6,7 +6,6 @@
 package java.lang;
 
 /**
- *
  * @author gust
  */
 public class RuntimeException extends Throwable {

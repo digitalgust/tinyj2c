@@ -7,8 +7,8 @@ import java.io.PrintStream;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
- *
  * @author gust
  */
 public class System {
@@ -22,4 +22,10 @@ public class System {
     public static native long nanoTime();
 
     static native String doubleToString(double val);
+
+    static native double stringToDouble(String s);
+
+    static native String utf8ToUtf16(byte[] b, int off, int len);
+
+    static native byte[] utf16ToUtf8(String s);
 }
