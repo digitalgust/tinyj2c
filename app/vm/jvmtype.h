@@ -51,6 +51,11 @@
 #endif
 
 
+#ifdef __JVM_OS_LINUX__
+#include <unistd.h>
+#endif
+
+
 typedef unsigned char u8;
 typedef signed char s8;
 typedef char c8;

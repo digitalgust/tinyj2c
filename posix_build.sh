@@ -4,8 +4,15 @@ echo "Requirement: jdk1.8 jar javac "
 GCC=gcc
 JAVAC=javac
 JAR=jar
-JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/
-#JAVA_HOME=
+
+#MAC
+#JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/
+
+#LINUX
+#JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.275.b01-1.el8_3.x86_64/
+
+#WIN
+#JAVA_HOME=d:\jdk180\
 
 function build_jar(){
     rm -rf $3/$1
