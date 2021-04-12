@@ -25,6 +25,14 @@ public class Double {
         return toString(value);
     }
 
+    public static Double valueOf(double i) {
+        return new Double(i);
+    }
+
+    public double doubleValue() {
+        return value;
+    }
+
     static public String toString(double val) {
         return System.doubleToString(val);
     }
@@ -41,4 +49,7 @@ public class Double {
         return (v == POSITIVE_INFINITY) || (v == NEGATIVE_INFINITY);
     }
 
+    public static native long doubleToLongBits(double value);
+
+    public static native double longBitsToDouble(long bits);
 }

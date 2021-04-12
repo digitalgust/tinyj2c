@@ -567,7 +567,7 @@ s32 instance_of_classname_index(JObject *jobj, s32 classNameIdx);
 
 s32 checkcast(JObject *jobj, s32 classNameIdx);
 
-__refer find_exception_handler_index(JThreadRuntime *runtime, LabelTable *labtable, __refer notfoundHandlerLabel);
+__refer find_exception_handler(JThreadRuntime *runtime, LabelTable *labtable, __refer notfoundHandlerLabel);
 
 void throw_exception(JThreadRuntime *runtime, JObject *jobj);
 

@@ -18,6 +18,14 @@ public class Byte {
         this.value = value;
     }
 
+    public static Byte valueOf(byte b) {
+        return new Byte(b);
+    }
+
+    public byte byteValue() {
+        return value;
+    }
+
     public String toString() {
         return toString(value);
     }

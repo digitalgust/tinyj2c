@@ -25,6 +25,14 @@ public class Float {
         return toString(value);
     }
 
+    public static Float valueOf(float i) {
+        return new Float(i);
+    }
+
+    public float floatValue() {
+        return value;
+    }
+
     static public String toString(float val) {
         return System.doubleToString(val);
     }
@@ -40,4 +48,8 @@ public class Float {
     static public boolean isInfinite(float v) {
         return (v == POSITIVE_INFINITY) || (v == NEGATIVE_INFINITY);
     }
+
+    public static native int floatToIntBits(float value);
+
+    public static native float intBitsToFloat(int bits);
 }

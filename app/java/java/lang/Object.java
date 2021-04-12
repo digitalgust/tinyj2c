@@ -18,8 +18,11 @@ public class Object {
         return getClass().getName() + "@" + Integer.toHexString(hashCode());
     }
 
-    public final void wait() throws InterruptedException {
+    public final void wait() {
         wait(0);
+    }
+
+    protected void finalize() throws Throwable {
     }
 
     public final native Class getClass();

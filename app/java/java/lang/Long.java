@@ -22,6 +22,14 @@ public class Long {
         return toString(v, 10);
     }
 
+    public static Long valueOf(long l) {
+        return new Long(l);
+    }
+
+    public long longValue() {
+        return (long) value;
+    }
+
     static public String toString(long v, int radix) {
 
         if (radix >= DIGI.length) {

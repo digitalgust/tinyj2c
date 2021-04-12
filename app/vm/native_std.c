@@ -200,6 +200,84 @@ void Java_java_lang_Object_wait__J_V(JThreadRuntime *runtime, struct java_lang_O
 }
 
 
+
+s64 Java_java_lang_Double_doubleToLongBits__D_J(JThreadRuntime *runtime, f64 p0) {
+    StackItem si;
+    si.d = p0;
+    return si.j;
+}
+
+f64 Java_java_lang_Double_longBitsToDouble__J_D(JThreadRuntime *runtime, s64 p0) {
+    StackItem si;
+    si.j = p0;
+    return si.d;
+}
+
+s32 Java_java_lang_Float_floatToIntBits__F_I(JThreadRuntime *runtime, f32 p0) {
+    StackItem si;
+    si.f = p0;
+    return si.i;
+}
+
+f32 Java_java_lang_Float_intBitsToFloat__I_F(JThreadRuntime *runtime, s32 p0) {
+    StackItem si;
+    si.i = p0;
+    return si.f;
+}
+
+f64 Java_java_lang_Math_acos__D_D(JThreadRuntime *runtime, f64 p0) {
+    return acos(p0);
+}
+
+f64 Java_java_lang_Math_asin__D_D(JThreadRuntime *runtime, f64 p0) {
+    return asin(p0);
+}
+
+f64 Java_java_lang_Math_atan__D_D(JThreadRuntime *runtime, f64 p0) {
+    return atan(p0);
+}
+
+f64 Java_java_lang_Math_atan2__DD_D(JThreadRuntime *runtime, f64 p0, f64 p1) {
+    return atan2(p0, p1);
+}
+
+f64 Java_java_lang_Math_ceil__D_D(JThreadRuntime *runtime, f64 p0) {
+    return ceil(p0);
+}
+
+f64 Java_java_lang_Math_cos__D_D(JThreadRuntime *runtime, f64 p0) {
+    return cos(p0);
+}
+
+f64 Java_java_lang_Math_exp__D_D(JThreadRuntime *runtime, f64 p0) {
+    return exp(p0);
+}
+
+f64 Java_java_lang_Math_floor__D_D(JThreadRuntime *runtime, f64 p0) {
+    return floor(p0);
+}
+
+f64 Java_java_lang_Math_log__D_D(JThreadRuntime *runtime, f64 p0) {
+    return log(p0);
+}
+
+f64 Java_java_lang_Math_pow__DD_D(JThreadRuntime *runtime, f64 p0, f64 p1) {
+    return pow(p0, p1);
+}
+
+f64 Java_java_lang_Math_sin__D_D(JThreadRuntime *runtime, f64 p0) {
+    return sin(p0);
+}
+
+f64 Java_java_lang_Math_sqrt__D_D(JThreadRuntime *runtime, f64 p0) {
+    return sqrt(p0);
+}
+
+f64 Java_java_lang_Math_tan__D_D(JThreadRuntime *runtime, f64 p0) {
+    return tan(p0);
+}
+
+
 s8 Java_java_lang_Class_isAssignableFrom__Ljava_lang_Class_2_Z(JThreadRuntime *runtime, struct java_lang_Class *p0, struct java_lang_Class *p1) {
     JClass *c0 = (__refer) (intptr_t) p0->classHandle_in_class;
     JClass *c1 = (__refer) (intptr_t) p1->classHandle_in_class;

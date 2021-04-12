@@ -15,6 +15,14 @@ public class Character {
         value = ch;
     }
 
+    public char charValue() {
+        return value;
+    }
+
+    public static Character valueOf(char i) {
+        return new Character(i);
+    }
+
     public static char toLowerCase(char ch) {
         return (ch >= 65 && ch <= 90) ? (char) (ch + 32) : ch;
     }

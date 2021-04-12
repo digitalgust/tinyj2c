@@ -31,7 +31,6 @@ public class Thread implements Runnable {
      */
     public final static int MAX_PRIORITY = 10;
 
-    ThreadLocal.ThreadLocalMap threadLocals;
 
     /* Whether or not the thread is a daemon thread. */
     private boolean daemon = false;
@@ -255,8 +254,6 @@ public class Thread implements Runnable {
      *
      * @param on if {@code true}, marks this thread as a daemon thread
      * @throws IllegalThreadStateException if this thread is {@linkplain #isAlive alive}
-     * @throws SecurityException           if {@link #checkAccess} determines that the current
-     *                                     thread cannot modify this thread
      */
     public final void setDaemon(boolean on) {
         if (isAlive()) {
