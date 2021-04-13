@@ -36,5 +36,16 @@ public class Test {
     static public void main(String[] args) {
 
         System.out.println(parseLong("1C6BF526353D4",16));
+
+        long f1 = 0x7fffffffffffffffL;
+        String s = Long.toString(f1, 16);
+        System.out.println("hex:" + s);
+        long v1 = Long.parseLong(s, 16);
+        System.out.println("hex to long :" + v1);
     }
+
+
+}
+enum TColor{
+    RED,GREEN,BLUE;
 }

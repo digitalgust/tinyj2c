@@ -9,6 +9,9 @@ package java.lang;
  * @author gust
  */
 public class Character {
+    @SuppressWarnings("unchecked")
+    public static final Class<Character> TYPE = (Class<Character>) Class.getPrimitiveClass("char");
+
     char value;
 
     public Character(char ch) {

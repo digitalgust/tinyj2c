@@ -25,6 +25,12 @@ public class Object {
     protected void finalize() throws Throwable {
     }
 
+    public boolean equals(Object obj) {
+        return (this == obj);
+    }
+
+    protected native Object clone() throws CloneNotSupportedException;
+
     public final native Class getClass();
 
     public final native void wait(long ms);

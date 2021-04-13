@@ -1,5 +1,10 @@
 package com.egls.test;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 class Foo1 {
 //
 
@@ -25,7 +30,7 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             val[i] = (byte) (5 % f0 - 2 * (9 + 5) / 2);
         }
-        System.out.println("byte.length=" + val.length);
+        System.out.println("byte.length=" + val.length + " type:" + val.getClass().getComponentType());
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
@@ -103,7 +108,7 @@ class Foo1 {
         for (int i = 0; i < val.length; i++) {
             System.out.println("val[" + i + "]=" + val[i]);
         }
-
+        f1 = 0x7fffffffffffffffL;
         String s = Long.toString(f1, 16);
         System.out.println("hex:" + s);
         long v1 = Long.parseLong(s, 16);
@@ -282,8 +287,30 @@ class Foo1 {
         try {
             Class c = Class.forName("com.egls.test.Foo2");
             Object o = c.newInstance();
+            Method m = c.getMethod("t2");
+            m.invoke(o);
+            m = c.getMethod("getName", Object.class, int.class, byte.class, String.class, Object.class);
+            if (m != null) {
+                System.out.println("invoke " + m.invoke(o, this, 2, 4, "Here is ok", o));
+            }
             System.out.println("forName and newInstance :" + o);
+
         } catch (Exception e) {
+        }
+    }
+
+    public void t14() {
+        try {
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int i = 0; i < 10; i++) list.add(i);
+            System.out.println("List size:" + list.size() + " elementAt (4) =" + list.indexOf(4));
+
+            Map<Integer, String> map = new HashMap<>();
+            for (int i = 0; i < 10; i++) map.put(i, "value-" + i);
+            System.out.println("Map size:" + map.size() + " key(4) =" + map.get(4));
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -303,5 +330,6 @@ class Foo1 {
         obj.t11();
         obj.t12();
         obj.t13();
+        obj.t14();
     }
 }

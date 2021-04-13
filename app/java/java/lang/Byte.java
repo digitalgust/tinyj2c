@@ -9,10 +9,12 @@ package java.lang;
  * @author gust
  */
 public class Byte {
-    private final byte value;
-
+    @SuppressWarnings("unchecked")
+    public static final Class<Byte> TYPE = (Class<Byte>) Class.getPrimitiveClass("byte");
     public static final byte MIN_VALUE = -128;
     public static final byte MAX_VALUE = 127;
+
+    private final byte value;
 
     public Byte(byte value) {
         this.value = value;
@@ -34,6 +36,9 @@ public class Byte {
         return Long.toString((int) b, 10);
     }
 
+    public static String toHexString(byte v) {
+        return Long.toString(v & 0xff, 16);
+    }
 
     public static String toString(byte v, int radix) {
         return Long.toString(v, radix);

@@ -43,7 +43,7 @@ public class Foo2 extends P {
     String str;
 
     public String getName(Object o1, int i, byte b, String a, Object o) {
-        return "NameClass";
+        return "NameClass/" + o1 + "/" + i + "/" + b + "/" + a + "/" + o;
     }
 
     public int getValue() {

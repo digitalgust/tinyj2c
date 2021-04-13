@@ -12,6 +12,8 @@ import java.lang.String;
  * @author gust
  */
 public class Integer {
+    @SuppressWarnings("unchecked")
+    public static final Class<Integer> TYPE = (Class<Integer>) Class.getPrimitiveClass("int");
     public static final int MIN_VALUE = 0x80000000;
     public static final int MAX_VALUE = 0x7fffffff;
 
@@ -53,7 +55,7 @@ public class Integer {
     }
 
     public static String toHexString(int v) {
-        return Long.toString(v, 16);
+        return Long.toString(v & 0xffffffff, 16);
     }
 
     public String toString() {

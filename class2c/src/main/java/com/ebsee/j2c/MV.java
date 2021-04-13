@@ -1344,7 +1344,7 @@ public class MV extends MethodVisitor {
         }
     }
 
-    public void addUsedLabel(String lab){
+    public void addUsedLabel(String lab) {
         if (!usedLabels.contains(lab)) {
             usedLabels.add(lab);
         }
@@ -1775,6 +1775,35 @@ public class MV extends MethodVisitor {
         }
 
         // 3) end
+        ps.println("}");
+        ps.println("");
+
+    }
+
+    public void outBridge(PrintStream ps) {
+//        if (cv.className.equals("com/egls/test/BpDeep") && methodName.equals("train") && signatureStr.equals("([D[D)V")) {
+//            int debug = 1;
+//        }
+
+        //gen bridge function
+        String methodRawName = Util.getMethodRawName(this.cv.className, this.methodName, signatureStr);
+        ps.println(getBridgeMethodDeclare(this.cv.className, this.methodName, signatureStr) + " {");
+        String cresult = signature.getCTypeOfResult();
+        String resultStr = "";
+        if (!"void".equals(cresult)) {
+            resultStr = "ret->" + Util.getStackFieldName_by_Jtype(signature.getJavaResult()) + " = ";
+        }
+        ps.print("    " + resultStr + methodRawName + "(runtime");
+        if (!isStatic()) {
+            ps.print(", ins");
+
+        }
+        int count = 0;
+        for (int i = isStatic() ? 0 : 1; i < _argTypes.size(); i++) {
+            String s = _argTypes.get(i);
+            ps.print(", para[" + (count++) + "]." + getStackFieldName_by_Ctype(s));
+        }
+        ps.println(");");
         ps.println("}");
         ps.println("");
     }

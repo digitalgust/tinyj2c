@@ -9,6 +9,8 @@ package java.lang;
  * @author gust
  */
 public class Float {
+    @SuppressWarnings("unchecked")
+    public static final Class<Float> TYPE = (Class<Float>) Class.getPrimitiveClass("float");
     public static final float POSITIVE_INFINITY = 1.0f / 0.0f;
     public static final float NEGATIVE_INFINITY = -1.0f / 0.0f;
     public static final float NaN = 0.0f / 0.0f;

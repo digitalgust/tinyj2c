@@ -2,8 +2,8 @@
 .idea
 class2c/target
 class2c/.idea
-app/out/classes
-app/out/c/*
+app/out/*
+app/out/
 *.out
 .svn
 tools

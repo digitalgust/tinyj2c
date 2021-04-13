@@ -9,6 +9,8 @@ package java.lang;
  * @author gust
  */
 public class Double {
+    @SuppressWarnings("unchecked")
+    public static final Class<Double>     TYPE = (Class<Double>) Class.getPrimitiveClass("double");
     public static final double POSITIVE_INFINITY = 1.0 / 0.0;
     public static final double NEGATIVE_INFINITY = -1.0 / 0.0;
     public static final double NaN = 0.0d / 0.0;

@@ -9,6 +9,8 @@ package java.lang;
  * @author gust
  */
 public class Boolean {
+    @SuppressWarnings("unchecked")
+    public static final Class TYPE = Class.getPrimitiveClass("boolean");
     public static final Boolean TRUE = new Boolean(true);
     public static final Boolean FALSE = new Boolean(false);
 

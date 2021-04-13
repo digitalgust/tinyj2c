@@ -9,6 +9,8 @@ package java.lang;
  * @author gust
  */
 public class Short {
+    @SuppressWarnings("unchecked")
+    public static final Class<Short> TYPE = (Class<Short>) Class.getPrimitiveClass("short");
     public static final short MIN_VALUE = -32768;
     public static final short MAX_VALUE = 32767;
 
@@ -32,7 +34,7 @@ public class Short {
     }
 
     public static String toHexString(short v) {
-        return Long.toString(v, 16);
+        return Long.toString(v&0xffff, 16);
     }
 
     public String toString() {

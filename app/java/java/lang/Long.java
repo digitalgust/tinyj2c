@@ -9,6 +9,8 @@ package java.lang;
  * @author gust
  */
 public class Long {
+    @SuppressWarnings("unchecked")
+    public static final Class<Long> TYPE = (Class<Long>) Class.getPrimitiveClass("long");
     public static final long MIN_VALUE = 0x8000000000000000L;
     public static final long MAX_VALUE = 0x7fffffffffffffffL;
 
@@ -37,7 +39,7 @@ public class Long {
         }
         StringBuilder sb = new StringBuilder();
         boolean neg = false;
-        if (v < 0) {
+        if (v < 0 ) {
             neg = true;
             v = -v;
         }
@@ -49,9 +51,7 @@ public class Long {
                 break;
             }
         }
-        if (neg) {
-            sb.append('-');
-        }
+        if (neg) sb.append('-');
         sb.reverse();
         return sb.toString();
     }
