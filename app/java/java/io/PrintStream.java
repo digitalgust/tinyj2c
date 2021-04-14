@@ -12,55 +12,58 @@ import java.lang.String;
  * @author gust
  */
 public class PrintStream {
+    int stderr;
+    static final int NO_NEW_LINE = 0;
+    static final int NEW_LINE = 1;
 
-    public PrintStream() {
-
+    public PrintStream(int std) {
+        stderr = std;
     }
 
     public void println() {
-        printImpl(null, 1);
+        printImpl(stderr, null, NEW_LINE);
     }
 
     public void print(String s) {
-        printImpl(s, 0);
+        printImpl(stderr, s, NO_NEW_LINE);
     }
 
     public void println(String s) {
-        printImpl(s, 1);
+        printImpl(stderr, s, NEW_LINE);
     }
 
     public void print(int v) {
-        printImpl(Integer.toString(v), 0);
+        printImpl(stderr, Integer.toString(v), NO_NEW_LINE);
     }
 
     public void println(int v) {
-        printImpl(Integer.toString(v), 1);
+        printImpl(stderr, Integer.toString(v), NEW_LINE);
     }
 
     public void print(long v) {
-        printImpl(Long.toString(v), 0);
+        printImpl(stderr, Long.toString(v), NO_NEW_LINE);
     }
 
     public void println(long v) {
-        printImpl(Long.toString(v), 1);
+        printImpl(stderr, Long.toString(v), NEW_LINE);
     }
 
     public void print(float d) {
-        printImpl(Double.toString(d), 0);
+        printImpl(stderr, Double.toString(d), NO_NEW_LINE);
     }
 
     public void println(float d) {
-        printImpl(Double.toString(d), 1);
+        printImpl(stderr, Double.toString(d), NEW_LINE);
     }
 
     public void print(double d) {
-        printImpl(Double.toString(d), 0);
+        printImpl(stderr, Double.toString(d), NO_NEW_LINE);
     }
 
     public void println(double d) {
-        printImpl(Double.toString(d), 1);
+        printImpl(stderr, Double.toString(d), NEW_LINE);
     }
 
 
-    static native void printImpl(String s, int cr);
+    static native void printImpl(int stderr, String s, int cr);
 }

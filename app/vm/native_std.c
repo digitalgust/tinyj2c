@@ -37,11 +37,11 @@ struct java_lang_String *utf8_2_jstring(JThreadRuntime *runtime, Utf8String *utf
 //----------------------------------------------------------------
 //               setter and getter implementation
 
-void jstring_debug_print(JObject *jobj, c8 *appendix) {
+void jstring_debug_print(int std, JObject *jobj, c8 *appendix) {
     java_lang_String *jstr = (java_lang_String *) jobj;
     Utf8String *ustr = utf8_create();
     jstring_2_utf8(jstr, ustr);
-    jvm_printf("%s%s", utf8_cstr(ustr), appendix);
+    fprintf(std ? stderr : stdout, "%s%s", utf8_cstr(ustr), appendix);
     utf8_destory(ustr);
 }
 
@@ -96,11 +96,11 @@ JObject *buildStackElement(JThreadRuntime *runtime, StackFrame *target) {
 //=================================  assist ====================================
 
 //native methods
-void func_java_io_PrintStream_printImpl__Ljava_lang_String_2I_V(JThreadRuntime *runtime, struct java_lang_String *p0, s32 p1) {
-    if (p0) {
-        jstring_debug_print((JObject *) p0, p1 ? "\n" : "");
+void func_java_io_PrintStream_printImpl__ILjava_lang_String_2I_V(JThreadRuntime *runtime, s32 p0, struct java_lang_String *p1, s32 p2) {
+    if (p1) {
+        jstring_debug_print(p0, (JObject *) p1, p2 ? "\n" : "");
     } else {
-        if (p1)printf("\n");
+        if (p2)fprintf(p0 ? stderr : stdout, "\n");
     }
 }
 

@@ -1,4 +1,4 @@
-package com.egls.test;
+package test;
 
 import java.util.Random;
 

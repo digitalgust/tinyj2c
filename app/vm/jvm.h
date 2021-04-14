@@ -628,7 +628,7 @@ void jclass_set_classHandle(JObject *jobj, JClass *clazz);
 
 void jclass_init_insOfClass(JThreadRuntime *runtime, JObject *jobj);
 
-void jstring_debug_print(JObject *jobj, c8 *appendix);
+void jstring_debug_print(int std, JObject *jobj, c8 *appendix);
 //=====================================================================
 
 static inline StackFrame *method_enter(JThreadRuntime *runtime, s32 methodRawIndex, RStackItem *stack, RStackItem *local, s32 *spPtr) {

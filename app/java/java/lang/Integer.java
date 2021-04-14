@@ -55,7 +55,7 @@ public class Integer {
     }
 
     public static String toHexString(int v) {
-        return Long.toString(v & 0xffffffff, 16);
+        return Long.toHexString(((long) v) & 0xffffffffL);
     }
 
     public String toString() {

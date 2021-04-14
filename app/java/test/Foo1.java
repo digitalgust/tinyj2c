@@ -1,4 +1,4 @@
-package com.egls.test;
+package test;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -197,10 +197,11 @@ class Foo1 {
             i = 0;
         } catch (Exception e) {
             i = 2;
+            System.err.println(e.getMessage());
             e.printStackTrace();
         }
         System.out.println("i=" + i);
-
+        //if (true) throw new RuntimeException("exception test 2");
         i = 3;
 
         System.out.println("i=" + i);
@@ -285,7 +286,7 @@ class Foo1 {
 
     public void t13() {
         try {
-            Class c = Class.forName("com.egls.test.Foo2");
+            Class c = Class.forName("test.Foo2");
             Object o = c.newInstance();
             Method m = c.getMethod("t2");
             m.invoke(o);

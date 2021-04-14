@@ -12,8 +12,11 @@ import java.io.PrintStream;
  * @author gust
  */
 public class System {
+    static final int STD = 0;
+    static final int ERR = 1;
 
-    public static PrintStream out = new PrintStream();
+    public static PrintStream out = new PrintStream(STD);
+    public static PrintStream err = new PrintStream(ERR);
 
     public static native void arraycopy(Object src, int srcPos, Object dest, int destPos, int arr_length);
 

@@ -31,14 +31,14 @@ if [ ! ${JAVA_HOME} ] ;then
     echo "JDK and JAVA_HOME env var set required"
 else
     echo "JAVA_HOME=${JAVA_HOME}"
-    ${JAVA_HOME}/bin/java -cp tools/class2c.jar com.ebsee.j2c.Main ./app/java/ ./app/out/classes/ ./app/out/c/
+    ${JAVA_HOME}/bin/java -cp tools/class2c.jar com.ebsee.Main ./app/java/ ./app/out/classes/ ./app/out/c/
 fi
 
 CSRC="./app"
 VMLIST=`find ${CSRC}/vm  -type f  -name "*.c" `
 GENLIST=`find ${CSRC}/out/c  -type f  -name "*.c" `
 
-${GCC} -O3  -o app.out -I${CSRC}/out/c -I${CSRC}/vm  -lpthread -lm   $VMLIST  ${GENLIST} 
+${GCC} -O3 -pipe -o app.out -I${CSRC}/out/c -I${CSRC}/vm  -lpthread -lm   $VMLIST  ${GENLIST} 
 
 echo "build completed : app.out"
 

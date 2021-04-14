@@ -34,7 +34,7 @@ public class Short {
     }
 
     public static String toHexString(short v) {
-        return Long.toString(v&0xffff, 16);
+        return Long.toHexString(((long) v) & 0xffffL);
     }
 
     public String toString() {

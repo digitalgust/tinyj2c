@@ -18,7 +18,7 @@ public class Method {
         List<String> args = splitSignature(argsStr);
         if (parameterTypes.length != args.size()) return false;
         for (String s : args) {
-            System.out.println(name + " para:" + s);
+            //System.out.println(name + " para:" + s);
             Class c = Class.getClassByDescriptor(s);
             if (c != parameterTypes[i++]) return false;
         }

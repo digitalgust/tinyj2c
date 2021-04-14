@@ -37,7 +37,7 @@ public class Byte {
     }
 
     public static String toHexString(byte v) {
-        return Long.toString(v & 0xff, 16);
+        return Long.toHexString(((long) v) & 0xffL);
     }
 
     public static String toString(byte v, int radix) {

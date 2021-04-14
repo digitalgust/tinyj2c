@@ -39,7 +39,7 @@ public class Long {
         }
         StringBuilder sb = new StringBuilder();
         boolean neg = false;
-        if (v < 0 ) {
+        if (v < 0) {
             neg = true;
             v = -v;
         }
@@ -57,12 +57,19 @@ public class Long {
     }
 
     public static String toHexString(long v) {
-        return toString(v, 16);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            int idx = (int) (v >>> ((16 - 1 - i) * 4)) & 0xf;
+            if (idx == 0) continue;
+            else sb.append(DIGI[idx]);
+        }
+        return sb.toString();
     }
 
     static char[] DIGI = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
     static private int indexOfDigi(char ch) {
+        ch = Character.toUpperCase(ch);
         for (int i = 0, imax = DIGI.length; i < imax; i++) {
             if (DIGI[i] == ch) {
                 return i;
@@ -91,6 +98,7 @@ public class Long {
         }
         return neg ? -v : v;
     }
+
 
     public String toString() {
         return toString(value);
