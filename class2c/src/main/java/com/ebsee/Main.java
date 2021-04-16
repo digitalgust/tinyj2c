@@ -51,7 +51,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         String jsrcPath = "../app/java/"
-//                + File.pathSeparator + "../../awtk-minijvm/java/src/main/java/"//
+//                + File.pathSeparator + "../../miniJVM/desktop/awtk_gui/java/src/main/java/"//
                 ;
         String classesPath = "../app/out/classes/";
         String csrcPath = "../app/out/c/";

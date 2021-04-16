@@ -75,66 +75,65 @@ public class Boolean {
 
 // generation
 // globals
-//struct java_lang_Boolean_static {struct java_lang_Boolean* TRUE_0; struct java_lang_Boolean* FALSE_1;};
-struct java_lang_Boolean_static static_var_java_lang_Boolean = {NULL, NULL};
+//struct java_lang_Boolean_static {struct java_lang_Class* TYPE_0; struct java_lang_Boolean* TRUE_1; struct java_lang_Boolean* FALSE_2;};
+struct java_lang_Boolean_static static_var_java_lang_Boolean = {NULL, NULL, NULL};
 
 
 __refer arr_vmtable_java_lang_Boolean_from_java_lang_Boolean[] = {
-    Java_java_lang_Boolean_toString___Ljava_lang_String_2,  //0
-    Java_java_lang_Boolean_booleanValue___Z  //1
+    func_java_lang_Boolean_toString___Ljava_lang_String_2,  //0
+    func_java_lang_Boolean_booleanValue___Z  //1
 };
 __refer arr_vmtable_java_lang_Boolean_from_java_lang_Object[] = {
-    Java_java_lang_Boolean_toString___Ljava_lang_String_2,  //0
-    Java_java_lang_Object_wait___V,  //1
-    Java_java_lang_Object_finalize___V,  //2
-    Java_java_lang_Object_getClass___Ljava_lang_Class_2,  //3
-    Java_java_lang_Object_wait__J_V,  //4
-    Java_java_lang_Object_notify___V,  //5
-    Java_java_lang_Object_notifyAll___V,  //6
-    Java_java_lang_Object_hashCode___I  //7
+    func_java_lang_Boolean_toString___Ljava_lang_String_2,  //0
+    func_java_lang_Object_wait___V,  //1
+    func_java_lang_Object_finalize___V,  //2
+    func_java_lang_Object_equals__Ljava_lang_Object_2_Z,  //3
+    func_java_lang_Object_clone___Ljava_lang_Object_2,  //4
+    func_java_lang_Object_getClass___Ljava_lang_Class_2,  //5
+    func_java_lang_Object_wait__J_V,  //6
+    func_java_lang_Object_notify___V,  //7
+    func_java_lang_Object_notifyAll___V,  //8
+    func_java_lang_Object_hashCode___I  //9
 };
 VMTable vmtable_java_lang_Boolean[] = {
-    {33, 2, arr_vmtable_java_lang_Boolean_from_java_lang_Boolean}, //0
-    {4, 8, arr_vmtable_java_lang_Boolean_from_java_lang_Object}, //1
+    {9, 2, arr_vmtable_java_lang_Boolean_from_java_lang_Boolean}, //0
+    {1, 10, arr_vmtable_java_lang_Boolean_from_java_lang_Object}, //1
 };
 
 
-ExceptionItem arr_extable_Java_java_lang_Boolean__init___Z_V[] = {
-};
-ExceptionTable extable_Java_java_lang_Boolean__init___Z_V = {0, arr_extable_Java_java_lang_Boolean__init___Z_V};
 
 // locals: 2
 // stack: 2
 // args: 2
-void Java_java_lang_Boolean__init___Z_V(JThreadRuntime *runtime, struct java_lang_Boolean* p0, s8 p1){
+void func_java_lang_Boolean__init___Z_V(JThreadRuntime *runtime, struct java_lang_Boolean* p0, s8 p1){
     static __refer arr___labtab[] = {&&__ExceptionHandler, &&__ExceptionHandlerNotFound};
     static LabelTable __labtab = {2, arr___labtab};
     
     StackItem local[4] = {0};
     RStackItem rlocal[4] = {0};
-    StackItem stack[4] = {0};
+    StackItem stack[4];
     RStackItem rstack[4] = {0};
-    s32 sp=0;
-    StackFrame *__frame = method_enter(runtime, 97, &rstack[0], &rlocal[0], &sp);
+    s16 sp=0;
+    StackFrame *__frame = method_enter(runtime, 16, &rstack[0], &rlocal[0], NULL);
     rlocal[0].obj = p0;
     local[1].i = p1;
     ; 
-    //  line no 17 , L579227762 , bytecode index = 0
+    //  line no 19 , L1980953477 , bytecode index = 0
     __frame->bytecodeIndex = 0; //first
-    __frame->lineNo = 17;
+    __frame->lineNo = 19;
     rstack[sp++].obj = rlocal[0].obj;
     // invokespecial java/lang/Object.<init>()V
     sp -= 1;  //pop para
     // it's a empty method
     ; 
-    //  line no 18 , L1446188993 , bytecode index = 4
+    //  line no 20 , L856495791 , bytecode index = 4
     rstack[sp++].obj = rlocal[0].obj;
     stack[sp++].i = local[1].i;
     // putfield java/lang/Boolean value Z
     sp -= 2;
-    ((struct java_lang_Boolean*)rstack[sp + 0].obj)->value_2 = stack[sp + 1].i;
+    ((struct java_lang_Boolean*)rstack[sp + 0].obj)->value_3 = stack[sp + 1].i;
     ; 
-    //  line no 19 , L1566390876 , bytecode index = 9
+    //  line no 21 , L24057252 , bytecode index = 9
     method_exit(runtime);
     return;
     ; 
@@ -145,40 +144,41 @@ void Java_java_lang_Boolean__init___Z_V(JThreadRuntime *runtime, struct java_lan
     return ;
 }
 
-ExceptionItem arr_extable_Java_java_lang_Boolean_toString___Ljava_lang_String_2[] = {
-};
-ExceptionTable extable_Java_java_lang_Boolean_toString___Ljava_lang_String_2 = {0, arr_extable_Java_java_lang_Boolean_toString___Ljava_lang_String_2};
+void bridge_java_lang_Boolean__init___Z_V(JThreadRuntime *runtime, __refer ins, ParaItem *para, ParaItem *ret) {
+    func_java_lang_Boolean__init___Z_V(runtime, ins, para[0].i);
+}
+
 
 // locals: 1
 // stack: 1
 // args: 1
-struct java_lang_String* Java_java_lang_Boolean_toString___Ljava_lang_String_2(JThreadRuntime *runtime, struct java_lang_Boolean* p0){
-    static __refer arr___labtab[] = {&&L811287498, &&L73404487, &&__ExceptionHandler, &&__ExceptionHandlerNotFound};
+struct java_lang_String* func_java_lang_Boolean_toString___Ljava_lang_String_2(JThreadRuntime *runtime, struct java_lang_Boolean* p0){
+    static __refer arr___labtab[] = {&&L1853939333, &&L389752004, &&__ExceptionHandler, &&__ExceptionHandlerNotFound};
     static LabelTable __labtab = {4, arr___labtab};
     
     StackItem local[3] = {0};
     RStackItem rlocal[3] = {0};
-    StackItem stack[3] = {0};
+    StackItem stack[3];
     RStackItem rstack[3] = {0};
-    s32 sp=0;
-    StackFrame *__frame = method_enter(runtime, 98, &rstack[0], &rlocal[0], &sp);
+    s16 sp=0;
+    StackFrame *__frame = method_enter(runtime, 17, &rstack[0], &rlocal[0], NULL);
     rlocal[0].obj = p0;
     ; 
-    //  line no 22 , L2115555031 , bytecode index = 0
+    //  line no 24 , L895684328 , bytecode index = 0
     __frame->bytecodeIndex = 0; //first
-    __frame->lineNo = 22;
+    __frame->lineNo = 24;
     rstack[sp++].obj = rlocal[0].obj;
     // getfield java/lang/Boolean value Z
-    stack[sp - 1].i = ((struct java_lang_Boolean*)rstack[sp - 1].obj)->value_2;
+    stack[sp - 1].i = ((struct java_lang_Boolean*)rstack[sp - 1].obj)->value_3;
     sp += 0;
-    if(stack[--sp].i  == 0) goto L811287498;
+    if(stack[--sp].i  == 0) goto L1853939333;
     //  ldc 
-    rstack[sp++].obj = construct_string_with_utfraw_index(runtime, 457);
-    goto L73404487;
-    L811287498:
+    rstack[sp++].obj = construct_string_with_utfraw_index(runtime, 38);
+    goto L389752004;
+    L1853939333:
     //  ldc 
-    rstack[sp++].obj = construct_string_with_utfraw_index(runtime, 458);
-    L73404487:
+    rstack[sp++].obj = construct_string_with_utfraw_index(runtime, 40);
+    L389752004:
     method_exit(runtime);
     return rstack[sp - 1].obj;
     ; 
@@ -189,66 +189,68 @@ struct java_lang_String* Java_java_lang_Boolean_toString___Ljava_lang_String_2(J
     return NULL;
 }
 
-ExceptionItem arr_extable_Java_java_lang_Boolean_booleanValue___Z[] = {
-};
-ExceptionTable extable_Java_java_lang_Boolean_booleanValue___Z = {0, arr_extable_Java_java_lang_Boolean_booleanValue___Z};
+void bridge_java_lang_Boolean_toString___Ljava_lang_String_2(JThreadRuntime *runtime, __refer ins, ParaItem *para, ParaItem *ret) {
+    ret->obj = func_java_lang_Boolean_toString___Ljava_lang_String_2(runtime, ins);
+}
+
 
 // locals: 1
 // stack: 1
 // args: 1
-s8 Java_java_lang_Boolean_booleanValue___Z(JThreadRuntime *runtime, struct java_lang_Boolean* p0){
+s8 func_java_lang_Boolean_booleanValue___Z(JThreadRuntime *runtime, struct java_lang_Boolean* p0){
     static __refer arr___labtab[] = {};
     static LabelTable __labtab = {0, arr___labtab};
     
     StackItem local[3] = {0};
     RStackItem rlocal[3] = {0};
-    StackItem stack[3] = {0};
+    StackItem stack[3];
     RStackItem rstack[3] = {0};
-    s32 sp=0;
+    s16 sp=0;
     rlocal[0].obj = p0;
     ; 
-    //  line no 26 , L973641395 , bytecode index = 0
+    //  line no 28 , L204543210 , bytecode index = 0
     rstack[sp++].obj = rlocal[0].obj;
     // getfield java/lang/Boolean value Z
-    stack[sp - 1].i = ((struct java_lang_Boolean*)rstack[sp - 1].obj)->value_2;
+    stack[sp - 1].i = ((struct java_lang_Boolean*)rstack[sp - 1].obj)->value_3;
     sp += 0;
     return stack[sp - 1].i;
     ; 
 }
 
-ExceptionItem arr_extable_Java_java_lang_Boolean_valueOf__Z_Ljava_lang_Boolean_2[] = {
-};
-ExceptionTable extable_Java_java_lang_Boolean_valueOf__Z_Ljava_lang_Boolean_2 = {0, arr_extable_Java_java_lang_Boolean_valueOf__Z_Ljava_lang_Boolean_2};
+void bridge_java_lang_Boolean_booleanValue___Z(JThreadRuntime *runtime, __refer ins, ParaItem *para, ParaItem *ret) {
+    ret->i = func_java_lang_Boolean_booleanValue___Z(runtime, ins);
+}
+
 
 // locals: 1
 // stack: 1
 // args: 1
-struct java_lang_Boolean* Java_java_lang_Boolean_valueOf__Z_Ljava_lang_Boolean_2(JThreadRuntime *runtime, s8 p0){
-    static __refer arr___labtab[] = {&&L572225495, &&L1557712937, &&__ExceptionHandler, &&__ExceptionHandlerNotFound};
+struct java_lang_Boolean* func_java_lang_Boolean_valueOf__Z_Ljava_lang_Boolean_2(JThreadRuntime *runtime, s8 p0){
+    static __refer arr___labtab[] = {&&L1237773898, &&L1305748956, &&__ExceptionHandler, &&__ExceptionHandlerNotFound};
     static LabelTable __labtab = {4, arr___labtab};
     
     StackItem local[3] = {0};
     RStackItem rlocal[3] = {0};
-    StackItem stack[3] = {0};
+    StackItem stack[3];
     RStackItem rstack[3] = {0};
-    s32 sp=0;
-    StackFrame *__frame = method_enter(runtime, 100, &rstack[0], &rlocal[0], &sp);
+    s16 sp=0;
+    StackFrame *__frame = method_enter(runtime, 19, &rstack[0], &rlocal[0], NULL);
     local[0].i = p0;
     ; 
-    //  line no 30 , L1421940560 , bytecode index = 0
+    //  line no 32 , L721322586 , bytecode index = 0
     __frame->bytecodeIndex = 0; //first
-    __frame->lineNo = 30;
+    __frame->lineNo = 32;
     stack[sp++].i = local[0].i;
-    if(stack[--sp].i  == 0) goto L572225495;
+    if(stack[--sp].i  == 0) goto L1237773898;
     // getstatic java/lang/Boolean TRUE Ljava/lang/Boolean;
-    rstack[sp].obj =static_var_java_lang_Boolean.TRUE_0;
+    rstack[sp].obj =static_var_java_lang_Boolean.TRUE_1;
     sp += 1;
-    goto L1557712937;
-    L572225495:
+    goto L1305748956;
+    L1237773898:
     // getstatic java/lang/Boolean FALSE Ljava/lang/Boolean;
-    rstack[sp].obj =static_var_java_lang_Boolean.FALSE_1;
+    rstack[sp].obj =static_var_java_lang_Boolean.FALSE_2;
     sp += 1;
-    L1557712937:
+    L1305748956:
     method_exit(runtime);
     return rstack[sp - 1].obj;
     ; 
@@ -259,45 +261,46 @@ struct java_lang_Boolean* Java_java_lang_Boolean_valueOf__Z_Ljava_lang_Boolean_2
     return NULL;
 }
 
-ExceptionItem arr_extable_Java_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z[] = {
-};
-ExceptionTable extable_Java_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z = {0, arr_extable_Java_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z};
+void bridge_java_lang_Boolean_valueOf__Z_Ljava_lang_Boolean_2(JThreadRuntime *runtime, __refer ins, ParaItem *para, ParaItem *ret) {
+    ret->obj = func_java_lang_Boolean_valueOf__Z_Ljava_lang_Boolean_2(runtime, para[0].i);
+}
+
 
 // locals: 1
 // stack: 2
 // args: 1
-s8 Java_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z(JThreadRuntime *runtime, struct java_lang_String* p0){
-    static __refer arr___labtab[] = {&&L391333725, &&__ExceptionHandler, &&L219186182, &&__ExceptionHandlerNotFound};
+s8 func_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z(JThreadRuntime *runtime, struct java_lang_String* p0){
+    static __refer arr___labtab[] = {&&L1706125628, &&__ExceptionHandler, &&L39179479, &&__ExceptionHandlerNotFound};
     static LabelTable __labtab = {4, arr___labtab};
     
     StackItem local[3] = {0};
     RStackItem rlocal[3] = {0};
-    StackItem stack[4] = {0};
+    StackItem stack[4];
     RStackItem rstack[4] = {0};
-    s32 sp=0;
-    StackFrame *__frame = method_enter(runtime, 101, &rstack[0], &rlocal[0], &sp);
+    s16 sp=0;
+    StackFrame *__frame = method_enter(runtime, 20, &rstack[0], &rlocal[0], NULL);
     rlocal[0].obj = p0;
     ; 
-    //  line no 34 , L1854873748 , bytecode index = 0
+    //  line no 36 , L469459127 , bytecode index = 0
     __frame->bytecodeIndex = 0; //first
-    __frame->lineNo = 34;
+    __frame->lineNo = 36;
     rstack[sp++].obj = rlocal[0].obj;
-    if(rstack[--sp].obj  == NULL) goto L391333725;
+    if(rstack[--sp].obj  == NULL) goto L1706125628;
     rstack[sp++].obj = rlocal[0].obj;
     //  ldc 
-    rstack[sp++].obj = construct_string_with_utfraw_index(runtime, 457);
+    rstack[sp++].obj = construct_string_with_utfraw_index(runtime, 38);
     // invokevirtual java/lang/String.equalsIgnoreCase(Ljava/lang/String;)Z
     {
         sp -= 2;
         JObject *__ins = rstack[sp + 0].ins;
         if (!__ins) {
-            rstack[sp++].obj = new_instance_with_classraw_index(runtime, 0);
-            __frame->bytecodeIndex = 0;//L1854873748
-            __frame->lineNo = 34;
+            rstack[sp++].obj = new_instance_with_classraw_index(runtime, 3);
+            __frame->bytecodeIndex = 0;//L469459127
+            __frame->lineNo = 36;
             throw_exception(runtime, rstack[sp - 1].obj);
             goto __ExceptionHandler;
         }
-        s8 (*__func_p) (JThreadRuntime *runtime,struct java_lang_String*,struct java_lang_String*) = find_method(__ins->vm_table, 14, 11);
+        s8 (*__func_p) (JThreadRuntime *runtime,struct java_lang_String*,struct java_lang_String*) = find_method(__ins->vm_table, 8, 11);
         stack[sp].i = __func_p(runtime, rstack[sp + 0].obj, rstack[sp + 1].obj);
         sp += 1;
         if (runtime->exception) {
@@ -305,14 +308,14 @@ s8 Java_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z(JThreadRuntime *ru
             goto __ExceptionHandler;
         }
     }
-    if(stack[--sp].i  == 0) goto L391333725;
+    if(stack[--sp].i  == 0) goto L1706125628;
     // iconst_1
     stack[sp++].i = 1;
-    goto L219186182;
-    L391333725:
+    goto L39179479;
+    L1706125628:
     // iconst_0
     stack[sp++].i = 0;
-    L219186182:
+    L39179479:
     method_exit(runtime);
     return stack[sp - 1].i;
     ; 
@@ -323,29 +326,47 @@ s8 Java_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z(JThreadRuntime *ru
     return 0;
 }
 
-ExceptionItem arr_extable_Java_java_lang_Boolean__clinit____V[] = {
-};
-ExceptionTable extable_Java_java_lang_Boolean__clinit____V = {0, arr_extable_Java_java_lang_Boolean__clinit____V};
+void bridge_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z(JThreadRuntime *runtime, __refer ins, ParaItem *para, ParaItem *ret) {
+    ret->i = func_java_lang_Boolean_parseBoolean__Ljava_lang_String_2_Z(runtime, para[0].obj);
+}
+
 
 // locals: 0
 // stack: 3
 // args: 0
-void Java_java_lang_Boolean__clinit____V(JThreadRuntime *runtime){
+void func_java_lang_Boolean__clinit____V(JThreadRuntime *runtime){
     static __refer arr___labtab[] = {&&__ExceptionHandler, &&__ExceptionHandlerNotFound};
     static LabelTable __labtab = {2, arr___labtab};
     
     StackItem local[2] = {0};
     RStackItem rlocal[2] = {0};
-    StackItem stack[5] = {0};
+    StackItem stack[5];
     RStackItem rstack[5] = {0};
-    s32 sp=0;
-    StackFrame *__frame = method_enter(runtime, 102, &rstack[0], &rlocal[0], &sp);
+    s16 sp=0;
+    StackFrame *__frame = method_enter(runtime, 21, &rstack[0], &rlocal[0], NULL);
     ; 
-    //  line no 12 , L1845527423 , bytecode index = 0
+    //  line no 13 , L524136404 , bytecode index = 0
     __frame->bytecodeIndex = 0; //first
-    __frame->lineNo = 12;
+    __frame->lineNo = 13;
+    //  ldc 
+    rstack[sp++].obj = construct_string_with_utfraw_index(runtime, 48);
+    // invokestatic java/lang/Class.getPrimitiveClass(Ljava/lang/String;)Ljava/lang/Class;
+    {
+        sp -= 1;
+        rstack[sp].obj = func_java_lang_Class_getPrimitiveClass__Ljava_lang_String_2_Ljava_lang_Class_2(runtime, rstack[sp + 0].obj);
+        sp += 1;
+        if (runtime->exception) {
+            rstack[sp++].obj = runtime->exception;
+            goto __ExceptionHandler;
+        }
+    }
+    // putstatic java/lang/Boolean TYPE Ljava/lang/Class;
+    sp -= 1;
+    static_var_java_lang_Boolean.TYPE_0 = rstack[sp].obj;
+    ; 
+    //  line no 14 , L862069640 , bytecode index = 8
     // new java/lang/Boolean
-    rstack[sp++].obj = new_instance_with_classraw_index(runtime, 33);
+    rstack[sp++].obj = new_instance_with_classraw_index(runtime, 9);
     // dup
     stack[sp].j = stack[sp - 1].j; 
     rstack[sp].obj = rstack[sp - 1].obj; 
@@ -357,13 +378,13 @@ void Java_java_lang_Boolean__clinit____V(JThreadRuntime *runtime){
         sp -= 2;
         JObject *__ins = rstack[sp + 0].ins;
         if (!__ins) {
-            rstack[sp++].obj = new_instance_with_classraw_index(runtime, 0);
-            __frame->bytecodeIndex = 0;//L1845527423
-            __frame->lineNo = 12;
+            rstack[sp++].obj = new_instance_with_classraw_index(runtime, 3);
+            __frame->bytecodeIndex = 8;//L862069640
+            __frame->lineNo = 14;
             throw_exception(runtime, rstack[sp - 1].obj);
             goto __ExceptionHandler;
         }
-        Java_java_lang_Boolean__init___Z_V(runtime, rstack[sp + 0].obj, stack[sp + 1].i);
+        func_java_lang_Boolean__init___Z_V(runtime, rstack[sp + 0].obj, stack[sp + 1].i);
         sp += 0;
         if (runtime->exception) {
             rstack[sp++].obj = runtime->exception;
@@ -372,11 +393,11 @@ void Java_java_lang_Boolean__clinit____V(JThreadRuntime *runtime){
     }
     // putstatic java/lang/Boolean TRUE Ljava/lang/Boolean;
     sp -= 1;
-    static_var_java_lang_Boolean.TRUE_0 = rstack[sp].obj;
+    static_var_java_lang_Boolean.TRUE_1 = rstack[sp].obj;
     ; 
-    //  line no 13 , L1675905101 , bytecode index = 11
+    //  line no 15 , L771996532 , bytecode index = 19
     // new java/lang/Boolean
-    rstack[sp++].obj = new_instance_with_classraw_index(runtime, 33);
+    rstack[sp++].obj = new_instance_with_classraw_index(runtime, 9);
     // dup
     stack[sp].j = stack[sp - 1].j; 
     rstack[sp].obj = rstack[sp - 1].obj; 
@@ -388,13 +409,13 @@ void Java_java_lang_Boolean__clinit____V(JThreadRuntime *runtime){
         sp -= 2;
         JObject *__ins = rstack[sp + 0].ins;
         if (!__ins) {
-            rstack[sp++].obj = new_instance_with_classraw_index(runtime, 0);
-            __frame->bytecodeIndex = 11;//L1675905101
-            __frame->lineNo = 13;
+            rstack[sp++].obj = new_instance_with_classraw_index(runtime, 3);
+            __frame->bytecodeIndex = 19;//L771996532
+            __frame->lineNo = 15;
             throw_exception(runtime, rstack[sp - 1].obj);
             goto __ExceptionHandler;
         }
-        Java_java_lang_Boolean__init___Z_V(runtime, rstack[sp + 0].obj, stack[sp + 1].i);
+        func_java_lang_Boolean__init___Z_V(runtime, rstack[sp + 0].obj, stack[sp + 1].i);
         sp += 0;
         if (runtime->exception) {
             rstack[sp++].obj = runtime->exception;
@@ -403,7 +424,7 @@ void Java_java_lang_Boolean__clinit____V(JThreadRuntime *runtime){
     }
     // putstatic java/lang/Boolean FALSE Ljava/lang/Boolean;
     sp -= 1;
-    static_var_java_lang_Boolean.FALSE_1 = rstack[sp].obj;
+    static_var_java_lang_Boolean.FALSE_2 = rstack[sp].obj;
     method_exit(runtime);
     return;
     __ExceptionHandler:
@@ -413,10 +434,12 @@ void Java_java_lang_Boolean__clinit____V(JThreadRuntime *runtime){
     return ;
 }
 
+void bridge_java_lang_Boolean__clinit____V(JThreadRuntime *runtime, __refer ins, ParaItem *para, ParaItem *ret) {
+    func_java_lang_Boolean__clinit____V(runtime);
+}
 
 
 
-     
      
 ```     
      

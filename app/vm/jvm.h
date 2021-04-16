@@ -317,9 +317,9 @@ struct _StackFrame {
 //    JThreadRuntime *runtime;
     //MethodInfo *methodInfo;
     StackFrame *next;
-    RStackItem *rstack;
-    s32 *spPtr;
-    RStackItem *rlocal;
+    const RStackItem *rstack;
+    const s32 *spPtr;
+    const RStackItem *rlocal;
 
     //
     s32 bytecodeIndex;
@@ -631,13 +631,12 @@ void jclass_init_insOfClass(JThreadRuntime *runtime, JObject *jobj);
 void jstring_debug_print(int std, JObject *jobj, c8 *appendix);
 //=====================================================================
 
-static inline StackFrame *method_enter(JThreadRuntime *runtime, s32 methodRawIndex, RStackItem *stack, RStackItem *local, s32 *spPtr) {
+static inline StackFrame *method_enter(JThreadRuntime *runtime, s32 methodRawIndex, const RStackItem *stack, const RStackItem *local, const s32 *spPtr) {
 
     StackFrame *cur;
     if (runtime->cache) {
         cur = runtime->cache;
         runtime->cache = cur->next;
-        memset(cur, 0, sizeof(StackFrame));
     } else {
         cur = stackframe_create();
     }
@@ -646,7 +645,7 @@ static inline StackFrame *method_enter(JThreadRuntime *runtime, s32 methodRawInd
     cur->methodRawIndex = methodRawIndex;
     cur->rstack = stack;
     cur->rlocal = local;
-    cur->spPtr = spPtr;
+    //cur->spPtr = spPtr;
 
 #if PRJ_DEBUG_LEV > 6
     //debug print

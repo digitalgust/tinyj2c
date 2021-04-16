@@ -381,9 +381,41 @@ public final class String {
         if (subLen < 0) {
             throw new ArrayIndexOutOfBoundsException(Integer.toString(subLen));
         }
-        String s = new String();
         return ((beginIndex == 0) && (endIndex == count)) ? this :
                 new String(offset + beginIndex, endIndex - beginIndex, value);
+    }
+
+    public String replace(String src, String dst) {
+        if (src == null || dst == null || src.length() == 0) {
+            return this;
+        }
+        char[] svalue = src.value;
+        int soffset = src.offset;
+        int scount = src.count;
+
+        StringBuilder sb = new StringBuilder(count);
+        for (int i = 0; i < count; ) {
+            int index = i + offset;
+            char ch = value[index];
+            boolean match = false;
+            if (ch == svalue[soffset] && index + scount <= count) {
+                match = true;
+                for (int j = 1; j < scount; j++) {
+                    if (value[index + j] != svalue[soffset + j]) {
+                        match = false;
+                        break;
+                    }
+                }
+            }
+            if (match) {
+                sb.append(dst);
+                i += src.count;
+            } else {
+                sb.append(ch);
+                i++;
+            }
+        }
+        return sb.toString();
     }
 
     public String replace(char oldChar, char newChar) {

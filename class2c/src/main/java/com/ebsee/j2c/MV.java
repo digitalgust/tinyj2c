@@ -1740,11 +1740,11 @@ public class MV extends MethodVisitor {
         add(insert++, "StackItem local[" + max_local + "] = {0};");
         add(insert++, "RStackItem rlocal[" + max_local + "] = {0};");
         localValue = "&rlocal[0]";
-        add(insert++, "StackItem stack[" + max_stack + "] = {0};");
+        add(insert++, "StackItem stack[" + max_stack + "]/* = {0}*/;");
         add(insert++, "RStackItem rstack[" + max_stack + "] = {0};");
-        add(insert++, "s32 sp=0;");
+        add(insert++, "s32 sp = 0;");
         stackValue = "&rstack[0]";
-        spPtrValue = "&sp";
+        spPtrValue = "NULL";//"&sp";
 
         if (!canSkipCodeTrack()) {
             add(insert++, "StackFrame *__frame = " + AssistLLVM.FUNC_METHOD_ENTER

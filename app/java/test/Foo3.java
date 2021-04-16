@@ -11,32 +11,32 @@ class Foo3 {
     }
 
     static void t7() {
-        final int MAX = 6000000;
+        final int MAX = 60000000;
         final int PRINT_COUNT = 10000;
-        Thread t = new Thread(new Runnable() {
-            ArrayList list = new ArrayList(MAX);
-
-            public void run() {
-
-                long start = System.currentTimeMillis();
-                System.out.println("thread here.");
-                int j = 0;
-                String c = null;
-                for (int i = 0; i < MAX; i++) {
-                    String a = "abc";
-//                    String b = "def";
-//                    c = a + b;
-                    list.add(a);
-                    list.remove(0);
-                    if (i % PRINT_COUNT == 0) {
-                        System.out.println(this + " thread i=" + i);
-                    }
-                }
-                System.out.println(this + " list.size():" + list.size());
-                System.out.println(this + " thread cost: " + (System.currentTimeMillis() - start));
-            }
-        });
-        t.start();
+//        Thread t = new Thread(new Runnable() {
+//            ArrayList list = new ArrayList(MAX);
+//
+//            public void run() {
+//
+//                long start = System.currentTimeMillis();
+//                System.out.println("thread here.");
+//                int j = 0;
+//                String c = null;
+//                for (int i = 0; i < MAX; i++) {
+//                    String a = "abc";
+////                    String b = "def";
+////                    c = a + b;
+//                    list.add(a);
+//                    list.remove(0);
+//                    if (i % PRINT_COUNT == 0) {
+//                        System.out.println(this + " thread i=" + i);
+//                    }
+//                }
+//                System.out.println(this + " list.size():" + list.size());
+//                System.out.println(this + " thread cost: " + (System.currentTimeMillis() - start));
+//            }
+//        });
+//        t.start();
 
 
         //

@@ -56,7 +56,7 @@ public class StringBuilder {
     }
 
     public StringBuilder append(char c) {
-        expand(16);
+        expand(1);
         value[count] = c;
         count++;
         return this;
