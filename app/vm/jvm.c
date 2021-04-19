@@ -1,9 +1,5 @@
-#include <errno.h>
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
 
 
 #include "jvm.h"
@@ -15,12 +11,8 @@ c8 *STR_JAVA_LANG_OBJECT = "java/lang/Object";
 c8 *STR_JAVA_LANG_STRING = "java/lang/String";
 c8 *STR_JAVA_LANG_THREAD = "java/lang/Thread";
 c8 *STR_JAVA_LANG_INTEGER = "java/lang/Integer";
-c8 *STR_JAVA_IO_EOF_EXCEPTION = "java/io/EOFException";
-c8 *STR_JAVA_IO_IO_EXCEPTION = "java/io/IOException";
-c8 *STR_JAVA_IO_FILE_NOT_FOUND_EXCEPTION = "java/lang/FileNotFoundException";
 c8 *STR_JAVA_LANG_OUT_OF_MEMORY_ERROR = "java/io/OutOfMemoryError";
 c8 *STR_JAVA_LANG_VIRTUAL_MACHINE_ERROR = "java/io/VirtualMachineError";
-c8 *STR_JAVA_LANG_NO_CLASS_DEF_FOUND_ERROR = "java/io/NoClassDefFoundError";
 c8 *STR_JAVA_LANG_CLASS_NOT_FOUND_EXCEPTION = "java/lang/ClassNotFoundException";
 c8 *STR_JAVA_LANG_ARITHMETIC_EXCEPTION = "java/lang/ArithmeticException";
 c8 *STR_JAVA_LANG_NULL_POINTER_EXCEPTION = "java/lang/NullPointerException";

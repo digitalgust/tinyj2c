@@ -45,10 +45,10 @@ JObject *new_instance_with_classraw(JThreadRuntime *runtime, ClassRaw *raw) {
         class_clinit(runtime, get_utf8str_by_utfraw_index(raw->name));
     }
     ins->prop.clazz = raw->clazz;
-    if (!ins->prop.clazz) {
-        JClass *clazz = classes_get(get_utf8str_by_utfraw_index(raw->name));
-        s32 debug = 1;
-    }
+//    if (!ins->prop.clazz) {
+//        JClass *clazz = classes_get(get_utf8str_by_utfraw_index(raw->name));
+//        s32 debug = 1;
+//    }
     ins->prop.members = &ins[1];
     ins->prop.type = INS_TYPE_OBJECT;
     ins->vm_table = raw->vmtable;
@@ -73,6 +73,12 @@ JObject *new_instance_with_name(JThreadRuntime *runtime, c8 *className) {
 
 JObject *new_instance_with_class(JThreadRuntime *runtime, JClass *clazz) {
     return new_instance_with_classraw(runtime, clazz->raw);
+}
+
+JObject *new_instance_with_classraw_index_and_init(JThreadRuntime *runtime, s32 classIndex) {
+    JObject *jobj = new_instance_with_classraw_index(runtime, classIndex);
+    instance_init(runtime, jobj);
+    return jobj;
 }
 
 

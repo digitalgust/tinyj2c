@@ -310,6 +310,7 @@ class Foo1 {
             for (int i = 0; i < 10; i++) map.put(i, "value-" + i);
             System.out.println("Map size:" + map.size() + " key(4) =" + map.get(4));
 
+            System.out.println("div zero :" + (100 / 0));
         } catch (Exception e) {
             e.printStackTrace();
         }

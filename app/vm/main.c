@@ -37,9 +37,9 @@ s32 main(int argc, const char *argv[]) {
         utf8_clear(mainClassName);
 //        utf8_append_c(mainClassName, "test.SpecTest");
 //        utf8_append_c(mainClassName, "test.BpDeepTest");
-//        utf8_append_c(mainClassName, "test.Foo1");
+        utf8_append_c(mainClassName, "test.Foo1");
 //        utf8_append_c(mainClassName, "test.Foo2");
-        utf8_append_c(mainClassName, "test.Foo3");
+//        utf8_append_c(mainClassName, "test.Foo3");
         jvm_printf("[INFO]ccjvm test.Test\n");
     }
     s32 ret = jvm_run_main(mainClassName);
