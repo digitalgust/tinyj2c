@@ -5,7 +5,9 @@ class2c/.idea
 app/out/*
 app/out/
 *.out
+*.exe
 .svn
+.vs
 tools
 cmake-*
 CMakeFiles
