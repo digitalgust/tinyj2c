@@ -11,9 +11,9 @@ package java.lang;
 public class Double {
     @SuppressWarnings("unchecked")
     public static final Class<Double>     TYPE = (Class<Double>) Class.getPrimitiveClass("double");
-    public static final double POSITIVE_INFINITY = 1.0 / 0.0;
-    public static final double NEGATIVE_INFINITY = -1.0 / 0.0;
-    public static final double NaN = 0.0d / 0.0;
+    public static final double POSITIVE_INFINITY = Double.longBitsToDouble(0x7ff0000000000000L);//1.0 / 0.0;
+    public static final double NEGATIVE_INFINITY = Double.longBitsToDouble(0xfff0000000000000L);//-1.0 / 0.0;
+    public static final double NaN = Double.longBitsToDouble(0x7ff8000000000000L);//0.0d / 0.0;
     public static final double MAX_VALUE = 1.79769313486231570e+308;
     public static final double MIN_VALUE = 4.94065645841246544e-324;
 

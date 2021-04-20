@@ -544,7 +544,11 @@ struct java_lang_Object *func_java_lang_reflect_Constructor_newInstanceWithoutIn
 
 struct java_lang_Object *func_java_lang_reflect_Method_invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2_Ljava_lang_Object_2(JThreadRuntime *runtime, struct java_lang_reflect_Method *p0, struct java_lang_Object *p1, JArray *p2) {
     MethodInfo *mi = (__refer) (intptr_t) p0->methodHandle_in_method;
+#ifdef __JVM_OS_VS__
+#define len  32
+#else
     s32 len = p2->prop.arr_length;
+#endif
     ParaItem para[len], ret;
     s32 i;
     //method para unboxing

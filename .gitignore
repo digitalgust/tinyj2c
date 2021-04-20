@@ -4,6 +4,9 @@ class2c/target
 class2c/.idea
 app/out/*
 app/out/
+app/Debug
+app/Release
+app/x64
 *.out
 *.exe
 .svn

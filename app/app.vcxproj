@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{F4DCE574-06A4-4366-BAB6-CC73FE3F2D46}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>app</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>out\c;vm\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>out\c;vm\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>out\c;vm\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>out\c;vm\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="out\c\metadata.h" />
+    <ClInclude Include="vm\arraylist.h" />
+    <ClInclude Include="vm\bytebuf.h" />
+    <ClInclude Include="vm\dirent_win.h" />
+    <ClInclude Include="vm\garbage.h" />
+    <ClInclude Include="vm\hashtable.h" />
+    <ClInclude Include="vm\jvm.h" />
+    <ClInclude Include="vm\jvmtype.h" />
+    <ClInclude Include="vm\miniz.h" />
+    <ClInclude Include="vm\miniz_wrapper.h" />
+    <ClInclude Include="vm\spinlock.h" />
+    <ClInclude Include="vm\tinycthread.h" />
+    <ClInclude Include="vm\utf8string.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="out\c\java.io.PrintStream.c" />
+    <ClCompile Include="out\c\java.io.Serializable.c" />
+    <ClCompile Include="out\c\java.lang.annotation.Annotation.c" />
+    <ClCompile Include="out\c\java.lang.ArithmeticException.c" />
+    <ClCompile Include="out\c\java.lang.ArrayIndexOutOfBoundsException.c" />
+    <ClCompile Include="out\c\java.lang.Boolean.c" />
+    <ClCompile Include="out\c\java.lang.Byte.c" />
+    <ClCompile Include="out\c\java.lang.Character.c" />
+    <ClCompile Include="out\c\java.lang.Class.c" />
+    <ClCompile Include="out\c\java.lang.ClassCastException.c" />
+    <ClCompile Include="out\c\java.lang.ClassNotFoundException.c" />
+    <ClCompile Include="out\c\java.lang.Cloneable.c" />
+    <ClCompile Include="out\c\java.lang.CloneNotSupportedException.c" />
+    <ClCompile Include="out\c\java.lang.Comparable.c" />
+    <ClCompile Include="out\c\java.lang.Double.c" />
+    <ClCompile Include="out\c\java.lang.Enum.c" />
+    <ClCompile Include="out\c\java.lang.Exception.c" />
+    <ClCompile Include="out\c\java.lang.Float.c" />
+    <ClCompile Include="out\c\java.lang.IllegalArgumentException.c" />
+    <ClCompile Include="out\c\java.lang.IllegalThreadStateException.c" />
+    <ClCompile Include="out\c\java.lang.InstantiationException.c" />
+    <ClCompile Include="out\c\java.lang.Integer.c" />
+    <ClCompile Include="out\c\java.lang.InterruptedException.c" />
+    <ClCompile Include="out\c\java.lang.Iterable.c" />
+    <ClCompile Include="out\c\java.lang.Long.c" />
+    <ClCompile Include="out\c\java.lang.Math.c" />
+    <ClCompile Include="out\c\java.lang.NoSuchFieldException.c" />
+    <ClCompile Include="out\c\java.lang.NoSuchMethodException.c" />
+    <ClCompile Include="out\c\java.lang.NullPointerException.c" />
+    <ClCompile Include="out\c\java.lang.Object.c" />
+    <ClCompile Include="out\c\java.lang.Override.c" />
+    <ClCompile Include="out\c\java.lang.reflect.Array.c" />
+    <ClCompile Include="out\c\java.lang.reflect.Constructor.c" />
+    <ClCompile Include="out\c\java.lang.reflect.Field.c" />
+    <ClCompile Include="out\c\java.lang.reflect.Method.c" />
+    <ClCompile Include="out\c\java.lang.Runnable.c" />
+    <ClCompile Include="out\c\java.lang.RuntimeException.c" />
+    <ClCompile Include="out\c\java.lang.Short.c" />
+    <ClCompile Include="out\c\java.lang.StackTraceElement.c" />
+    <ClCompile Include="out\c\java.lang.String.c" />
+    <ClCompile Include="out\c\java.lang.StringBuffer.c" />
+    <ClCompile Include="out\c\java.lang.StringBuilder.c" />
+    <ClCompile Include="out\c\java.lang.System.c" />
+    <ClCompile Include="out\c\java.lang.Thread.c" />
+    <ClCompile Include="out\c\java.lang.Throwable.c" />
+    <ClCompile Include="out\c\java.lang.Void.c" />
+    <ClCompile Include="out\c\java.util.AbstractCollection.c" />
+    <ClCompile Include="out\c\java.util.AbstractList.c" />
+    <ClCompile Include="out\c\java.util.AbstractList_1.c" />
+    <ClCompile Include="out\c\java.util.AbstractList_Itr.c" />
+    <ClCompile Include="out\c\java.util.AbstractList_ListItr.c" />
+    <ClCompile Include="out\c\java.util.AbstractMap.c" />
+    <ClCompile Include="out\c\java.util.AbstractMap_1.c" />
+    <ClCompile Include="out\c\java.util.AbstractMap_1_1.c" />
+    <ClCompile Include="out\c\java.util.AbstractMap_2.c" />
+    <ClCompile Include="out\c\java.util.AbstractMap_2_1.c" />
+    <ClCompile Include="out\c\java.util.AbstractMap_SimpleEntry.c" />
+    <ClCompile Include="out\c\java.util.AbstractMap_SimpleImmutableEntry.c" />
+    <ClCompile Include="out\c\java.util.AbstractSet.c" />
+    <ClCompile Include="out\c\java.util.ArrayList.c" />
+    <ClCompile Include="out\c\java.util.Collection.c" />
+    <ClCompile Include="out\c\java.util.ConcurrentModificationException.c" />
+    <ClCompile Include="out\c\java.util.HashMap.c" />
+    <ClCompile Include="out\c\java.util.HashMap_1.c" />
+    <ClCompile Include="out\c\java.util.HashMap_Entry.c" />
+    <ClCompile Include="out\c\java.util.HashMap_EntryIterator.c" />
+    <ClCompile Include="out\c\java.util.HashMap_EntrySet.c" />
+    <ClCompile Include="out\c\java.util.HashMap_HashIterator.c" />
+    <ClCompile Include="out\c\java.util.HashMap_KeyIterator.c" />
+    <ClCompile Include="out\c\java.util.HashMap_KeySet.c" />
+    <ClCompile Include="out\c\java.util.HashMap_ValueIterator.c" />
+    <ClCompile Include="out\c\java.util.HashMap_Values.c" />
+    <ClCompile Include="out\c\java.util.HashSet.c" />
+    <ClCompile Include="out\c\java.util.Iterator.c" />
+    <ClCompile Include="out\c\java.util.LinkedHashMap.c" />
+    <ClCompile Include="out\c\java.util.LinkedHashMap_1.c" />
+    <ClCompile Include="out\c\java.util.LinkedHashMap_Entry.c" />
+    <ClCompile Include="out\c\java.util.LinkedHashMap_EntryIterator.c" />
+    <ClCompile Include="out\c\java.util.LinkedHashMap_KeyIterator.c" />
+    <ClCompile Include="out\c\java.util.LinkedHashMap_LinkedHashIterator.c" />
+    <ClCompile Include="out\c\java.util.LinkedHashMap_ValueIterator.c" />
+    <ClCompile Include="out\c\java.util.List.c" />
+    <ClCompile Include="out\c\java.util.ListIterator.c" />
+    <ClCompile Include="out\c\java.util.Map.c" />
+    <ClCompile Include="out\c\java.util.Map_Entry.c" />
+    <ClCompile Include="out\c\java.util.Random.c" />
+    <ClCompile Include="out\c\java.util.Set.c" />
+    <ClCompile Include="out\c\java.util.SubList.c" />
+    <ClCompile Include="out\c\java.util.SubList_1.c" />
+    <ClCompile Include="out\c\metadata.c" />
+    <ClCompile Include="out\c\test.BpDeep.c" />
+    <ClCompile Include="out\c\test.BpDeepTest.c" />
+    <ClCompile Include="out\c\test.Father.c" />
+    <ClCompile Include="out\c\test.Foo1.c" />
+    <ClCompile Include="out\c\test.Foo1_T7class.c" />
+    <ClCompile Include="out\c\test.Foo2.c" />
+    <ClCompile Include="out\c\test.Foo3.c" />
+    <ClCompile Include="out\c\test.Grandpa.c" />
+    <ClCompile Include="out\c\test.Human.c" />
+    <ClCompile Include="out\c\test.P.c" />
+    <ClCompile Include="out\c\test.Son.c" />
+    <ClCompile Include="out\c\test.SpecTest.c" />
+    <ClCompile Include="out\c\test.SpecTest_1.c" />
+    <ClCompile Include="out\c\test.SpecTest_1A.c" />
+    <ClCompile Include="out\c\test.SpecTest_1Lua.c" />
+    <ClCompile Include="out\c\test.SpecTest_XF.c" />
+    <ClCompile Include="out\c\test_Foo1_lambda_t12_0.c" />
+    <ClCompile Include="out\c\test_SpecTest_lambda_test_0005fmethod_0.c" />
+    <ClCompile Include="vm\arraylist.c" />
+    <ClCompile Include="vm\bytebuf.c" />
+    <ClCompile Include="vm\garbage.c" />
+    <ClCompile Include="vm\hashtable.c" />
+    <ClCompile Include="vm\jassist.c" />
+    <ClCompile Include="vm\jvm.c" />
+    <ClCompile Include="vm\jvmsvc.c" />
+    <ClCompile Include="vm\main.c" />
+    <ClCompile Include="vm\miniz.c" />
+    <ClCompile Include="vm\miniz_wrapper.c" />
+    <ClCompile Include="vm\native_std.c" />
+    <ClCompile Include="vm\tinycthread.c" />
+    <ClCompile Include="vm\utf8string.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

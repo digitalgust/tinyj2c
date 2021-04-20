@@ -211,7 +211,7 @@ s32 instance_of_classname_index(JObject *jobj, s32 classNameIdx) {
 }
 
 
-inline void throw_exception(JThreadRuntime *runtime, JObject *jobj) {
+void throw_exception(JThreadRuntime *runtime, JObject *jobj) {
     // StackFrame *cur = runtime->tail;
     runtime->exception = jobj;
 }
@@ -251,7 +251,7 @@ s32 find_exception_handler_index(JThreadRuntime *runtime) {
     return -1;
 }
 
-inline s32 exception_check_print(JThreadRuntime *runtime) {
+s32 exception_check_print(JThreadRuntime *runtime) {
     //
     if (runtime->exception) {
         jvm_printf("Exception in thread [%llx] %s\n", (s64) (intptr_t) runtime->jthread, utf8_cstr(runtime->exception->prop.clazz->name));
@@ -270,63 +270,10 @@ inline s32 exception_check_print(JThreadRuntime *runtime) {
     }
     return 0;
 }
-//
-//inline StackFrame *method_enter(JThreadRuntime *runtime, s32 methodRawIndex, LabelTable *labtable, RStackItem *stack, RStackItem *local, s32 *spPtr) {
-//
-//    StackFrame *cur;
-//    if (runtime->cache) {
-//        cur = runtime->cache;
-//        runtime->cache = cur->next;
-//        memset(cur, 0, sizeof(StackFrame));
-//    } else {
-//        cur = stackframe_create();
-//    }
-//    cur->next = runtime->tail;
-//    runtime->tail = cur;
-//    cur->methodRawIndex = methodRawIndex;
-//    cur->labtable = labtable;
-//    cur->rstack = stack;
-//    cur->rlocal = local;
-//    cur->spPtr = spPtr;
-//
-//#if PRJ_DEBUG_LEV > 6
-//    //debug print
-//     StackFrame *next = cur;
-//    while (next) {
-//        next = next->next;
-//        printf(" ");
-//    }
-//    printf("enter %d %s.%s\n", cur->methodRawIndex,
-//           g_strings[g_methods[cur->methodRawIndex].class_name].str,
-//           g_strings[g_methods[cur->methodRawIndex].name].str);
-//#endif
-//    return cur;
-//}
-//
-//inline void method_exit(JThreadRuntime *runtime) {
-//
-//    StackFrame *cur = runtime->tail;
-//    //native no stackframe, so non native method exit to next
-//#if PRJ_DEBUG_LEV > 6
-//    //debug print
-//     StackFrame *next = cur;
-//    while (next) {
-//        next = next->next;
-//        printf(" ");
-//    }
-//    printf("exit %d %s.%s\n", cur->methodRawIndex,
-//           g_strings[g_methods[cur->methodRawIndex].class_name].str,
-//           g_strings[g_methods[cur->methodRawIndex].name].str);
-//#endif
-//
-//    //
-//    runtime->tail = cur->next;
-//    cur->next = runtime->cache;
-//    runtime->cache = cur;
-//}
 
 
-inline void check_suspend_and_pause(JThreadRuntime *runtime) {
+
+void check_suspend_and_pause(JThreadRuntime *runtime) {
     if (runtime->suspend_count && !runtime->no_pause) {
         runtime->is_suspend = 1;
         garbage_thread_lock();

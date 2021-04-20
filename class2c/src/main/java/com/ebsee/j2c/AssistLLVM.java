@@ -566,7 +566,8 @@ public class AssistLLVM {
         Method finalizeM = ClassManger.findFinalizeMethod(className);
         classinfo += finalizeM == null ? "NULL" : Util.getMethodRawName(finalizeM.getClassFile().getThisClassName(), finalizeM.getMethodName(), finalizeM.getDescriptor());
         classinfo += ", ";
-        classinfo += "&" + Util.getStaticFieldStructVarName(className);
+        int staticVarCnt = Util.getClassStaticFieldCount(className);
+        classinfo += staticVarCnt > 0 ? "&" + Util.getStaticFieldStructVarName(className) : "NULL";
         classinfo += "},";
         classinfo += "// ";
 

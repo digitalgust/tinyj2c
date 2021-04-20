@@ -11,9 +11,9 @@ package java.lang;
 public class Float {
     @SuppressWarnings("unchecked")
     public static final Class<Float> TYPE = (Class<Float>) Class.getPrimitiveClass("float");
-    public static final float POSITIVE_INFINITY = 1.0f / 0.0f;
-    public static final float NEGATIVE_INFINITY = -1.0f / 0.0f;
-    public static final float NaN = 0.0f / 0.0f;
+    public static final float POSITIVE_INFINITY = Float.intBitsToFloat(0x7f800000);//1.0f / 0.0f;
+    public static final float NEGATIVE_INFINITY = Float.intBitsToFloat(0xff800000);//-1.0f / 0.0f;
+    public static final float NaN = Float.intBitsToFloat(0x7fc00000);//0.0f / 0.0f;
     public static final float MAX_VALUE = 3.40282346638528860e+38f;
     public static final float MIN_VALUE = 1.40129846432481707e-45f;
 

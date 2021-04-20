@@ -740,7 +740,7 @@ static inline void _class_mark_refer(InstProp *ins) {
     for (i = 0, len = fiList->length; i < len; i++) {
         FieldInfo *fi = arraylist_get_value_unsafe(fiList, i);
         if (fi->is_static && fi->is_refer) {
-            __refer ref = *((__refer *) (ins->members + fi->offset_ins));
+            __refer ref = *((__refer *) ((c8 *)ins->members + fi->offset_ins));
             if (ref)_garbage_mark_object(ref);
         }
     }

@@ -44,6 +44,7 @@ s32 main(int argc, const char *argv[]) {
     }
     s32 ret = jvm_run_main(mainClassName);
     utf8_destory(mainClassName);
+	//getchar();
     return ret;
 
 }
