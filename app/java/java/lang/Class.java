@@ -48,6 +48,7 @@ public final class Class<T> {
         return methods;
     }
 
+    @SuppressWarnings("unchecked")
     public Method getMethod(String name, Class<?>... parameterTypes) {
         Method[] ms = getMethods();
         for (int i = 0, imax = ms.length; i < imax; i++) {

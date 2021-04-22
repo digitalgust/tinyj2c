@@ -29,16 +29,20 @@ public class Main {
             {"java.lang.Long", "value", "J", "value_in_long"},
             {"java.lang.Float", "value", "F", "value_in_float"},
             {"java.lang.Double", "value", "D", "value_in_double"},
+
             {"java.lang.reflect.Method", "methodHandle", "J", "methodHandle_in_method"},
             {"java.lang.reflect.Method", "clazz", "Ljava/lang/Class;", "clazz_in_method"},
             {"java.lang.reflect.Method", "name", "Ljava/lang/String;", "name_in_method"},
             {"java.lang.reflect.Method", "desc", "Ljava/lang/String;", "desc_in_method"},
             {"java.lang.reflect.Method", "signature", "Ljava/lang/String;", "signature_in_method"},
+
             {"java.lang.reflect.Field", "fieldHandle", "J", "fieldHandle_in_field"},
             {"java.lang.reflect.Field", "clazz", "Ljava/lang/Class;", "clazz_in_field"},
             {"java.lang.reflect.Field", "name", "Ljava/lang/String;", "name_in_field"},
             {"java.lang.reflect.Field", "desc", "Ljava/lang/String;", "desc_in_field"},
             {"java.lang.reflect.Field", "signature", "Ljava/lang/String;", "signature_in_field"},
+
+            {"java.lang.ref.WeakReference", "target", "Ljava/lang/Object;", "target_in_weakreference"},
 
             {"java.lang.Thread", "stackFrame", "J", "stackFrame_in_thread"},
             {"java.lang.StackTraceElement", "declaringClass", "Ljava/lang/String;", "declaringClass_in_stacktraceelement"},
@@ -52,6 +56,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String jsrcPath = "../app/java/"
 //                + File.pathSeparator + "../../miniJVM/desktop/awtk_gui/java/src/main/java/"//
+//                + File.pathSeparator + "../../minijvm_third_lib/luaj/src/main/java/"//
                 ;
         String classesPath = "../app/out/classes/";
         String csrcPath = "../app/out/c/";

@@ -41,6 +41,7 @@ JObject *new_instance_with_classraw(JThreadRuntime *runtime, ClassRaw *raw) {
     s32 insSize = raw->ins_size;
     //printf("ins size :%d\n", insSize);
     JObject *ins = jvm_calloc(insSize);
+    ins->prop.heap_size = insSize;
     if (!raw->clazz) {
         class_clinit(runtime, get_utf8str_by_utfraw_index(raw->name));
     }
@@ -149,6 +150,7 @@ static JArray *multi_array_create_impl(JThreadRuntime *runtime, s32 *dimm, s32 d
     if (cellBytes != 0 && deep == dimm_count - 1) {// none object array
         s32 totalBytes = arr_len * cellBytes + sizeof(JArray);
         JArray *arr = jvm_calloc(totalBytes);
+        arr->prop.heap_size=totalBytes;
         arr->prop.clazz = clazz;
         arr->vm_table = g_procache.java_lang_object_raw->vmtable;
         arr->prop.type = INS_TYPE_ARRAY;
@@ -161,6 +163,7 @@ static JArray *multi_array_create_impl(JThreadRuntime *runtime, s32 *dimm, s32 d
         deep++;
         s32 totalBytes = arr_len * sizeof(char *) + sizeof(JArray);
         JArray *arr = jvm_calloc(totalBytes);
+        arr->prop.heap_size=totalBytes;
         arr->prop.clazz = cell_class;
         arr->vm_table = g_procache.java_lang_object_raw->vmtable;
         arr->prop.type = INS_TYPE_ARRAY;
@@ -214,6 +217,14 @@ s32 instance_of_classname_index(JObject *jobj, s32 classNameIdx) {
 void throw_exception(JThreadRuntime *runtime, JObject *jobj) {
     // StackFrame *cur = runtime->tail;
     runtime->exception = jobj;
+}
+
+JObject *construct_and_throw_exception(JThreadRuntime *runtime, s32 classrawIndex, s32 bytecodeIndex, s32 lineNo) {
+    JObject *jobj = new_instance_with_classraw_index_and_init(runtime, classrawIndex);
+    runtime->tail->bytecodeIndex = bytecodeIndex;
+    runtime->tail->lineNo = lineNo;
+    runtime->exception = jobj;
+    return jobj;
 }
 
 s32 find_exception_handler_index(JThreadRuntime *runtime) {
@@ -270,7 +281,6 @@ s32 exception_check_print(JThreadRuntime *runtime) {
     }
     return 0;
 }
-
 
 
 void check_suspend_and_pause(JThreadRuntime *runtime) {

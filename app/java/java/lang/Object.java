@@ -1,14 +1,5 @@
 package java.lang;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-import java.lang.String;
-
 /**
  * @author gust
  */
@@ -18,7 +9,7 @@ public class Object {
         return getClass().getName() + "@" + Integer.toHexString(hashCode());
     }
 
-    public final void wait() {
+    public final void wait() throws InterruptedException {
         wait(0);
     }
 
@@ -33,7 +24,7 @@ public class Object {
 
     public final native Class getClass();
 
-    public final native void wait(long ms);
+    public final native void wait(long ms) throws InterruptedException;
 
     public final native void notify();
 

@@ -1,22 +1,19 @@
 package java.lang;
 
+import java.io.ConsoleOutputStream;
 import java.io.PrintStream;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  * @author gust
  */
 public class System {
-    static final int STD = 0;
-    static final int ERR = 1;
 
-    public static PrintStream out = new PrintStream(STD);
-    public static PrintStream err = new PrintStream(ERR);
+
+    public static PrintStream out = new PrintStream(new ConsoleOutputStream(ConsoleOutputStream.STD));
+    public static PrintStream err = new PrintStream(new ConsoleOutputStream(ConsoleOutputStream.ERR));
+
+    public static native void gc();
 
     public static native void arraycopy(Object src, int srcPos, Object dest, int destPos, int arr_length);
 

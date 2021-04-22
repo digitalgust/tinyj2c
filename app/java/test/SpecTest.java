@@ -6,6 +6,11 @@
 package test;
 
 
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.WeakHashMap;
+
 /**
  * @author Gust
  */
@@ -27,6 +32,9 @@ public class SpecTest {
         test_wide();
         test_method();
         test_cal();
+        test_reference();
+        test_finalized();
+        test_weakhashmap();
         print("test end");
     }
 
@@ -1259,6 +1267,82 @@ public class SpecTest {
             printerr("invokedynamic");
         }
     }
+
+    static void test_reference() {
+        Apple a = new Apple("Green");
+        ReferenceQueue<Apple> appleReferenceQueue = new ReferenceQueue<>();
+        WeakReference<Apple> apple1 = new WeakReference<Apple>(a, appleReferenceQueue);
+
+        _wait_for_gc();
+        //下面两个输出为null,表示对象被回收了
+        if (apple1.get() == null) printerr("weakreference hold");
+
+        a = null;
+        _wait_for_gc();
+        if (apple1.get() != null) printerr("weakreference release");
+
+        //输出结果，并且就是上面的appleWeakReference、appleWeakReference2，再次证明对象被回收了
+        int count = 0;
+        Reference<? extends Apple> ref = null;
+        while ((ref = appleReferenceQueue.poll()) != null) {
+            count++;
+        }
+        if (count == 0) printerr("referencequeue enqueue");
+    }
+
+
+    static void _new_apple() {
+        Object ap = new Apple("Blue");
+        ap = null;
+    }
+
+    static void test_finalized() {
+        _new_apple();
+        _wait_for_gc();
+        if (Apple.lastOne == null) {
+            printerr("finlize " + Apple.lastOne);
+        }
+    }
+
+    static void test_weakhashmap() {
+        WeakHashMap<Object, String> weakHashMap = new WeakHashMap<>(10);
+
+        Object key0 = new Integer(1);
+        Object key1 = new Byte((byte) 1);
+        Object key2 = new Long(3);
+
+        // 存放元素
+        weakHashMap.put(key0, "K");
+        weakHashMap.put(key1, "Z");
+        weakHashMap.put(key2, "W");
+        _wait_for_gc();
+        if (weakHashMap.size() != 3) {
+            printerr("weakHashMap ");
+        }
+        // 这意味着"弱键"key0再没有被其它对象引用，调用gc时会回收WeakHashMap中与key0对应的键值对
+        key0 = null;
+        key1 = null;
+        // 内存回收，这里会回收WeakHashMap中与"key0"对应的键值对
+
+        _wait_for_gc();
+
+        if (weakHashMap.size() != 1) {
+            printerr("weakHashMap ");
+        }
+    }
+
+    static void _wait_for_gc() {
+
+        try {
+            System.gc();
+            //System.out.println("waiting for gc");
+            Thread.sleep(2000);
+            //System.out.println("wakeup");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        }
+    }
 }
 
 //=========================================================
@@ -1293,5 +1377,42 @@ class Son extends Father {
 
     public int age() {
         return 10;
+    }
+}
+
+//=========================================================
+class Apple {
+    public static Apple lastOne = null;
+
+    private String name;
+
+    public Apple(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 覆盖finalize，在回收的时候会执行。
+     *
+     * @throws Throwable
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        Apple.lastOne = this;
+    }
+
+    @Override
+    public String toString() {
+        return "Apple{" +
+                "name='" + name + '\'' +
+                '}' + ", hashCode:" + this.hashCode();
     }
 }

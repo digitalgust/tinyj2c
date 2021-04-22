@@ -37,11 +37,11 @@ struct java_lang_String *utf8_2_jstring(JThreadRuntime *runtime, Utf8String *utf
 //----------------------------------------------------------------
 //               setter and getter implementation
 
-void jstring_debug_print(int std, JObject *jobj, c8 *appendix) {
+void jstring_debug_print(JObject *jobj, c8 *appendix) {
     java_lang_String *jstr = (java_lang_String *) jobj;
     Utf8String *ustr = utf8_create();
     jstring_2_utf8(jstr, ustr);
-    fprintf(std ? stderr : stdout, "%s%s", utf8_cstr(ustr), appendix);
+    jvm_printf("%s%s", utf8_cstr(ustr), appendix);
     utf8_destory(ustr);
 }
 
@@ -64,6 +64,15 @@ void jclass_set_classHandle(JObject *jobj, JClass *clazz) {
 void jclass_init_insOfClass(JThreadRuntime *runtime, JObject *jobj) {
     java_lang_Class *ins = (java_lang_Class *) jobj;
     func_java_lang_Class__init____V(runtime, ins);
+}
+
+JObject *weakreference_get_target(JThreadRuntime *runtime, JObject *jobj) {
+    struct java_lang_ref_WeakReference *ins = (struct java_lang_ref_WeakReference *) jobj;
+    return (JObject *) ins->target_in_weakreference;
+}
+
+void weakref_vmreferenceenqueue(JThreadRuntime *runtime, JObject *jobj) {
+    func_java_lang_ref_Reference_vmEnqueneReference__Ljava_lang_ref_Reference_2_V(runtime, (struct java_lang_ref_Reference *) jobj);
 }
 //----------------------------------------------------------------
 
@@ -96,12 +105,9 @@ JObject *buildStackElement(JThreadRuntime *runtime, StackFrame *target) {
 //=================================  assist ====================================
 
 //native methods
-void func_java_io_PrintStream_printImpl__ILjava_lang_String_2I_V(JThreadRuntime *runtime, s32 p0, struct java_lang_String *p1, s32 p2) {
-    if (p1) {
-        jstring_debug_print(p0, (JObject *) p1, p2 ? "\n" : "");
-    } else {
-        if (p2)fprintf(p0 ? stderr : stdout, "\n");
-    }
+
+void func_java_io_ConsoleOutputStream_writeImpl__II_V(JThreadRuntime *runtime, s32 p0, s32 p1) {
+    fprintf(p0 ? stderr : stdout, "%c", (c8) p1);
 }
 
 
@@ -422,6 +428,11 @@ struct java_lang_String *func_java_lang_System_doubleToString__D_Ljava_lang_Stri
 }
 
 
+void func_java_lang_System_gc___V(JThreadRuntime *runtime) {
+    g_jvm->collector->lastgc = 0;
+}
+
+
 JArray *func_java_lang_System_utf16ToUtf8__Ljava_lang_String_2__3B(JThreadRuntime *runtime, struct java_lang_String *p0) {
     Utf8String *ustr = utf8_create();
     jstring_2_utf8(p0, ustr);
@@ -471,16 +482,7 @@ void func_java_lang_Thread_interrupt0___V(JThreadRuntime *runtime, struct java_l
 
 
 s8 func_java_lang_Thread_isAlive___Z(JThreadRuntime *runtime, struct java_lang_Thread *p0) {
-    s32 i, imax;
-    spin_lock(&g_jvm->thread_list->spinlock);
-    for (i = 0, imax = g_jvm->thread_list->length; i < imax; i++) {
-        JThreadRuntime *runtime = arraylist_get_value_unsafe(g_jvm->thread_list, i);
-        if (runtime->jthread == (__refer) p0) {
-            return runtime->thread_status != THREAD_STATUS_DEAD;
-        }
-    }
-    spin_unlock(&g_jvm->thread_list->spinlock);
-    return 0;
+    return runtime->thread_status != THREAD_STATUS_DEAD;
 }
 
 
@@ -506,6 +508,11 @@ void func_java_lang_Thread_yield___V(JThreadRuntime *runtime) {
 
 struct java_lang_StackTraceElement *func_java_lang_Throwable_buildStackElement___Ljava_lang_StackTraceElement_2(JThreadRuntime *runtime, struct java_lang_Throwable *p0) {
     return (__refer) buildStackElement(runtime, runtime->tail);
+}
+
+
+void func_java_lang_ref_Reference_markItAsWeak__Z_V(JThreadRuntime *runtime, struct java_lang_ref_Reference *p0, s8 p1) {
+    p0->prop.is_weakreference = p1;
 }
 
 

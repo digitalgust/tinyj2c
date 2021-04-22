@@ -44,6 +44,10 @@ public final class String {
         this(bytes, 0, bytes.length, "utf-8");
     }
 
+    public String(byte bytes[], int off, int len) {
+        this(bytes, off, len, "utf-8");
+    }
+
     public String(byte bytes[], int off, int len, String enc) {
         if (enc.equalsIgnoreCase("utf-8")) {
             if (bytes == null || off < 0 || off + len > bytes.length) {
