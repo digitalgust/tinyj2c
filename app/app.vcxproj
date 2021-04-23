@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="out\c\native_gen.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +158,15 @@
     <ClInclude Include="vm\utf8string.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="out\c\java.io.ByteArrayInputStream.c" />
+    <ClCompile Include="out\c\java.io.ByteArrayOutputStream.c" />
+    <ClCompile Include="out\c\java.io.ConsoleOutputStream.c" />
+    <ClCompile Include="out\c\java.io.DataInputStream.c" />
+    <ClCompile Include="out\c\java.io.DataOutputStream.c" />
+    <ClCompile Include="out\c\java.io.EOFException.c" />
+    <ClCompile Include="out\c\java.io.InputStream.c" />
+    <ClCompile Include="out\c\java.io.IOException.c" />
+    <ClCompile Include="out\c\java.io.OutputStream.c" />
     <ClCompile Include="out\c\java.io.PrintStream.c" />
     <ClCompile Include="out\c\java.io.Serializable.c" />
     <ClCompile Include="out\c\java.lang.annotation.Annotation.c" />
@@ -188,6 +198,9 @@
     <ClCompile Include="out\c\java.lang.NullPointerException.c" />
     <ClCompile Include="out\c\java.lang.Object.c" />
     <ClCompile Include="out\c\java.lang.Override.c" />
+    <ClCompile Include="out\c\java.lang.ref.Reference.c" />
+    <ClCompile Include="out\c\java.lang.ref.ReferenceQueue.c" />
+    <ClCompile Include="out\c\java.lang.ref.WeakReference.c" />
     <ClCompile Include="out\c\java.lang.reflect.Array.c" />
     <ClCompile Include="out\c\java.lang.reflect.Constructor.c" />
     <ClCompile Include="out\c\java.lang.reflect.Field.c" />
@@ -246,24 +259,34 @@
     <ClCompile Include="out\c\java.util.Set.c" />
     <ClCompile Include="out\c\java.util.SubList.c" />
     <ClCompile Include="out\c\java.util.SubList_1.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_1.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_Entry.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_EntryIterator.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_EntrySet.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_HashIterator.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_KeyIterator.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_KeySet.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_ValueIterator.c" />
+    <ClCompile Include="out\c\java.util.WeakHashMap_Values.c" />
     <ClCompile Include="out\c\metadata.c" />
+    <ClCompile Include="out\c\test.Apple.c" />
     <ClCompile Include="out\c\test.BpDeep.c" />
     <ClCompile Include="out\c\test.BpDeepTest.c" />
     <ClCompile Include="out\c\test.Father.c" />
     <ClCompile Include="out\c\test.Foo1.c" />
-    <ClCompile Include="out\c\test.Foo1_T7class.c" />
-    <ClCompile Include="out\c\test.Foo2.c" />
-    <ClCompile Include="out\c\test.Foo3.c" />
+    <ClCompile Include="out\c\test.Foo1_1.c" />
+    <ClCompile Include="out\c\test.Foo1_Tclass.c" />
     <ClCompile Include="out\c\test.Grandpa.c" />
+    <ClCompile Include="out\c\test.HelloWorld.c" />
     <ClCompile Include="out\c\test.Human.c" />
-    <ClCompile Include="out\c\test.P.c" />
     <ClCompile Include="out\c\test.Son.c" />
     <ClCompile Include="out\c\test.SpecTest.c" />
     <ClCompile Include="out\c\test.SpecTest_1.c" />
     <ClCompile Include="out\c\test.SpecTest_1A.c" />
     <ClCompile Include="out\c\test.SpecTest_1Lua.c" />
     <ClCompile Include="out\c\test.SpecTest_XF.c" />
-    <ClCompile Include="out\c\test_Foo1_lambda_t12_0.c" />
+    <ClCompile Include="out\c\test_Foo1_lambda_testThreadWait_0.c" />
     <ClCompile Include="out\c\test_SpecTest_lambda_test_0005fmethod_0.c" />
     <ClCompile Include="vm\arraylist.c" />
     <ClCompile Include="vm\bytebuf.c" />
