@@ -8,6 +8,16 @@
 #include <time.h>
 #include <math.h>
 
+#include "jvm.h"
+#include "metadata.h"
+
+
+#include "bytebuf.h"
+#include "miniz_wrapper.h"
+#include "garbage.h"
+
+
+
 #if __JVM_OS_VS__
 #include <stdio.h>
 #else
@@ -16,14 +26,6 @@
 #include <unistd.h>
 
 #endif
-
-#include "jvm.h"
-#include "metadata.h"
-
-
-#include "bytebuf.h"
-#include "miniz_wrapper.h"
-#include "garbage.h"
 
 
 s32 jstring_2_utf8(struct java_lang_String *jstr, Utf8String *utf8) {
