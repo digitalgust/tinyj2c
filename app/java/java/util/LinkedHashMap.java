@@ -143,7 +143,7 @@ public class LinkedHashMap<K, V>
 
         public void remove() {
             if (lastReturned == null)
-                throw new RuntimeException("ILLEGAL STATE");
+                throw new IllegalStateException();
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
 
@@ -156,7 +156,7 @@ public class LinkedHashMap<K, V>
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
             if (nextEntry == header)
-                throw new RuntimeException("NO SUCH ELEMENT");
+                throw new NoSuchElementException("NO SUCH ELEMENT");
 
             Entry<K, V> e = lastReturned = nextEntry;
             nextEntry = e.after;

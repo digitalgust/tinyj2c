@@ -37,7 +37,7 @@ class DataInputStream extends InputStream  {
     
     public final void readFully(byte b[], int off, int len) throws IOException {
         if (len < 0) {
-            throw new RuntimeException("IndexOutOfBoundsException");
+            throw new IndexOutOfBoundsException();
         }
         int n = 0;
         while (n < len) {

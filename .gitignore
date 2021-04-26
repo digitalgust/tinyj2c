@@ -12,6 +12,7 @@ app/x64
 .svn
 .vs
 tools
+target
 cmake-*
 CMakeFiles
 cmake_*

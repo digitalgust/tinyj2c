@@ -23,10 +23,20 @@ public class Character {
     }
 
     public static char toLowerCase(char ch) {
-        return (ch >= 65 && ch <= 90) ? (char) (ch + 32) : ch;
+        return (ch >= 'A' && ch <= 'Z') ? (char) (ch + 32) : ch;
     }
 
     public static char toUpperCase(char ch) {
-        return (ch >= 97 && ch <= 122) ? (char) (ch - 32) : ch;
+        return (ch >= 'a' && ch <= 'z') ? (char) (ch - 32) : ch;
+    }
+
+    public static boolean isLowerCase(char ch) {
+        return ch >= 'a' && ch <= 'z';
+    }
+    public static boolean isUpperCase(char ch) {
+        return ch >= 'A' && ch <= 'Z';
+    }
+    public static boolean isDigit(char ch) {
+        return ch >= '0' && ch <= '9';
     }
 }

@@ -8,6 +8,14 @@
 #include <time.h>
 #include <math.h>
 
+#if __JVM_OS_VS__
+#include <stdio.h>
+#else
+
+#include <dirent.h>
+#include <unistd.h>
+
+#endif
 
 #include "jvm.h"
 #include "metadata.h"
@@ -107,7 +115,164 @@ JObject *buildStackElement(JThreadRuntime *runtime, StackFrame *target) {
 //native methods
 
 void func_java_io_ConsoleOutputStream_writeImpl__II_V(JThreadRuntime *runtime, s32 p0, s32 p1) {
+    if (p1 == 10) {
+        s32 debug = 1;
+    }
     fprintf(p0 ? stderr : stdout, "%c", (c8) p1);
+}
+
+
+s32 func_java_io_RandomAccessFile_available0__J_I(JThreadRuntime *runtime, s64 p0) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+
+    s32 cur = 0, end = 0;
+    if (fd) {
+        cur = ftell(fd);
+        fseek(fd, (long) 0, SEEK_END);
+        end = ftell(fd);
+        fseek(fd, (long) cur, SEEK_SET);
+    }
+    return end - cur;
+}
+
+
+s32 func_java_io_RandomAccessFile_closeFile__J_I(JThreadRuntime *runtime, s64 p0) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+    s32 ret = -1;
+    if (fd) {
+        ret = fclose(fd);
+    }
+    return ret;
+}
+
+
+s32 func_java_io_RandomAccessFile_flush0__J_I(JThreadRuntime *runtime, s64 p0) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+    s32 ret = -1;
+    if (fd) {
+        ret = fflush(fd);
+    }
+    return ret;
+}
+
+
+s32 func_java_io_RandomAccessFile_length0__J_I(JThreadRuntime *runtime, s64 p0) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+
+    s32 cur = 0, end = 0;
+    if (fd) {
+        cur = ftell(fd);
+        fseek(fd, (long) 0, SEEK_END);
+        end = ftell(fd);
+        fseek(fd, (long) cur, SEEK_SET);
+    }
+    return end;
+}
+
+
+s64 func_java_io_RandomAccessFile_openFile___3B_3B_J(JThreadRuntime *runtime, JArray *p0, JArray *p1) {
+    if (p0 && p1) {
+        FILE *fd = fopen(p0->prop.as_s8_arr, p1->prop.as_s8_arr);
+        return (s64) (intptr_t) fd;
+    }
+    return 0;
+}
+
+
+s32 func_java_io_RandomAccessFile_read0__J_I(JThreadRuntime *runtime, s64 p0) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+    s32 ret = -1;
+    if (fd) {
+        ret = fgetc(fd);
+        if (ret == EOF) {
+            return -1;
+        }
+    }
+    return ret;
+}
+
+
+s32 func_java_io_RandomAccessFile_readbuf__J_3BII_I(JThreadRuntime *runtime, s64 p0, JArray *p2, s32 p3, s32 p4) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+    s32 ret = -1;
+    if (fd && p2) {
+        ret = (s32) fread(p2->prop.as_s8_arr + p3, 1, p4, fd);
+    }
+    if (ret == 0) {
+        ret = -1;
+    }
+    return ret;
+}
+
+
+s32 func_java_io_RandomAccessFile_seek0__JJ_I(JThreadRuntime *runtime, s64 p0, s64 p2) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+    if (fd) {
+        return fseek(fd, (long) p2, SEEK_SET);
+    }
+    return -1;
+}
+
+
+s32 func_java_io_RandomAccessFile_setLength0__JJ_I(JThreadRuntime *runtime, s64 p0, s64 p2) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+    s64 filelen = p2;
+    s32 ret = 0;
+    if (fd) {
+        long pos;
+        ret = fseek(fd, 0, SEEK_END);
+        if (!ret) {
+            ret = ftell(fd);
+            if (!ret) {
+                if (filelen < pos) {
+#if __JVM_OS_VS__ || __JVM_OS_MINGW__ || __JVM_OS_CYGWIN__
+                    fseek(fd, (long) filelen, SEEK_SET);
+                    SetEndOfFile(fd);
+#else
+                    ret = ftruncate(fileno(fd), (off_t) filelen);
+#endif
+                } else {
+                    u8 d = 0;
+                    s32 i, imax = filelen - pos;
+                    for (i = 0; i < imax; i++) {
+                        fwrite(&d, 1, 1, fd);
+                    }
+                    fflush(fd);
+                }
+            }
+        }
+    }
+    return ret;
+}
+
+
+s32 func_java_io_RandomAccessFile_write0__JI_I(JThreadRuntime *runtime, s64 p0, s32 p2) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+    u8 byte = (u8) p2;
+    if (fd) {
+        s32 ret = fputc(byte, fd);
+        if (ret == EOF) {
+            return -1;
+        } else {
+            return p2;
+        }
+    }
+    return -1;
+}
+
+
+s32 func_java_io_RandomAccessFile_writebuf__J_3BII_I(JThreadRuntime *runtime, s64 p0, JArray *p2, s32 p3, s32 p4) {
+    FILE *fd = (FILE *) (intptr_t) p0;
+    s32 offset = p3;
+    s32 len = p4;
+    s32 ret = -1;
+    if (fd && p2 && (offset + len <= p2->prop.arr_length)) {
+        ret = (s32) fwrite(p2->prop.as_s8_arr + offset, 1, len, fd);
+        if (ret == 0) {
+            ret = -1;
+        }
+    }
+    return ret;
 }
 
 
@@ -305,6 +470,23 @@ void func_java_lang_Object_wait__J_V(JThreadRuntime *runtime, struct java_lang_O
 }
 
 
+void func_java_lang_Runtime_exitInternal__I_V(JThreadRuntime *runtime, struct java_lang_Runtime *p0, s32 p1) {
+    return;
+}
+
+s64 func_java_lang_Runtime_freeMemory___J(JThreadRuntime *runtime, struct java_lang_Runtime *p0) {
+    return g_jvm->collector->max_heap_size - g_jvm->collector->obj_heap_size;
+}
+
+void func_java_lang_Runtime_gc___V(JThreadRuntime *runtime, struct java_lang_Runtime *p0) {
+    return;
+}
+
+s64 func_java_lang_Runtime_totalMemory___J(JThreadRuntime *runtime, struct java_lang_Runtime *p0) {
+    return g_jvm->collector->max_heap_size;
+}
+
+
 s64 func_java_lang_Double_doubleToLongBits__D_J(JThreadRuntime *runtime, f64 p0) {
     StackItem si;
     si.d = p0;
@@ -418,51 +600,8 @@ s64 func_java_lang_System_currentTimeMillis___J(JThreadRuntime *runtime) {
 }
 
 
-struct java_lang_String *func_java_lang_System_doubleToString__D_Ljava_lang_String_2(JThreadRuntime *runtime, f64 p0) {
-    char buf[100];
-    sprintf(buf, "%lf", p0);
-    Utf8String *ustr = utf8_create_c(buf);
-    JObject *jstr = construct_string_with_ustr(runtime, ustr);
-    utf8_destory(ustr);
-    return (struct java_lang_String *) jstr;
-}
-
-
-void func_java_lang_System_gc___V(JThreadRuntime *runtime) {
-    g_jvm->collector->lastgc = 0;
-}
-
-
-JArray *func_java_lang_System_utf16ToUtf8__Ljava_lang_String_2__3B(JThreadRuntime *runtime, struct java_lang_String *p0) {
-    Utf8String *ustr = utf8_create();
-    jstring_2_utf8(p0, ustr);
-    s32 len = ustr->length;
-    JArray *jarr = multi_array_create_by_typename(runtime, &len, 1, "[B");
-    memcpy(jarr->prop.as_c8_arr, ustr->data, ustr->length);
-    utf8_destory(ustr);
-    return jarr;
-}
-
-
-struct java_lang_String *func_java_lang_System_utf8ToUtf16___3BII_Ljava_lang_String_2(JThreadRuntime *runtime, JArray *p0, s32 p1, s32 p2) {
-    Utf8String *ustr = utf8_create_part_c(p0->prop.as_c8_arr, p1, p2);
-    JObject *jstr = construct_string_with_ustr(runtime, ustr);
-    utf8_destory(ustr);
-    return (struct java_lang_String *) jstr;
-}
-
-
 s64 func_java_lang_System_nanoTime___J(JThreadRuntime *runtime) {
     return nanoTime();
-}
-
-
-f64 func_java_lang_System_stringToDouble__Ljava_lang_String_2_D(JThreadRuntime *runtime, struct java_lang_String *p0) {
-    Utf8String *ustr = utf8_create();
-    jstring_2_utf8(p0, ustr);
-    double d = atof(utf8_cstr(ustr));
-    utf8_destory(ustr);
-    return d;
 }
 
 
@@ -508,6 +647,44 @@ void func_java_lang_Thread_yield___V(JThreadRuntime *runtime) {
 
 struct java_lang_StackTraceElement *func_java_lang_Throwable_buildStackElement___Ljava_lang_StackTraceElement_2(JThreadRuntime *runtime, struct java_lang_Throwable *p0) {
     return (__refer) buildStackElement(runtime, runtime->tail);
+}
+
+
+struct java_lang_String *func_java_lang_VM_doubleToString__D_Ljava_lang_String_2(JThreadRuntime *runtime, f64 p0) {
+    char buf[100];
+    sprintf(buf, "%lf", p0);
+    Utf8String *ustr = utf8_create_c(buf);
+    JObject *jstr = construct_string_with_ustr(runtime, ustr);
+    utf8_destory(ustr);
+    return (struct java_lang_String *) jstr;
+}
+
+
+JArray *func_java_lang_VM_utf16ToUtf8__Ljava_lang_String_2__3B(JThreadRuntime *runtime, struct java_lang_String *p0) {
+    Utf8String *ustr = utf8_create();
+    jstring_2_utf8(p0, ustr);
+    s32 len = ustr->length;
+    JArray *jarr = multi_array_create_by_typename(runtime, &len, 1, "[B");
+    memcpy(jarr->prop.as_c8_arr, ustr->data, ustr->length);
+    utf8_destory(ustr);
+    return jarr;
+}
+
+
+struct java_lang_String *func_java_lang_VM_utf8ToUtf16___3BII_Ljava_lang_String_2(JThreadRuntime *runtime, JArray *p0, s32 p1, s32 p2) {
+    Utf8String *ustr = utf8_create_part_c(p0->prop.as_c8_arr, p1, p2);
+    JObject *jstr = construct_string_with_ustr(runtime, ustr);
+    utf8_destory(ustr);
+    return (struct java_lang_String *) jstr;
+}
+
+
+f64 func_java_lang_VM_stringToDouble__Ljava_lang_String_2_D(JThreadRuntime *runtime, struct java_lang_String *p0) {
+    Utf8String *ustr = utf8_create();
+    jstring_2_utf8(p0, ustr);
+    double d = atof(utf8_cstr(ustr));
+    utf8_destory(ustr);
+    return d;
 }
 
 

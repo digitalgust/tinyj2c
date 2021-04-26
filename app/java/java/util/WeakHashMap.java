@@ -480,7 +480,7 @@ public class WeakHashMap<K, V>
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
             if (nextKey == null && !hasNext())
-                throw new RuntimeException("NoSuchElementException");
+                throw new NoSuchElementException();
 
             lastReturned = entry;
             entry = entry.next;
@@ -491,7 +491,7 @@ public class WeakHashMap<K, V>
 
         public void remove() {
             if (lastReturned == null)
-                throw new RuntimeException("IllegalStateException");
+                throw new IllegalStateException();
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
 

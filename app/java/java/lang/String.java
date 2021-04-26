@@ -8,7 +8,7 @@ package java.lang;
 /**
  * @author gust
  */
-public final class String {
+public final class String implements CharSequence {
 
     int hash = 0;
     char[] value;
@@ -53,7 +53,7 @@ public final class String {
             if (bytes == null || off < 0 || off + len > bytes.length) {
                 throw new IllegalArgumentException();
             }
-            String s = System.utf8ToUtf16(bytes, off, len);
+            String s = VM.utf8ToUtf16(bytes, off, len);
             count = s.count;
             this.value = s.value;
         } else {
@@ -389,6 +389,11 @@ public final class String {
                 new String(offset + beginIndex, endIndex - beginIndex, value);
     }
 
+    @Override
+    public CharSequence subSequence(int start, int end) {
+        return substring(start, end);
+    }
+
     public String replace(String src, String dst) {
         if (src == null || dst == null || src.length() == 0) {
             return this;
@@ -450,15 +455,15 @@ public final class String {
         return this;
     }
 
-    public byte[] getBytes() throws IllegalArgumentException {
-        return getBytes("utf-8");
+    public byte[] getBytes() {
+        return VM.utf16ToUtf8(this);
     }
 
-    public byte[] getBytes(String enc) throws IllegalArgumentException {
+    public byte[] getBytes(String enc) throws UnsupportedEncodingException {
         if (enc.equalsIgnoreCase("utf-8")) {
-            return System.utf16ToUtf8(this);
+            return VM.utf16ToUtf8(this);
         }
-        throw new IllegalArgumentException("not support encode :" + enc);
+        throw new UnsupportedEncodingException("not support encode :" + enc);
     }
 
 
@@ -523,6 +528,54 @@ public final class String {
             len--;
         }
         return ((st > 0) || (len < value.length)) ? substring(st, len) : this;
+    }
+
+    public String toLowerCase() {
+        int i;
+
+        scan:
+        {
+            for (i = 0; i < count; i++) {
+                char c = value[offset + i];
+                if (c != Character.toLowerCase(c)) {
+                    break scan;
+                }
+            }
+            return this;
+        }
+
+        char buf[] = new char[count];
+
+        System.arraycopy(value, offset, buf, 0, i);
+
+        for (; i < count; i++) {
+            buf[i] = Character.toLowerCase(value[offset + i]);
+        }
+        return new String(0, count, buf);
+    }
+
+    public String toUpperCase() {
+        int i;
+
+        scan:
+        {
+            for (i = 0; i < count; i++) {
+                char c = value[offset + i];
+                if (c != Character.toUpperCase(c)) {
+                    break scan;
+                }
+            }
+            return this;
+        }
+
+        char buf[] = new char[count];
+
+        System.arraycopy(value, offset, buf, 0, i);
+
+        for (; i < count; i++) {
+            buf[i] = Character.toUpperCase(value[offset + i]);
+        }
+        return new String(0, count, buf);
     }
 
 

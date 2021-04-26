@@ -18,14 +18,16 @@ class Foo1 {
 
 
     void testChinese() {
-        String s = "中国";
-        System.out.println(s);
-        byte[] b = s.getBytes("utf-8");
-        if (b != null) {
-            System.out.println(s + " bytes:" + b.length);
-            String s1 = new String(b, 0, b.length, "utf-8");
-            System.out.println(s1);
-        }
+        try {
+            String s = "中国";
+            System.out.println(s);
+            byte[] b = s.getBytes("utf-8");
+            if (b != null) {
+                System.out.println(s + " bytes:" + b.length);
+                String s1 = new String(b, 0, b.length, "utf-8");
+                System.out.println(s1);
+            }
+        }catch (Exception e){}
     }
 
 

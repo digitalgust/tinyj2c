@@ -656,7 +656,7 @@ static inline StackFrame *method_enter(JThreadRuntime *runtime, s32 methodRawInd
     cur->methodRawIndex = methodRawIndex;
     cur->rstack = stack;
     cur->rlocal = local;
-    cur->spPtr = spPtr;
+//    cur->spPtr = spPtr;
 
 #if PRJ_DEBUG_LEV > 6
     //debug print

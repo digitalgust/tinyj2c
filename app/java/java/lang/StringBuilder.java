@@ -1,7 +1,6 @@
 package java.lang;
 
 
-
 /**
  * @author gust
  */
@@ -12,6 +11,14 @@ public class StringBuilder {
 
     public StringBuilder() {
         this(16);
+    }
+
+    public StringBuilder(String s) {
+        if (s == null) {
+            s = "null";
+        }
+        value = new char[s.length()];
+        System.arraycopy(s.value, 0, value, 0, value.length);
     }
 
     public StringBuilder(int len) {

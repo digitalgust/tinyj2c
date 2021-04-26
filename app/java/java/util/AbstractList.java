@@ -86,7 +86,7 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
 
     public ListIterator<E> listIterator(final int index) {
         if (index < 0 || index > size())
-            throw new RuntimeException("Index: " + index);
+            throw new IndexOutOfBoundsException("Index: " + index);
 
         return new ListItr(index);
     }
@@ -113,13 +113,13 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
                 return next;
             } catch (Exception e) {
                 checkForComodification();
-                throw new RuntimeException("NO SUCH ELEMENT");
+                throw new NoSuchElementException();
             }
         }
 
         public void remove() {
             if (lastRet == -1)
-                throw new RuntimeException("ILLEGAL STATE");
+                throw new IllegalStateException();
             checkForComodification();
 
             try {
@@ -157,7 +157,7 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
                 return previous;
             } catch (Exception e) {
                 checkForComodification();
-                throw new RuntimeException("NO SUCH ELEMENT");
+                throw new NoSuchElementException();
             }
         }
 
@@ -171,7 +171,7 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
 
         public void set(E o) {
             if (lastRet == -1)
-                throw new RuntimeException("ILLEGAL STATE");
+                throw new IllegalStateException();
             checkForComodification();
 
             try {
@@ -249,11 +249,11 @@ class SubList<E> extends AbstractList<E> {
 
     SubList(AbstractList<E> list, int fromIndex, int toIndex) {
         if (fromIndex < 0)
-            throw new RuntimeException("fromIndex = " + fromIndex);
+            throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
         if (toIndex > list.size())
-            throw new RuntimeException("toIndex = " + toIndex);
+            throw new IndexOutOfBoundsException("toIndex = " + toIndex);
         if (fromIndex > toIndex)
-            throw new IllegalArgumentException("fromIndex(" + fromIndex +
+            throw new IndexOutOfBoundsException("fromIndex(" + fromIndex +
                     ") > toIndex(" + toIndex + ")");
         l = list;
         offset = fromIndex;
@@ -280,7 +280,7 @@ class SubList<E> extends AbstractList<E> {
 
     public void add(int index, E element) {
         if (index < 0 || index > size)
-            throw new RuntimeException("INDEX OUT OF BOUNDS");
+            throw new IndexOutOfBoundsException();
         checkForComodification();
         l.add(index + offset, element);
         expectedModCount = l.modCount;
@@ -312,7 +312,7 @@ class SubList<E> extends AbstractList<E> {
 
     public boolean addAll(int index, Collection<? extends E> c) {
         if (index < 0 || index > size)
-            throw new RuntimeException(
+            throw new IndexOutOfBoundsException(
                     "Index: " + index + ", Size: " + size);
         int cSize = c.size();
         if (cSize == 0)
@@ -333,7 +333,7 @@ class SubList<E> extends AbstractList<E> {
     public ListIterator<E> listIterator(final int index) {
         checkForComodification();
         if (index < 0 || index > size)
-            throw new RuntimeException(
+            throw new IndexOutOfBoundsException(
                     "Index: " + index + ", Size: " + size);
 
         return new ListIterator<E>() {
@@ -347,7 +347,7 @@ class SubList<E> extends AbstractList<E> {
                 if (hasNext())
                     return i.next();
                 else
-                    throw new RuntimeException("NO SUCH ELEMENT");
+                    throw new NoSuchElementException();
             }
 
             public boolean hasPrevious() {
@@ -358,7 +358,7 @@ class SubList<E> extends AbstractList<E> {
                 if (hasPrevious())
                     return i.previous();
                 else
-                    throw new RuntimeException("NO SUCH ELEMENT");
+                    throw new NoSuchElementException();
             }
 
             public int nextIndex() {
@@ -395,7 +395,7 @@ class SubList<E> extends AbstractList<E> {
 
     private void rangeCheck(int index) {
         if (index < 0 || index >= size)
-            throw new RuntimeException("Index: " + index +
+            throw new IndexOutOfBoundsException("Index: " + index +
                     ",Size: " + size);
     }
 

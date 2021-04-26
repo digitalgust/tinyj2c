@@ -32,11 +32,11 @@ public class Double {
     }
 
     static public String toString(double val) {
-        return System.doubleToString(val);
+        return VM.doubleToString(val);
     }
 
     public static double parseDouble(String s) {
-        return System.stringToDouble(s);
+        return VM.stringToDouble(s);
     }
 
     static public boolean isNaN(double v) {

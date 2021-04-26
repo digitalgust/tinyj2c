@@ -133,7 +133,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     public void add(int index, E element) {
         if (index > size || index < 0)
-            throw new RuntimeException(
+            throw new IndexOutOfBoundsException(
                     "Index: " + index + ", Size: " + size);
 
         ensureCapacity(size + 1);  // Increments modCount!!
@@ -205,7 +205,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     public boolean addAll(int index, Collection<? extends E> c) {
         if (index > size || index < 0)
-            throw new RuntimeException(
+            throw new IndexOutOfBoundsException(
                     "Index: " + index + ", Size: " + size);
 
         Object[] a = c.toArray();
@@ -236,7 +236,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     private void RangeCheck(int index) {
         if (index >= size)
-            throw new RuntimeException(
+            throw new IndexOutOfBoundsException(
                     "Index: " + index + ", Size: " + size);
     }
 

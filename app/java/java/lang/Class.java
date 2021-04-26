@@ -1,5 +1,6 @@
 package java.lang;
 
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -146,6 +147,10 @@ public final class Class<T> {
                 }
                 return null;
         }
+    }
+
+    public InputStream getResourceAsStream(String path) {
+        return null;
     }
 
 

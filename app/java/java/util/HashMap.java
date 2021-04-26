@@ -462,7 +462,7 @@ public class HashMap<K, V>
                 throw new ConcurrentModificationException();
             Entry<K, V> e = next;
             if (e == null)
-                throw new RuntimeException("NO SUCH ELEMENT");
+                throw new NoSuchElementException();
 
             Entry<K, V> n = e.next;
             Entry[] t = table;
@@ -476,7 +476,7 @@ public class HashMap<K, V>
 
         public void remove() {
             if (current == null)
-                throw new RuntimeException("ILLEGAL STATE");
+                throw new IllegalStateException();
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
             Object k = current.key;

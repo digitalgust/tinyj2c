@@ -54,7 +54,7 @@ public class ByteArrayOutputStream extends OutputStream {
         ensureOpen();
         if ((off < 0) || (off > b.length) || (len < 0)
                 || ((off + len) > b.length) || ((off + len) < 0)) {
-            throw new RuntimeException("IndexOutOfBoundsException");
+            throw new IndexOutOfBoundsException();
         } else if (len == 0) {
             return;
         }

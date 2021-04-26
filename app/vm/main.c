@@ -39,6 +39,7 @@ s32 main(int argc, const char *argv[]) {
 //        utf8_append_c(mainClassName, "test.BpDeepTest");
 //        utf8_append_c(mainClassName, "test.Foo1");
         utf8_append_c(mainClassName, "test.HelloWorld");
+//        utf8_append_c(mainClassName, "org.luaj.vm2.lib.jme.TestLuaJ");
         jvm_printf("[INFO]ccjvm test.HelloWorld\n");
     }
     s32 ret = jvm_run_main(mainClassName);

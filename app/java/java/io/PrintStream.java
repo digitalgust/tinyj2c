@@ -1,9 +1,6 @@
 package java.io;
 
-import java.lang.Integer;
-import java.lang.String;
-
-public class PrintStream {
+public class PrintStream extends OutputStream {
 
 
     OutputStream out;
@@ -19,6 +16,24 @@ public class PrintStream {
         }
     }
 
+    public void write(int b) {
+        try {
+            synchronized (this) {
+                out.write(b);
+            }
+        } catch (IOException x) {
+        }
+    }
+
+    public void write(byte buf[], int off, int len) {
+        try {
+            synchronized (this) {
+                out.write(buf, off, len);
+            }
+        } catch (IOException x) {
+        }
+    }
+
     public void println() {
         newLine();
     }
@@ -26,8 +41,11 @@ public class PrintStream {
     public void print(String s) {
         if (s == null) s = "null";
         try {
+
             byte[] b = s.getBytes("utf-8");
-            out.write(b);
+            synchronized (this) {
+                out.write(b);
+            }
         } catch (Exception e) {
         }
     }
@@ -37,12 +55,30 @@ public class PrintStream {
         newLine();
     }
 
+    public void print(Object o) {
+        print(o == null ? "null" : o.toString());
+    }
+
+    public void println(Object o) {
+        print(o == null ? "null" : o.toString());
+        newLine();
+    }
+
     public void print(int v) {
         print(Integer.toString(v));
     }
 
     public void println(int v) {
         print(Integer.toString(v));
+        newLine();
+    }
+
+    public void print(char v) {
+        write(v);
+    }
+
+    public void println(char v) {
+        write(v);
         newLine();
     }
 

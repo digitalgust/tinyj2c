@@ -32,11 +32,11 @@ public class Float {
     }
 
     static public String toString(float val) {
-        return System.doubleToString(val);
+        return VM.doubleToString(val);
     }
 
     public static float parseFloat(String s) {
-        return (float) System.stringToDouble(s);
+        return (float) VM.stringToDouble(s);
     }
 
     static public boolean isNaN(float v) {

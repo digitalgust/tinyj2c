@@ -3,7 +3,8 @@ package com.ebsee.j2c;
 import com.ebsee.classparser.CodeAttribute;
 import com.ebsee.classparser.Field;
 import com.ebsee.classparser.Method;
-import com.ebsee.invoke.*;
+import com.ebsee.invoke.LambdaMetafactory;
+import com.ebsee.invoke.MethodHandle;
 import com.ebsee.invoke.bytecode.ByteCodeAssembler;
 import org.objectweb.asm.*;
 
@@ -1745,7 +1746,7 @@ public class MV extends MethodVisitor {
         add(insert++, "RStackItem rstack[" + max_stack + "] = {0};");
         add(insert++, "s32 sp = 0;");
         stackValue = "&rstack[0]";
-        spPtrValue = "&sp";//"NULL";//"&sp";
+        spPtrValue = "NULL";//"NULL";//"&sp";
 
         if (!canSkipCodeTrack()) {
             add(insert++, "StackFrame *__frame = " + AssistLLVM.FUNC_METHOD_ENTER

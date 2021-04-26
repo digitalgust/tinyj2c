@@ -99,7 +99,7 @@ public class MyCompiler {
 
             Iterable<? extends JavaFileObject> files = manager.getJavaFileObjectsFromFiles(srcList);
 
-            Iterable options = Arrays.asList("-encoding", srcFileEncode, "-d", outputPath, "-g", "-Xlint:unchecked");
+            Iterable options = Arrays.asList("-encoding", srcFileEncode, "-d", outputPath, "-g"/*, "-Xlint:unchecked"*/);
 
             JavaCompiler.CompilationTask task = compiler.getTask(null, manager, listener, options, null, files);
 
