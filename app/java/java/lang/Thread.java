@@ -15,7 +15,7 @@ public class Thread implements Runnable {
     private char name[];
 
     
-    private long stackFrame;//vm used
+    private long stackFrame = createStackFrame();//vm used
     
     public final static int MIN_PRIORITY = 1;
 
@@ -29,7 +29,8 @@ public class Thread implements Runnable {
     
     private boolean daemon = false;
 
-    
+    private native long createStackFrame();
+
     public static native Thread currentThread();
 
     

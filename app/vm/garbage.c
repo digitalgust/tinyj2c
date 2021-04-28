@@ -65,7 +65,7 @@ GcCollector *garbage_collector_create() {
 
     collector->runtime_refer_copy = arraylist_create(256);
     collector->garbage_collect_period_ms = 30 * 1000;//mill sec
-    collector->max_heap_size = 300 * 1000 * 1000;//byte
+    collector->max_heap_size = 30 * 1000 * 1000;//byte
 
     collector->_garbage_thread_status = GARBAGE_THREAD_PAUSE;
     thread_lock_init(&collector->garbagelock);
@@ -634,8 +634,8 @@ s32 _garbage_copy_refer_thread(JThreadRuntime *pruntime) {
         while (frame) {
             const RStackItem *rstack = frame->rstack;
             if (rstack) {
-//                s32 size = *frame->spPtr;
-                s32 size = g_methods[frame->methodRawIndex].max_stack;
+                s32 size = *frame->spPtr;
+//                s32 size = g_methods[frame->methodRawIndex].max_stack;
                 for (j = 0; j < size; j++) {
                     if (rstack[j].obj) {
                         //jvm_printf("rstack :%llx\n",(s64)(intptr_t)rstack[j].obj);

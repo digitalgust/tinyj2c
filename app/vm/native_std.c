@@ -65,6 +65,12 @@ void jthread_set_stackFrame(JObject *jobj, JThreadRuntime *runtime) {
     jthread->stackFrame_in_thread = (s64) (intptr_t) runtime;
 }
 
+JThreadRuntime *jthread_get_stackFrame(JObject *jobj) {
+    java_lang_Thread *jthread = (java_lang_Thread *) jobj;
+    return (__refer) (intptr_t) jthread->stackFrame_in_thread;
+}
+
+
 void jclass_set_classHandle(JObject *jobj, JClass *clazz) {
     java_lang_Class *ins = (java_lang_Class *) jobj;
     ins->classHandle_in_class = (s64) (intptr_t) clazz;
@@ -609,6 +615,13 @@ s64 func_java_lang_System_nanoTime___J(JThreadRuntime *runtime) {
 
 s32 func_java_lang_Thread_activeCount___I(JThreadRuntime *runtime) {
     return g_jvm->thread_list->length;
+}
+
+
+s64 func_java_lang_Thread_createStackFrame___J(JThreadRuntime *runtime, struct java_lang_Thread *p0) {
+    JThreadRuntime *r = jthreadruntime_create();
+    jthread_set_stackFrame((__refer)p0, r);
+    return (s64) (intptr_t) r;
 }
 
 
