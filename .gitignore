@@ -16,3 +16,7 @@ target
 cmake-*
 CMakeFiles
 cmake_*
+
+cppapp/out/
+class2cpp/target
+class2cpp/.idea
