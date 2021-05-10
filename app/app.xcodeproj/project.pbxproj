@@ -1,0 +1,1021 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		457249342020AFAA00349683 /* libc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 457249332020AFAA00349683 /* libc.tbd */; };
+		457249362020AFB400349683 /* libpthread.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 457249352020AFB400349683 /* libpthread.tbd */; };
+		845AED792644DFB6003957DB /* garbage.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED632644DFB5003957DB /* garbage.c */; };
+		845AED7A2644DFB6003957DB /* miniz.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED642644DFB5003957DB /* miniz.c */; };
+		845AED7B2644DFB6003957DB /* jvm.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED652644DFB5003957DB /* jvm.c */; };
+		845AED7C2644DFB6003957DB /* jassist.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED672644DFB5003957DB /* jassist.c */; };
+		845AED7D2644DFB6003957DB /* native_std.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED6A2644DFB5003957DB /* native_std.c */; };
+		845AED7E2644DFB6003957DB /* jvmsvc.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED6B2644DFB5003957DB /* jvmsvc.c */; };
+		845AED7F2644DFB6003957DB /* tinycthread.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED6C2644DFB5003957DB /* tinycthread.c */; };
+		845AED802644DFB6003957DB /* arraylist.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED6D2644DFB5003957DB /* arraylist.c */; };
+		845AED812644DFB6003957DB /* utf8string.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED712644DFB5003957DB /* utf8string.c */; };
+		845AED822644DFB6003957DB /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED722644DFB5003957DB /* main.c */; };
+		845AED832644DFB6003957DB /* hashtable.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED732644DFB5003957DB /* hashtable.c */; };
+		845AED842644DFB6003957DB /* miniz_wrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED742644DFB5003957DB /* miniz_wrapper.c */; };
+		845AED852644DFB6003957DB /* bytebuf.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED762644DFB5003957DB /* bytebuf.c */; };
+		845AEE272644DFD3003957DB /* test.Son.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED882644DFD2003957DB /* test.Son.c */; };
+		845AEE282644DFD3003957DB /* java.lang.Cloneable.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED892644DFD2003957DB /* java.lang.Cloneable.c */; };
+		845AEE292644DFD3003957DB /* java.lang.ClassCastException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED8A2644DFD2003957DB /* java.lang.ClassCastException.c */; };
+		845AEE2A2644DFD3003957DB /* java.lang.System_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED8B2644DFD2003957DB /* java.lang.System_1.c */; };
+		845AEE2B2644DFD3003957DB /* java.util.HashMap_HashIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED8C2644DFD2003957DB /* java.util.HashMap_HashIterator.c */; };
+		845AEE2C2644DFD3003957DB /* java.lang.Thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED8D2644DFD2003957DB /* java.lang.Thread.c */; };
+		845AEE2D2644DFD3003957DB /* java.lang.StringBuilder.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED8E2644DFD2003957DB /* java.lang.StringBuilder.c */; };
+		845AEE2E2644DFD3003957DB /* java.io.EOFException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED8F2644DFD2003957DB /* java.io.EOFException.c */; };
+		845AEE2F2644DFD3003957DB /* java.lang.IllegalThreadStateException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED902644DFD2003957DB /* java.lang.IllegalThreadStateException.c */; };
+		845AEE302644DFD3003957DB /* java.util.Set.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED912644DFD2003957DB /* java.util.Set.c */; };
+		845AEE312644DFD3003957DB /* test.Father.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED922644DFD2003957DB /* test.Father.c */; };
+		845AEE322644DFD3003957DB /* test.Human.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED932644DFD2003957DB /* test.Human.c */; };
+		845AEE332644DFD3003957DB /* java.lang.IllegalArgumentException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED942644DFD2003957DB /* java.lang.IllegalArgumentException.c */; };
+		845AEE342644DFD3003957DB /* java.util.HashMap_EntryIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED952644DFD2003957DB /* java.util.HashMap_EntryIterator.c */; };
+		845AEE352644DFD3003957DB /* java.util.HashMap_Values.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED962644DFD2003957DB /* java.util.HashMap_Values.c */; };
+		845AEE362644DFD3003957DB /* java.lang.ref.Reference.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED972644DFD2003957DB /* java.lang.ref.Reference.c */; };
+		845AEE372644DFD3003957DB /* java.util.AbstractMap.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED982644DFD2003957DB /* java.util.AbstractMap.c */; };
+		845AEE382644DFD3003957DB /* java.util.LinkedHashMap.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED992644DFD2003957DB /* java.util.LinkedHashMap.c */; };
+		845AEE392644DFD3003957DB /* java.util.TimeZone.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED9A2644DFD2003957DB /* java.util.TimeZone.c */; };
+		845AEE3A2644DFD3003957DB /* java.lang.Long.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED9B2644DFD2003957DB /* java.lang.Long.c */; };
+		845AEE3B2644DFD3003957DB /* java.lang.Double.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED9C2644DFD2003957DB /* java.lang.Double.c */; };
+		845AEE3C2644DFD3003957DB /* java.util.CalendarImpl.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED9D2644DFD2003957DB /* java.util.CalendarImpl.c */; };
+		845AEE3D2644DFD3003957DB /* java.util.WeakHashMap_Values.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED9E2644DFD2003957DB /* java.util.WeakHashMap_Values.c */; };
+		845AEE3E2644DFD3003957DB /* java.io.PrintStream.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AED9F2644DFD2003957DB /* java.io.PrintStream.c */; };
+		845AEE3F2644DFD3003957DB /* java.lang.NumberFormatException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA02644DFD2003957DB /* java.lang.NumberFormatException.c */; };
+		845AEE402644DFD3003957DB /* java.io.DataInputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA12644DFD2003957DB /* java.io.DataInputStream.c */; };
+		845AEE412644DFD3003957DB /* java.util.WeakHashMap_KeyIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA22644DFD2003957DB /* java.util.WeakHashMap_KeyIterator.c */; };
+		845AEE422644DFD3003957DB /* java.io.Reader.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA32644DFD2003957DB /* java.io.Reader.c */; };
+		845AEE432644DFD3003957DB /* java.lang.Override.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA42644DFD2003957DB /* java.lang.Override.c */; };
+		845AEE442644DFD3003957DB /* java.util.Map_Entry.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA52644DFD2003957DB /* java.util.Map_Entry.c */; };
+		845AEE452644DFD3003957DB /* java.lang.Object.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA62644DFD2003957DB /* java.lang.Object.c */; };
+		845AEE462644DFD3003957DB /* java.io.RandomAccessFile_2.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA72644DFD2003957DB /* java.io.RandomAccessFile_2.c */; };
+		845AEE472644DFD3003957DB /* java.util.Collection.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA82644DFD2003957DB /* java.util.Collection.c */; };
+		845AEE482644DFD3003957DB /* java.util.Enumeration.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDA92644DFD2003957DB /* java.util.Enumeration.c */; };
+		845AEE492644DFD3003957DB /* java.io.Serializable.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDAA2644DFD2003957DB /* java.io.Serializable.c */; };
+		845AEE4A2644DFD3003957DB /* java.lang.Iterable.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDAB2644DFD2003957DB /* java.lang.Iterable.c */; };
+		845AEE4B2644DFD3003957DB /* java.util.Date.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDAC2644DFD2003957DB /* java.util.Date.c */; };
+		845AEE4C2644DFD3003957DB /* java.io.ByteArrayOutputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDAD2644DFD2003957DB /* java.io.ByteArrayOutputStream.c */; };
+		845AEE4D2644DFD3003957DB /* java.util.AbstractMap_2.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDAE2644DFD2003957DB /* java.util.AbstractMap_2.c */; };
+		845AEE4E2644DFD3003957DB /* java.lang.Exception.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDAF2644DFD2003957DB /* java.lang.Exception.c */; };
+		845AEE4F2644DFD3003957DB /* java.lang.Short.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB02644DFD2003957DB /* java.lang.Short.c */; };
+		845AEE502644DFD3003957DB /* java.util.LinkedHashMap_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB12644DFD2003957DB /* java.util.LinkedHashMap_1.c */; };
+		845AEE512644DFD3003957DB /* java.util.Calendar.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB22644DFD2003957DB /* java.util.Calendar.c */; };
+		845AEE522644DFD3003957DB /* java.lang.ref.ReferenceQueue.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB32644DFD2003957DB /* java.lang.ref.ReferenceQueue.c */; };
+		845AEE532644DFD3003957DB /* java.util.HashMap.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB42644DFD2003957DB /* java.util.HashMap.c */; };
+		845AEE542644DFD3003957DB /* java.lang.Float.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB52644DFD2003957DB /* java.lang.Float.c */; };
+		845AEE552644DFD3003957DB /* java.util.AbstractList_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB62644DFD2003957DB /* java.util.AbstractList_1.c */; };
+		845AEE562644DFD3003957DB /* java.lang.StringBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB72644DFD2003957DB /* java.lang.StringBuffer.c */; };
+		845AEE572644DFD3003957DB /* java.lang.ArrayIndexOutOfBoundsException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB82644DFD2003957DB /* java.lang.ArrayIndexOutOfBoundsException.c */; };
+		845AEE582644DFD3003957DB /* java.io.OutputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDB92644DFD2003957DB /* java.io.OutputStream.c */; };
+		845AEE592644DFD3003957DB /* java.lang.CharSequence.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDBA2644DFD2003957DB /* java.lang.CharSequence.c */; };
+		845AEE5A2644DFD3003957DB /* java.lang.Runnable.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDBB2644DFD2003957DB /* java.lang.Runnable.c */; };
+		845AEE5B2644DFD3003957DB /* java.util.HashMap_Entry.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDBC2644DFD2003957DB /* java.util.HashMap_Entry.c */; };
+		845AEE5C2644DFD3003957DB /* test.Grandpa.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDBD2644DFD3003957DB /* test.Grandpa.c */; };
+		845AEE5D2644DFD3003957DB /* java.lang.System.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDBE2644DFD3003957DB /* java.lang.System.c */; };
+		845AEE5E2644DFD3003957DB /* java.io.ByteArrayInputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDBF2644DFD3003957DB /* java.io.ByteArrayInputStream.c */; };
+		845AEE5F2644DFD3003957DB /* test.SpecTest_1Lua.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC02644DFD3003957DB /* test.SpecTest_1Lua.c */; };
+		845AEE602644DFD3003957DB /* java.lang.CloneNotSupportedException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC12644DFD3003957DB /* java.lang.CloneNotSupportedException.c */; };
+		845AEE612644DFD3003957DB /* java.lang.reflect.Constructor.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC22644DFD3003957DB /* java.lang.reflect.Constructor.c */; };
+		845AEE622644DFD3003957DB /* java.io.RandomAccessFile_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC32644DFD3003957DB /* java.io.RandomAccessFile_1.c */; };
+		845AEE632644DFD3003957DB /* test.Foo1_Tclass.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC42644DFD3003957DB /* test.Foo1_Tclass.c */; };
+		845AEE642644DFD3003957DB /* java.lang.InstantiationException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC52644DFD3003957DB /* java.lang.InstantiationException.c */; };
+		845AEE652644DFD3003957DB /* java.lang.ref.WeakReference.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC62644DFD3003957DB /* java.lang.ref.WeakReference.c */; };
+		845AEE662644DFD3003957DB /* test.SpecTest_1A.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC72644DFD3003957DB /* test.SpecTest_1A.c */; };
+		845AEE672644DFD3003957DB /* test.BpDeep.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC82644DFD3003957DB /* test.BpDeep.c */; };
+		845AEE682644DFD3003957DB /* java.util.NoSuchElementException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDC92644DFD3003957DB /* java.util.NoSuchElementException.c */; };
+		845AEE692644DFD3003957DB /* java.lang.String.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDCA2644DFD3003957DB /* java.lang.String.c */; };
+		845AEE6A2644DFD3003957DB /* java.lang.UnsupportedEncodingException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDCB2644DFD3003957DB /* java.lang.UnsupportedEncodingException.c */; };
+		845AEE6B2644DFD3003957DB /* java.lang.Error.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDCC2644DFD3003957DB /* java.lang.Error.c */; };
+		845AEE6C2644DFD3003957DB /* java.util.WeakHashMap_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDCD2644DFD3003957DB /* java.util.WeakHashMap_1.c */; };
+		845AEE6D2644DFD3003957DB /* java.util.ArrayList.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDCE2644DFD3003957DB /* java.util.ArrayList.c */; };
+		845AEE6E2644DFD3003957DB /* java.lang.Enum.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD02644DFD3003957DB /* java.lang.Enum.c */; };
+		845AEE6F2644DFD3003957DB /* java.util.AbstractMap_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD12644DFD3003957DB /* java.util.AbstractMap_1.c */; };
+		845AEE702644DFD3003957DB /* java.util.LinkedHashMap_KeyIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD22644DFD3003957DB /* java.util.LinkedHashMap_KeyIterator.c */; };
+		845AEE712644DFD3003957DB /* java.lang.Void.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD32644DFD3003957DB /* java.lang.Void.c */; };
+		845AEE722644DFD3003957DB /* java.util.HashMap_ValueIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD42644DFD3003957DB /* java.util.HashMap_ValueIterator.c */; };
+		845AEE732644DFD3003957DB /* java.lang.Throwable.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD52644DFD3003957DB /* java.lang.Throwable.c */; };
+		845AEE742644DFD3003957DB /* java.lang.reflect.Field.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD62644DFD3003957DB /* java.lang.reflect.Field.c */; };
+		845AEE752644DFD3003957DB /* java.lang.Comparable.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD72644DFD3003957DB /* java.lang.Comparable.c */; };
+		845AEE762644DFD3003957DB /* java.io.Writer.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD82644DFD3003957DB /* java.io.Writer.c */; };
+		845AEE772644DFD3003957DB /* java.util.Hashtable.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDD92644DFD3003957DB /* java.util.Hashtable.c */; };
+		845AEE782644DFD3003957DB /* java.util.AbstractList.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDDA2644DFD3003957DB /* java.util.AbstractList.c */; };
+		845AEE792644DFD3003957DB /* java.util.HashSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDDB2644DFD3003957DB /* java.util.HashSet.c */; };
+		845AEE7A2644DFD3003957DB /* java.lang.reflect.Method.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDDC2644DFD3003957DB /* java.lang.reflect.Method.c */; };
+		845AEE7B2644DFD3003957DB /* java.util.AbstractCollection.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDDD2644DFD3003957DB /* java.util.AbstractCollection.c */; };
+		845AEE7C2644DFD3003957DB /* java.util.ConcurrentModificationException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDDE2644DFD3003957DB /* java.util.ConcurrentModificationException.c */; };
+		845AEE7D2644DFD3003957DB /* test.Foo1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDDF2644DFD3003957DB /* test.Foo1.c */; };
+		845AEE7E2644DFD3003957DB /* java.io.ConsoleOutputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE02644DFD3003957DB /* java.io.ConsoleOutputStream.c */; };
+		845AEE7F2644DFD3003957DB /* java.io.IOException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE12644DFD3003957DB /* java.io.IOException.c */; };
+		845AEE802644DFD3003957DB /* java.util.AbstractList_ListItr.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE22644DFD3003957DB /* java.util.AbstractList_ListItr.c */; };
+		845AEE812644DFD3003957DB /* java.lang.Character.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE32644DFD3003957DB /* java.lang.Character.c */; };
+		845AEE822644DFD3003957DB /* java.util.Hashtable_2.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE42644DFD3003957DB /* java.util.Hashtable_2.c */; };
+		845AEE832644DFD3003957DB /* java.io.InputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE52644DFD3003957DB /* java.io.InputStream.c */; };
+		845AEE842644DFD3003957DB /* java.lang.ClassNotFoundException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE62644DFD3003957DB /* java.lang.ClassNotFoundException.c */; };
+		845AEE852644DFD3003957DB /* java.lang.reflect.Array.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE72644DFD3003957DB /* java.lang.reflect.Array.c */; };
+		845AEE862644DFD3003957DB /* test.Apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE82644DFD3003957DB /* test.Apple.c */; };
+		845AEE872644DFD3003957DB /* java.util.WeakHashMap_KeySet.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDE92644DFD3003957DB /* java.util.WeakHashMap_KeySet.c */; };
+		845AEE882644DFD3003957DB /* java.lang.IndexOutOfBoundsException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDEA2644DFD3003957DB /* java.lang.IndexOutOfBoundsException.c */; };
+		845AEE892644DFD3003957DB /* java.lang.ArithmeticException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDEB2644DFD3003957DB /* java.lang.ArithmeticException.c */; };
+		845AEE8A2644DFD3003957DB /* java.lang.NullPointerException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDEC2644DFD3003957DB /* java.lang.NullPointerException.c */; };
+		845AEE8B2644DFD3003957DB /* java.util.Random.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDED2644DFD3003957DB /* java.util.Random.c */; };
+		845AEE8C2644DFD3003957DB /* java.lang.Byte.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDEE2644DFD3003957DB /* java.lang.Byte.c */; };
+		845AEE8D2644DFD3003957DB /* java.util.WeakHashMap_HashIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDEF2644DFD3003957DB /* java.util.WeakHashMap_HashIterator.c */; };
+		845AEE8E2644DFD3003957DB /* java.lang.OutOfMemoryError.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF02644DFD3003957DB /* java.lang.OutOfMemoryError.c */; };
+		845AEE8F2644DFD3003957DB /* test.BpDeepTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF12644DFD3003957DB /* test.BpDeepTest.c */; };
+		845AEE902644DFD3003957DB /* java.util.LinkedHashMap_ValueIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF22644DFD3003957DB /* java.util.LinkedHashMap_ValueIterator.c */; };
+		845AEE912644DFD3003957DB /* java.lang.StackTraceElement.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF32644DFD3003957DB /* java.lang.StackTraceElement.c */; };
+		845AEE922644DFD3003957DB /* java.lang.NoSuchFieldException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF42644DFD3003957DB /* java.lang.NoSuchFieldException.c */; };
+		845AEE932644DFD3003957DB /* java.io.RandomAccessFile.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF52644DFD3003957DB /* java.io.RandomAccessFile.c */; };
+		845AEE942644DFD3003957DB /* java.util.WeakHashMap_EntryIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF62644DFD3003957DB /* java.util.WeakHashMap_EntryIterator.c */; };
+		845AEE952644DFD3003957DB /* java.util.HashMap_KeySet.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF72644DFD3003957DB /* java.util.HashMap_KeySet.c */; };
+		845AEE962644DFD3003957DB /* java.util.WeakHashMap.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF82644DFD3003957DB /* java.util.WeakHashMap.c */; };
+		845AEE972644DFD3003957DB /* java.util.TimeZoneImpl.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDF92644DFD3003957DB /* java.util.TimeZoneImpl.c */; };
+		845AEE982644DFD3003957DB /* java.util.Vector.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDFA2644DFD3003957DB /* java.util.Vector.c */; };
+		845AEE992644DFD3003957DB /* java.lang.Runtime.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDFB2644DFD3003957DB /* java.lang.Runtime.c */; };
+		845AEE9A2644DFD3003957DB /* java.lang.InterruptedException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDFC2644DFD3003957DB /* java.lang.InterruptedException.c */; };
+		845AEE9B2644DFD3003957DB /* java.lang.Boolean.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDFD2644DFD3003957DB /* java.lang.Boolean.c */; };
+		845AEE9C2644DFD3003957DB /* java.util.WeakHashMap_Entry.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDFE2644DFD3003957DB /* java.util.WeakHashMap_Entry.c */; };
+		845AEE9D2644DFD3003957DB /* java.util.AbstractMap_SimpleImmutableEntry.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEDFF2644DFD3003957DB /* java.util.AbstractMap_SimpleImmutableEntry.c */; };
+		845AEE9E2644DFD3003957DB /* java.lang.RuntimeException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE002644DFD3003957DB /* java.lang.RuntimeException.c */; };
+		845AEE9F2644DFD3003957DB /* java.util.AbstractMap_1_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE012644DFD3003957DB /* java.util.AbstractMap_1_1.c */; };
+		845AEEA02644DFD3003957DB /* java.util.Iterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE022644DFD3003957DB /* java.util.Iterator.c */; };
+		845AEEA12644DFD3003957DB /* java.util.Map.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE032644DFD3003957DB /* java.util.Map.c */; };
+		845AEEA22644DFD3003957DB /* test_Foo1_lambda_testThreadWait_0.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE042644DFD3003957DB /* test_Foo1_lambda_testThreadWait_0.c */; };
+		845AEEA32644DFD3003957DB /* java.util.LinkedHashMap_EntryIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE052644DFD3003957DB /* java.util.LinkedHashMap_EntryIterator.c */; };
+		845AEEA42644DFD3003957DB /* java.io.DataOutputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE062644DFD3003957DB /* java.io.DataOutputStream.c */; };
+		845AEEA52644DFD3003957DB /* java.util.WeakHashMap_ValueIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE072644DFD3003957DB /* java.util.WeakHashMap_ValueIterator.c */; };
+		845AEEA62644DFD3003957DB /* java.util.ListIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE082644DFD3003957DB /* java.util.ListIterator.c */; };
+		845AEEA72644DFD3003957DB /* java.util.HashMap_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE092644DFD3003957DB /* java.util.HashMap_1.c */; };
+		845AEEA82644DFD3003957DB /* java.util.Vector_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE0A2644DFD3003957DB /* java.util.Vector_1.c */; };
+		845AEEA92644DFD3003957DB /* test.SpecTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE0B2644DFD3003957DB /* test.SpecTest.c */; };
+		845AEEAA2644DFD3003957DB /* java.lang.IllegalStateException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE0C2644DFD3003957DB /* java.lang.IllegalStateException.c */; };
+		845AEEAB2644DFD3003957DB /* java.util.HashMap_KeyIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE0D2644DFD3003957DB /* java.util.HashMap_KeyIterator.c */; };
+		845AEEAC2644DFD3003957DB /* java.util.AbstractMap_2_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE0E2644DFD3003957DB /* java.util.AbstractMap_2_1.c */; };
+		845AEEAD2644DFD3003957DB /* java.lang.Integer.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE0F2644DFD3003957DB /* java.lang.Integer.c */; };
+		845AEEAE2644DFD3003957DB /* java.util.WeakHashMap_EntrySet.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE102644DFD3003957DB /* java.util.WeakHashMap_EntrySet.c */; };
+		845AEEAF2644DFD3003957DB /* java.util.AbstractSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE112644DFD3003957DB /* java.util.AbstractSet.c */; };
+		845AEEB02644DFD3003957DB /* java.lang.Class.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE122644DFD3003957DB /* java.lang.Class.c */; };
+		845AEEB12644DFD3003957DB /* java.util.AbstractList_Itr.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE132644DFD3003957DB /* java.util.AbstractList_Itr.c */; };
+		845AEEB22644DFD3003957DB /* test.HelloWorld.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE142644DFD3003957DB /* test.HelloWorld.c */; };
+		845AEEB32644DFD3003957DB /* test_SpecTest_lambda_test_0005fmethod_0.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE162644DFD3003957DB /* test_SpecTest_lambda_test_0005fmethod_0.c */; };
+		845AEEB42644DFD3003957DB /* java.util.Hashtable_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE172644DFD3003957DB /* java.util.Hashtable_1.c */; };
+		845AEEB52644DFD3003957DB /* java.lang.NoSuchMethodException.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE182644DFD3003957DB /* java.lang.NoSuchMethodException.c */; };
+		845AEEB62644DFD3003957DB /* java.util.HashMap_EntrySet.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE192644DFD3003957DB /* java.util.HashMap_EntrySet.c */; };
+		845AEEB72644DFD3003957DB /* java.lang.VM.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE1A2644DFD3003957DB /* java.lang.VM.c */; };
+		845AEEB82644DFD3003957DB /* test.Foo1_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE1B2644DFD3003957DB /* test.Foo1_1.c */; };
+		845AEEB92644DFD3003957DB /* java.util.List.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE1C2644DFD3003957DB /* java.util.List.c */; };
+		845AEEBA2644DFD3003957DB /* metadata.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE1D2644DFD3003957DB /* metadata.c */; };
+		845AEEBB2644DFD3003957DB /* java.util.SubList.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE1E2644DFD3003957DB /* java.util.SubList.c */; };
+		845AEEBC2644DFD3003957DB /* java.util.LinkedHashMap_Entry.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE1F2644DFD3003957DB /* java.util.LinkedHashMap_Entry.c */; };
+		845AEEBD2644DFD3003957DB /* java.lang.Math.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE202644DFD3003957DB /* java.lang.Math.c */; };
+		845AEEBE2644DFD3003957DB /* test.SpecTest_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE212644DFD3003957DB /* test.SpecTest_1.c */; };
+		845AEEBF2644DFD3003957DB /* java.util.SubList_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE222644DFD3003957DB /* java.util.SubList_1.c */; };
+		845AEEC02644DFD3003957DB /* test.SpecTest_XF.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE232644DFD3003957DB /* test.SpecTest_XF.c */; };
+		845AEEC12644DFD3003957DB /* java.util.LinkedHashMap_LinkedHashIterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE242644DFD3003957DB /* java.util.LinkedHashMap_LinkedHashIterator.c */; };
+		845AEEC22644DFD3003957DB /* java.lang.annotation.Annotation.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE252644DFD3003957DB /* java.lang.annotation.Annotation.c */; };
+		845AEEC32644DFD3003957DB /* java.util.AbstractMap_SimpleEntry.c in Sources */ = {isa = PBXBuildFile; fileRef = 845AEE262644DFD3003957DB /* java.util.AbstractMap_SimpleEntry.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		457248DC2020AAC600349683 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		457248DE2020AAC600349683 /* tinyapp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tinyapp; sourceTree = BUILT_PRODUCTS_DIR; };
+		457249332020AFAA00349683 /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
+		457249352020AFB400349683 /* libpthread.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpthread.tbd; path = usr/lib/libpthread.tbd; sourceTree = SDKROOT; };
+		845AED602644DFB5003957DB /* dirent_win.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dirent_win.h; sourceTree = "<group>"; };
+		845AED612644DFB5003957DB /* spinlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spinlock.h; sourceTree = "<group>"; };
+		845AED622644DFB5003957DB /* utf8string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8string.h; sourceTree = "<group>"; };
+		845AED632644DFB5003957DB /* garbage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = garbage.c; sourceTree = "<group>"; };
+		845AED642644DFB5003957DB /* miniz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = miniz.c; sourceTree = "<group>"; };
+		845AED652644DFB5003957DB /* jvm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jvm.c; sourceTree = "<group>"; };
+		845AED662644DFB5003957DB /* bytebuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bytebuf.h; sourceTree = "<group>"; };
+		845AED672644DFB5003957DB /* jassist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jassist.c; sourceTree = "<group>"; };
+		845AED682644DFB5003957DB /* miniz_wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = miniz_wrapper.h; sourceTree = "<group>"; };
+		845AED692644DFB5003957DB /* hashtable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hashtable.h; sourceTree = "<group>"; };
+		845AED6A2644DFB5003957DB /* native_std.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = native_std.c; sourceTree = "<group>"; };
+		845AED6B2644DFB5003957DB /* jvmsvc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jvmsvc.c; sourceTree = "<group>"; };
+		845AED6C2644DFB5003957DB /* tinycthread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tinycthread.c; sourceTree = "<group>"; };
+		845AED6D2644DFB5003957DB /* arraylist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = arraylist.c; sourceTree = "<group>"; };
+		845AED6E2644DFB5003957DB /* jvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jvm.h; sourceTree = "<group>"; };
+		845AED6F2644DFB5003957DB /* miniz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = miniz.h; sourceTree = "<group>"; };
+		845AED702644DFB5003957DB /* garbage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = garbage.h; sourceTree = "<group>"; };
+		845AED712644DFB5003957DB /* utf8string.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utf8string.c; sourceTree = "<group>"; };
+		845AED722644DFB5003957DB /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		845AED732644DFB5003957DB /* hashtable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hashtable.c; sourceTree = "<group>"; };
+		845AED742644DFB5003957DB /* miniz_wrapper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = miniz_wrapper.c; sourceTree = "<group>"; };
+		845AED752644DFB5003957DB /* jvmtype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jvmtype.h; sourceTree = "<group>"; };
+		845AED762644DFB5003957DB /* bytebuf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bytebuf.c; sourceTree = "<group>"; };
+		845AED772644DFB5003957DB /* arraylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arraylist.h; sourceTree = "<group>"; };
+		845AED782644DFB5003957DB /* tinycthread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinycthread.h; sourceTree = "<group>"; };
+		845AED882644DFD2003957DB /* test.Son.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.Son.c; sourceTree = "<group>"; };
+		845AED892644DFD2003957DB /* java.lang.Cloneable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Cloneable.c; sourceTree = "<group>"; };
+		845AED8A2644DFD2003957DB /* java.lang.ClassCastException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.ClassCastException.c; sourceTree = "<group>"; };
+		845AED8B2644DFD2003957DB /* java.lang.System_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.System_1.c; sourceTree = "<group>"; };
+		845AED8C2644DFD2003957DB /* java.util.HashMap_HashIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_HashIterator.c; sourceTree = "<group>"; };
+		845AED8D2644DFD2003957DB /* java.lang.Thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Thread.c; sourceTree = "<group>"; };
+		845AED8E2644DFD2003957DB /* java.lang.StringBuilder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.StringBuilder.c; sourceTree = "<group>"; };
+		845AED8F2644DFD2003957DB /* java.io.EOFException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.EOFException.c; sourceTree = "<group>"; };
+		845AED902644DFD2003957DB /* java.lang.IllegalThreadStateException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.IllegalThreadStateException.c; sourceTree = "<group>"; };
+		845AED912644DFD2003957DB /* java.util.Set.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Set.c; sourceTree = "<group>"; };
+		845AED922644DFD2003957DB /* test.Father.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.Father.c; sourceTree = "<group>"; };
+		845AED932644DFD2003957DB /* test.Human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.Human.c; sourceTree = "<group>"; };
+		845AED942644DFD2003957DB /* java.lang.IllegalArgumentException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.IllegalArgumentException.c; sourceTree = "<group>"; };
+		845AED952644DFD2003957DB /* java.util.HashMap_EntryIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_EntryIterator.c; sourceTree = "<group>"; };
+		845AED962644DFD2003957DB /* java.util.HashMap_Values.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_Values.c; sourceTree = "<group>"; };
+		845AED972644DFD2003957DB /* java.lang.ref.Reference.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.ref.Reference.c; sourceTree = "<group>"; };
+		845AED982644DFD2003957DB /* java.util.AbstractMap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractMap.c; sourceTree = "<group>"; };
+		845AED992644DFD2003957DB /* java.util.LinkedHashMap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.LinkedHashMap.c; sourceTree = "<group>"; };
+		845AED9A2644DFD2003957DB /* java.util.TimeZone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.TimeZone.c; sourceTree = "<group>"; };
+		845AED9B2644DFD2003957DB /* java.lang.Long.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Long.c; sourceTree = "<group>"; };
+		845AED9C2644DFD2003957DB /* java.lang.Double.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Double.c; sourceTree = "<group>"; };
+		845AED9D2644DFD2003957DB /* java.util.CalendarImpl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.CalendarImpl.c; sourceTree = "<group>"; };
+		845AED9E2644DFD2003957DB /* java.util.WeakHashMap_Values.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_Values.c; sourceTree = "<group>"; };
+		845AED9F2644DFD2003957DB /* java.io.PrintStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.PrintStream.c; sourceTree = "<group>"; };
+		845AEDA02644DFD2003957DB /* java.lang.NumberFormatException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.NumberFormatException.c; sourceTree = "<group>"; };
+		845AEDA12644DFD2003957DB /* java.io.DataInputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.DataInputStream.c; sourceTree = "<group>"; };
+		845AEDA22644DFD2003957DB /* java.util.WeakHashMap_KeyIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_KeyIterator.c; sourceTree = "<group>"; };
+		845AEDA32644DFD2003957DB /* java.io.Reader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.Reader.c; sourceTree = "<group>"; };
+		845AEDA42644DFD2003957DB /* java.lang.Override.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Override.c; sourceTree = "<group>"; };
+		845AEDA52644DFD2003957DB /* java.util.Map_Entry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Map_Entry.c; sourceTree = "<group>"; };
+		845AEDA62644DFD2003957DB /* java.lang.Object.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Object.c; sourceTree = "<group>"; };
+		845AEDA72644DFD2003957DB /* java.io.RandomAccessFile_2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.RandomAccessFile_2.c; sourceTree = "<group>"; };
+		845AEDA82644DFD2003957DB /* java.util.Collection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Collection.c; sourceTree = "<group>"; };
+		845AEDA92644DFD2003957DB /* java.util.Enumeration.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Enumeration.c; sourceTree = "<group>"; };
+		845AEDAA2644DFD2003957DB /* java.io.Serializable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.Serializable.c; sourceTree = "<group>"; };
+		845AEDAB2644DFD2003957DB /* java.lang.Iterable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Iterable.c; sourceTree = "<group>"; };
+		845AEDAC2644DFD2003957DB /* java.util.Date.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Date.c; sourceTree = "<group>"; };
+		845AEDAD2644DFD2003957DB /* java.io.ByteArrayOutputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.ByteArrayOutputStream.c; sourceTree = "<group>"; };
+		845AEDAE2644DFD2003957DB /* java.util.AbstractMap_2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractMap_2.c; sourceTree = "<group>"; };
+		845AEDAF2644DFD2003957DB /* java.lang.Exception.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Exception.c; sourceTree = "<group>"; };
+		845AEDB02644DFD2003957DB /* java.lang.Short.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Short.c; sourceTree = "<group>"; };
+		845AEDB12644DFD2003957DB /* java.util.LinkedHashMap_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.LinkedHashMap_1.c; sourceTree = "<group>"; };
+		845AEDB22644DFD2003957DB /* java.util.Calendar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Calendar.c; sourceTree = "<group>"; };
+		845AEDB32644DFD2003957DB /* java.lang.ref.ReferenceQueue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.ref.ReferenceQueue.c; sourceTree = "<group>"; };
+		845AEDB42644DFD2003957DB /* java.util.HashMap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap.c; sourceTree = "<group>"; };
+		845AEDB52644DFD2003957DB /* java.lang.Float.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Float.c; sourceTree = "<group>"; };
+		845AEDB62644DFD2003957DB /* java.util.AbstractList_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractList_1.c; sourceTree = "<group>"; };
+		845AEDB72644DFD2003957DB /* java.lang.StringBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.StringBuffer.c; sourceTree = "<group>"; };
+		845AEDB82644DFD2003957DB /* java.lang.ArrayIndexOutOfBoundsException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.ArrayIndexOutOfBoundsException.c; sourceTree = "<group>"; };
+		845AEDB92644DFD2003957DB /* java.io.OutputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.OutputStream.c; sourceTree = "<group>"; };
+		845AEDBA2644DFD2003957DB /* java.lang.CharSequence.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.CharSequence.c; sourceTree = "<group>"; };
+		845AEDBB2644DFD2003957DB /* java.lang.Runnable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Runnable.c; sourceTree = "<group>"; };
+		845AEDBC2644DFD2003957DB /* java.util.HashMap_Entry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_Entry.c; sourceTree = "<group>"; };
+		845AEDBD2644DFD3003957DB /* test.Grandpa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.Grandpa.c; sourceTree = "<group>"; };
+		845AEDBE2644DFD3003957DB /* java.lang.System.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.System.c; sourceTree = "<group>"; };
+		845AEDBF2644DFD3003957DB /* java.io.ByteArrayInputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.ByteArrayInputStream.c; sourceTree = "<group>"; };
+		845AEDC02644DFD3003957DB /* test.SpecTest_1Lua.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.SpecTest_1Lua.c; sourceTree = "<group>"; };
+		845AEDC12644DFD3003957DB /* java.lang.CloneNotSupportedException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.CloneNotSupportedException.c; sourceTree = "<group>"; };
+		845AEDC22644DFD3003957DB /* java.lang.reflect.Constructor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.reflect.Constructor.c; sourceTree = "<group>"; };
+		845AEDC32644DFD3003957DB /* java.io.RandomAccessFile_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.RandomAccessFile_1.c; sourceTree = "<group>"; };
+		845AEDC42644DFD3003957DB /* test.Foo1_Tclass.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.Foo1_Tclass.c; sourceTree = "<group>"; };
+		845AEDC52644DFD3003957DB /* java.lang.InstantiationException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.InstantiationException.c; sourceTree = "<group>"; };
+		845AEDC62644DFD3003957DB /* java.lang.ref.WeakReference.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.ref.WeakReference.c; sourceTree = "<group>"; };
+		845AEDC72644DFD3003957DB /* test.SpecTest_1A.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.SpecTest_1A.c; sourceTree = "<group>"; };
+		845AEDC82644DFD3003957DB /* test.BpDeep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.BpDeep.c; sourceTree = "<group>"; };
+		845AEDC92644DFD3003957DB /* java.util.NoSuchElementException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.NoSuchElementException.c; sourceTree = "<group>"; };
+		845AEDCA2644DFD3003957DB /* java.lang.String.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.String.c; sourceTree = "<group>"; };
+		845AEDCB2644DFD3003957DB /* java.lang.UnsupportedEncodingException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.UnsupportedEncodingException.c; sourceTree = "<group>"; };
+		845AEDCC2644DFD3003957DB /* java.lang.Error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Error.c; sourceTree = "<group>"; };
+		845AEDCD2644DFD3003957DB /* java.util.WeakHashMap_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_1.c; sourceTree = "<group>"; };
+		845AEDCE2644DFD3003957DB /* java.util.ArrayList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.ArrayList.c; sourceTree = "<group>"; };
+		845AEDCF2644DFD3003957DB /* metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = metadata.h; sourceTree = "<group>"; };
+		845AEDD02644DFD3003957DB /* java.lang.Enum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Enum.c; sourceTree = "<group>"; };
+		845AEDD12644DFD3003957DB /* java.util.AbstractMap_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractMap_1.c; sourceTree = "<group>"; };
+		845AEDD22644DFD3003957DB /* java.util.LinkedHashMap_KeyIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.LinkedHashMap_KeyIterator.c; sourceTree = "<group>"; };
+		845AEDD32644DFD3003957DB /* java.lang.Void.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Void.c; sourceTree = "<group>"; };
+		845AEDD42644DFD3003957DB /* java.util.HashMap_ValueIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_ValueIterator.c; sourceTree = "<group>"; };
+		845AEDD52644DFD3003957DB /* java.lang.Throwable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Throwable.c; sourceTree = "<group>"; };
+		845AEDD62644DFD3003957DB /* java.lang.reflect.Field.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.reflect.Field.c; sourceTree = "<group>"; };
+		845AEDD72644DFD3003957DB /* java.lang.Comparable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Comparable.c; sourceTree = "<group>"; };
+		845AEDD82644DFD3003957DB /* java.io.Writer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.Writer.c; sourceTree = "<group>"; };
+		845AEDD92644DFD3003957DB /* java.util.Hashtable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Hashtable.c; sourceTree = "<group>"; };
+		845AEDDA2644DFD3003957DB /* java.util.AbstractList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractList.c; sourceTree = "<group>"; };
+		845AEDDB2644DFD3003957DB /* java.util.HashSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashSet.c; sourceTree = "<group>"; };
+		845AEDDC2644DFD3003957DB /* java.lang.reflect.Method.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.reflect.Method.c; sourceTree = "<group>"; };
+		845AEDDD2644DFD3003957DB /* java.util.AbstractCollection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractCollection.c; sourceTree = "<group>"; };
+		845AEDDE2644DFD3003957DB /* java.util.ConcurrentModificationException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.ConcurrentModificationException.c; sourceTree = "<group>"; };
+		845AEDDF2644DFD3003957DB /* test.Foo1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.Foo1.c; sourceTree = "<group>"; };
+		845AEDE02644DFD3003957DB /* java.io.ConsoleOutputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.ConsoleOutputStream.c; sourceTree = "<group>"; };
+		845AEDE12644DFD3003957DB /* java.io.IOException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.IOException.c; sourceTree = "<group>"; };
+		845AEDE22644DFD3003957DB /* java.util.AbstractList_ListItr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractList_ListItr.c; sourceTree = "<group>"; };
+		845AEDE32644DFD3003957DB /* java.lang.Character.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Character.c; sourceTree = "<group>"; };
+		845AEDE42644DFD3003957DB /* java.util.Hashtable_2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Hashtable_2.c; sourceTree = "<group>"; };
+		845AEDE52644DFD3003957DB /* java.io.InputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.InputStream.c; sourceTree = "<group>"; };
+		845AEDE62644DFD3003957DB /* java.lang.ClassNotFoundException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.ClassNotFoundException.c; sourceTree = "<group>"; };
+		845AEDE72644DFD3003957DB /* java.lang.reflect.Array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.reflect.Array.c; sourceTree = "<group>"; };
+		845AEDE82644DFD3003957DB /* test.Apple.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.Apple.c; sourceTree = "<group>"; };
+		845AEDE92644DFD3003957DB /* java.util.WeakHashMap_KeySet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_KeySet.c; sourceTree = "<group>"; };
+		845AEDEA2644DFD3003957DB /* java.lang.IndexOutOfBoundsException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.IndexOutOfBoundsException.c; sourceTree = "<group>"; };
+		845AEDEB2644DFD3003957DB /* java.lang.ArithmeticException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.ArithmeticException.c; sourceTree = "<group>"; };
+		845AEDEC2644DFD3003957DB /* java.lang.NullPointerException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.NullPointerException.c; sourceTree = "<group>"; };
+		845AEDED2644DFD3003957DB /* java.util.Random.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Random.c; sourceTree = "<group>"; };
+		845AEDEE2644DFD3003957DB /* java.lang.Byte.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Byte.c; sourceTree = "<group>"; };
+		845AEDEF2644DFD3003957DB /* java.util.WeakHashMap_HashIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_HashIterator.c; sourceTree = "<group>"; };
+		845AEDF02644DFD3003957DB /* java.lang.OutOfMemoryError.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.OutOfMemoryError.c; sourceTree = "<group>"; };
+		845AEDF12644DFD3003957DB /* test.BpDeepTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.BpDeepTest.c; sourceTree = "<group>"; };
+		845AEDF22644DFD3003957DB /* java.util.LinkedHashMap_ValueIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.LinkedHashMap_ValueIterator.c; sourceTree = "<group>"; };
+		845AEDF32644DFD3003957DB /* java.lang.StackTraceElement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.StackTraceElement.c; sourceTree = "<group>"; };
+		845AEDF42644DFD3003957DB /* java.lang.NoSuchFieldException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.NoSuchFieldException.c; sourceTree = "<group>"; };
+		845AEDF52644DFD3003957DB /* java.io.RandomAccessFile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.RandomAccessFile.c; sourceTree = "<group>"; };
+		845AEDF62644DFD3003957DB /* java.util.WeakHashMap_EntryIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_EntryIterator.c; sourceTree = "<group>"; };
+		845AEDF72644DFD3003957DB /* java.util.HashMap_KeySet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_KeySet.c; sourceTree = "<group>"; };
+		845AEDF82644DFD3003957DB /* java.util.WeakHashMap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap.c; sourceTree = "<group>"; };
+		845AEDF92644DFD3003957DB /* java.util.TimeZoneImpl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.TimeZoneImpl.c; sourceTree = "<group>"; };
+		845AEDFA2644DFD3003957DB /* java.util.Vector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Vector.c; sourceTree = "<group>"; };
+		845AEDFB2644DFD3003957DB /* java.lang.Runtime.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Runtime.c; sourceTree = "<group>"; };
+		845AEDFC2644DFD3003957DB /* java.lang.InterruptedException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.InterruptedException.c; sourceTree = "<group>"; };
+		845AEDFD2644DFD3003957DB /* java.lang.Boolean.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Boolean.c; sourceTree = "<group>"; };
+		845AEDFE2644DFD3003957DB /* java.util.WeakHashMap_Entry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_Entry.c; sourceTree = "<group>"; };
+		845AEDFF2644DFD3003957DB /* java.util.AbstractMap_SimpleImmutableEntry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractMap_SimpleImmutableEntry.c; sourceTree = "<group>"; };
+		845AEE002644DFD3003957DB /* java.lang.RuntimeException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.RuntimeException.c; sourceTree = "<group>"; };
+		845AEE012644DFD3003957DB /* java.util.AbstractMap_1_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractMap_1_1.c; sourceTree = "<group>"; };
+		845AEE022644DFD3003957DB /* java.util.Iterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Iterator.c; sourceTree = "<group>"; };
+		845AEE032644DFD3003957DB /* java.util.Map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Map.c; sourceTree = "<group>"; };
+		845AEE042644DFD3003957DB /* test_Foo1_lambda_testThreadWait_0.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_Foo1_lambda_testThreadWait_0.c; sourceTree = "<group>"; };
+		845AEE052644DFD3003957DB /* java.util.LinkedHashMap_EntryIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.LinkedHashMap_EntryIterator.c; sourceTree = "<group>"; };
+		845AEE062644DFD3003957DB /* java.io.DataOutputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.io.DataOutputStream.c; sourceTree = "<group>"; };
+		845AEE072644DFD3003957DB /* java.util.WeakHashMap_ValueIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_ValueIterator.c; sourceTree = "<group>"; };
+		845AEE082644DFD3003957DB /* java.util.ListIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.ListIterator.c; sourceTree = "<group>"; };
+		845AEE092644DFD3003957DB /* java.util.HashMap_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_1.c; sourceTree = "<group>"; };
+		845AEE0A2644DFD3003957DB /* java.util.Vector_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Vector_1.c; sourceTree = "<group>"; };
+		845AEE0B2644DFD3003957DB /* test.SpecTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.SpecTest.c; sourceTree = "<group>"; };
+		845AEE0C2644DFD3003957DB /* java.lang.IllegalStateException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.IllegalStateException.c; sourceTree = "<group>"; };
+		845AEE0D2644DFD3003957DB /* java.util.HashMap_KeyIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_KeyIterator.c; sourceTree = "<group>"; };
+		845AEE0E2644DFD3003957DB /* java.util.AbstractMap_2_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractMap_2_1.c; sourceTree = "<group>"; };
+		845AEE0F2644DFD3003957DB /* java.lang.Integer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Integer.c; sourceTree = "<group>"; };
+		845AEE102644DFD3003957DB /* java.util.WeakHashMap_EntrySet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.WeakHashMap_EntrySet.c; sourceTree = "<group>"; };
+		845AEE112644DFD3003957DB /* java.util.AbstractSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractSet.c; sourceTree = "<group>"; };
+		845AEE122644DFD3003957DB /* java.lang.Class.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Class.c; sourceTree = "<group>"; };
+		845AEE132644DFD3003957DB /* java.util.AbstractList_Itr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractList_Itr.c; sourceTree = "<group>"; };
+		845AEE142644DFD3003957DB /* test.HelloWorld.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.HelloWorld.c; sourceTree = "<group>"; };
+		845AEE152644DFD3003957DB /* native_gen.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = native_gen.txt; sourceTree = "<group>"; };
+		845AEE162644DFD3003957DB /* test_SpecTest_lambda_test_0005fmethod_0.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_SpecTest_lambda_test_0005fmethod_0.c; sourceTree = "<group>"; };
+		845AEE172644DFD3003957DB /* java.util.Hashtable_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.Hashtable_1.c; sourceTree = "<group>"; };
+		845AEE182644DFD3003957DB /* java.lang.NoSuchMethodException.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.NoSuchMethodException.c; sourceTree = "<group>"; };
+		845AEE192644DFD3003957DB /* java.util.HashMap_EntrySet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.HashMap_EntrySet.c; sourceTree = "<group>"; };
+		845AEE1A2644DFD3003957DB /* java.lang.VM.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.VM.c; sourceTree = "<group>"; };
+		845AEE1B2644DFD3003957DB /* test.Foo1_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.Foo1_1.c; sourceTree = "<group>"; };
+		845AEE1C2644DFD3003957DB /* java.util.List.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.List.c; sourceTree = "<group>"; };
+		845AEE1D2644DFD3003957DB /* metadata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = metadata.c; sourceTree = "<group>"; };
+		845AEE1E2644DFD3003957DB /* java.util.SubList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.SubList.c; sourceTree = "<group>"; };
+		845AEE1F2644DFD3003957DB /* java.util.LinkedHashMap_Entry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.LinkedHashMap_Entry.c; sourceTree = "<group>"; };
+		845AEE202644DFD3003957DB /* java.lang.Math.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.Math.c; sourceTree = "<group>"; };
+		845AEE212644DFD3003957DB /* test.SpecTest_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.SpecTest_1.c; sourceTree = "<group>"; };
+		845AEE222644DFD3003957DB /* java.util.SubList_1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.SubList_1.c; sourceTree = "<group>"; };
+		845AEE232644DFD3003957DB /* test.SpecTest_XF.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.SpecTest_XF.c; sourceTree = "<group>"; };
+		845AEE242644DFD3003957DB /* java.util.LinkedHashMap_LinkedHashIterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.LinkedHashMap_LinkedHashIterator.c; sourceTree = "<group>"; };
+		845AEE252644DFD3003957DB /* java.lang.annotation.Annotation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.lang.annotation.Annotation.c; sourceTree = "<group>"; };
+		845AEE262644DFD3003957DB /* java.util.AbstractMap_SimpleEntry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = java.util.AbstractMap_SimpleEntry.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		457248DB2020AAC600349683 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				457249362020AFB400349683 /* libpthread.tbd in Frameworks */,
+				457249342020AFAA00349683 /* libc.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		457248D52020AAC600349683 = {
+			isa = PBXGroup;
+			children = (
+				845AED872644DFD2003957DB /* c */,
+				845AED5F2644DFB5003957DB /* vm */,
+				457248DF2020AAC600349683 /* Products */,
+				457249322020AFAA00349683 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		457248DF2020AAC600349683 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				457248DE2020AAC600349683 /* tinyapp */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		457249322020AFAA00349683 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				457249352020AFB400349683 /* libpthread.tbd */,
+				457249332020AFAA00349683 /* libc.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		845AED5F2644DFB5003957DB /* vm */ = {
+			isa = PBXGroup;
+			children = (
+				845AED602644DFB5003957DB /* dirent_win.h */,
+				845AED612644DFB5003957DB /* spinlock.h */,
+				845AED622644DFB5003957DB /* utf8string.h */,
+				845AED632644DFB5003957DB /* garbage.c */,
+				845AED642644DFB5003957DB /* miniz.c */,
+				845AED652644DFB5003957DB /* jvm.c */,
+				845AED662644DFB5003957DB /* bytebuf.h */,
+				845AED672644DFB5003957DB /* jassist.c */,
+				845AED682644DFB5003957DB /* miniz_wrapper.h */,
+				845AED692644DFB5003957DB /* hashtable.h */,
+				845AED6A2644DFB5003957DB /* native_std.c */,
+				845AED6B2644DFB5003957DB /* jvmsvc.c */,
+				845AED6C2644DFB5003957DB /* tinycthread.c */,
+				845AED6D2644DFB5003957DB /* arraylist.c */,
+				845AED6E2644DFB5003957DB /* jvm.h */,
+				845AED6F2644DFB5003957DB /* miniz.h */,
+				845AED702644DFB5003957DB /* garbage.h */,
+				845AED712644DFB5003957DB /* utf8string.c */,
+				845AED722644DFB5003957DB /* main.c */,
+				845AED732644DFB5003957DB /* hashtable.c */,
+				845AED742644DFB5003957DB /* miniz_wrapper.c */,
+				845AED752644DFB5003957DB /* jvmtype.h */,
+				845AED762644DFB5003957DB /* bytebuf.c */,
+				845AED772644DFB5003957DB /* arraylist.h */,
+				845AED782644DFB5003957DB /* tinycthread.h */,
+			);
+			path = vm;
+			sourceTree = "<group>";
+		};
+		845AED872644DFD2003957DB /* c */ = {
+			isa = PBXGroup;
+			children = (
+				845AEDBF2644DFD3003957DB /* java.io.ByteArrayInputStream.c */,
+				845AEDAD2644DFD2003957DB /* java.io.ByteArrayOutputStream.c */,
+				845AEDE02644DFD3003957DB /* java.io.ConsoleOutputStream.c */,
+				845AEDA12644DFD2003957DB /* java.io.DataInputStream.c */,
+				845AEE062644DFD3003957DB /* java.io.DataOutputStream.c */,
+				845AED8F2644DFD2003957DB /* java.io.EOFException.c */,
+				845AEDE52644DFD3003957DB /* java.io.InputStream.c */,
+				845AEDE12644DFD3003957DB /* java.io.IOException.c */,
+				845AEDB92644DFD2003957DB /* java.io.OutputStream.c */,
+				845AED9F2644DFD2003957DB /* java.io.PrintStream.c */,
+				845AEDC32644DFD3003957DB /* java.io.RandomAccessFile_1.c */,
+				845AEDA72644DFD2003957DB /* java.io.RandomAccessFile_2.c */,
+				845AEDF52644DFD3003957DB /* java.io.RandomAccessFile.c */,
+				845AEDA32644DFD2003957DB /* java.io.Reader.c */,
+				845AEDAA2644DFD2003957DB /* java.io.Serializable.c */,
+				845AEDD82644DFD3003957DB /* java.io.Writer.c */,
+				845AEE252644DFD3003957DB /* java.lang.annotation.Annotation.c */,
+				845AEDEB2644DFD3003957DB /* java.lang.ArithmeticException.c */,
+				845AEDB82644DFD2003957DB /* java.lang.ArrayIndexOutOfBoundsException.c */,
+				845AEDFD2644DFD3003957DB /* java.lang.Boolean.c */,
+				845AEDEE2644DFD3003957DB /* java.lang.Byte.c */,
+				845AEDE32644DFD3003957DB /* java.lang.Character.c */,
+				845AEDBA2644DFD2003957DB /* java.lang.CharSequence.c */,
+				845AEE122644DFD3003957DB /* java.lang.Class.c */,
+				845AED8A2644DFD2003957DB /* java.lang.ClassCastException.c */,
+				845AEDE62644DFD3003957DB /* java.lang.ClassNotFoundException.c */,
+				845AED892644DFD2003957DB /* java.lang.Cloneable.c */,
+				845AEDC12644DFD3003957DB /* java.lang.CloneNotSupportedException.c */,
+				845AEDD72644DFD3003957DB /* java.lang.Comparable.c */,
+				845AED9C2644DFD2003957DB /* java.lang.Double.c */,
+				845AEDD02644DFD3003957DB /* java.lang.Enum.c */,
+				845AEDCC2644DFD3003957DB /* java.lang.Error.c */,
+				845AEDAF2644DFD2003957DB /* java.lang.Exception.c */,
+				845AEDB52644DFD2003957DB /* java.lang.Float.c */,
+				845AED942644DFD2003957DB /* java.lang.IllegalArgumentException.c */,
+				845AEE0C2644DFD3003957DB /* java.lang.IllegalStateException.c */,
+				845AED902644DFD2003957DB /* java.lang.IllegalThreadStateException.c */,
+				845AEDEA2644DFD3003957DB /* java.lang.IndexOutOfBoundsException.c */,
+				845AEDC52644DFD3003957DB /* java.lang.InstantiationException.c */,
+				845AEE0F2644DFD3003957DB /* java.lang.Integer.c */,
+				845AEDFC2644DFD3003957DB /* java.lang.InterruptedException.c */,
+				845AEDAB2644DFD2003957DB /* java.lang.Iterable.c */,
+				845AED9B2644DFD2003957DB /* java.lang.Long.c */,
+				845AEE202644DFD3003957DB /* java.lang.Math.c */,
+				845AEDF42644DFD3003957DB /* java.lang.NoSuchFieldException.c */,
+				845AEE182644DFD3003957DB /* java.lang.NoSuchMethodException.c */,
+				845AEDEC2644DFD3003957DB /* java.lang.NullPointerException.c */,
+				845AEDA02644DFD2003957DB /* java.lang.NumberFormatException.c */,
+				845AEDA62644DFD2003957DB /* java.lang.Object.c */,
+				845AEDF02644DFD3003957DB /* java.lang.OutOfMemoryError.c */,
+				845AEDA42644DFD2003957DB /* java.lang.Override.c */,
+				845AED972644DFD2003957DB /* java.lang.ref.Reference.c */,
+				845AEDB32644DFD2003957DB /* java.lang.ref.ReferenceQueue.c */,
+				845AEDC62644DFD3003957DB /* java.lang.ref.WeakReference.c */,
+				845AEDE72644DFD3003957DB /* java.lang.reflect.Array.c */,
+				845AEDC22644DFD3003957DB /* java.lang.reflect.Constructor.c */,
+				845AEDD62644DFD3003957DB /* java.lang.reflect.Field.c */,
+				845AEDDC2644DFD3003957DB /* java.lang.reflect.Method.c */,
+				845AEDBB2644DFD2003957DB /* java.lang.Runnable.c */,
+				845AEDFB2644DFD3003957DB /* java.lang.Runtime.c */,
+				845AEE002644DFD3003957DB /* java.lang.RuntimeException.c */,
+				845AEDB02644DFD2003957DB /* java.lang.Short.c */,
+				845AEDF32644DFD3003957DB /* java.lang.StackTraceElement.c */,
+				845AEDCA2644DFD3003957DB /* java.lang.String.c */,
+				845AEDB72644DFD2003957DB /* java.lang.StringBuffer.c */,
+				845AED8E2644DFD2003957DB /* java.lang.StringBuilder.c */,
+				845AED8B2644DFD2003957DB /* java.lang.System_1.c */,
+				845AEDBE2644DFD3003957DB /* java.lang.System.c */,
+				845AED8D2644DFD2003957DB /* java.lang.Thread.c */,
+				845AEDD52644DFD3003957DB /* java.lang.Throwable.c */,
+				845AEDCB2644DFD3003957DB /* java.lang.UnsupportedEncodingException.c */,
+				845AEE1A2644DFD3003957DB /* java.lang.VM.c */,
+				845AEDD32644DFD3003957DB /* java.lang.Void.c */,
+				845AEDDD2644DFD3003957DB /* java.util.AbstractCollection.c */,
+				845AEDB62644DFD2003957DB /* java.util.AbstractList_1.c */,
+				845AEE132644DFD3003957DB /* java.util.AbstractList_Itr.c */,
+				845AEDE22644DFD3003957DB /* java.util.AbstractList_ListItr.c */,
+				845AEDDA2644DFD3003957DB /* java.util.AbstractList.c */,
+				845AEE012644DFD3003957DB /* java.util.AbstractMap_1_1.c */,
+				845AEDD12644DFD3003957DB /* java.util.AbstractMap_1.c */,
+				845AEE0E2644DFD3003957DB /* java.util.AbstractMap_2_1.c */,
+				845AEDAE2644DFD2003957DB /* java.util.AbstractMap_2.c */,
+				845AEE262644DFD3003957DB /* java.util.AbstractMap_SimpleEntry.c */,
+				845AEDFF2644DFD3003957DB /* java.util.AbstractMap_SimpleImmutableEntry.c */,
+				845AED982644DFD2003957DB /* java.util.AbstractMap.c */,
+				845AEE112644DFD3003957DB /* java.util.AbstractSet.c */,
+				845AEDCE2644DFD3003957DB /* java.util.ArrayList.c */,
+				845AEDB22644DFD2003957DB /* java.util.Calendar.c */,
+				845AED9D2644DFD2003957DB /* java.util.CalendarImpl.c */,
+				845AEDA82644DFD2003957DB /* java.util.Collection.c */,
+				845AEDDE2644DFD3003957DB /* java.util.ConcurrentModificationException.c */,
+				845AEDAC2644DFD2003957DB /* java.util.Date.c */,
+				845AEDA92644DFD2003957DB /* java.util.Enumeration.c */,
+				845AEE092644DFD3003957DB /* java.util.HashMap_1.c */,
+				845AEDBC2644DFD2003957DB /* java.util.HashMap_Entry.c */,
+				845AED952644DFD2003957DB /* java.util.HashMap_EntryIterator.c */,
+				845AEE192644DFD3003957DB /* java.util.HashMap_EntrySet.c */,
+				845AED8C2644DFD2003957DB /* java.util.HashMap_HashIterator.c */,
+				845AEE0D2644DFD3003957DB /* java.util.HashMap_KeyIterator.c */,
+				845AEDF72644DFD3003957DB /* java.util.HashMap_KeySet.c */,
+				845AEDD42644DFD3003957DB /* java.util.HashMap_ValueIterator.c */,
+				845AED962644DFD2003957DB /* java.util.HashMap_Values.c */,
+				845AEDB42644DFD2003957DB /* java.util.HashMap.c */,
+				845AEDDB2644DFD3003957DB /* java.util.HashSet.c */,
+				845AEE172644DFD3003957DB /* java.util.Hashtable_1.c */,
+				845AEDE42644DFD3003957DB /* java.util.Hashtable_2.c */,
+				845AEDD92644DFD3003957DB /* java.util.Hashtable.c */,
+				845AEE022644DFD3003957DB /* java.util.Iterator.c */,
+				845AEDB12644DFD2003957DB /* java.util.LinkedHashMap_1.c */,
+				845AEE1F2644DFD3003957DB /* java.util.LinkedHashMap_Entry.c */,
+				845AEE052644DFD3003957DB /* java.util.LinkedHashMap_EntryIterator.c */,
+				845AEDD22644DFD3003957DB /* java.util.LinkedHashMap_KeyIterator.c */,
+				845AEE242644DFD3003957DB /* java.util.LinkedHashMap_LinkedHashIterator.c */,
+				845AEDF22644DFD3003957DB /* java.util.LinkedHashMap_ValueIterator.c */,
+				845AED992644DFD2003957DB /* java.util.LinkedHashMap.c */,
+				845AEE1C2644DFD3003957DB /* java.util.List.c */,
+				845AEE082644DFD3003957DB /* java.util.ListIterator.c */,
+				845AEDA52644DFD2003957DB /* java.util.Map_Entry.c */,
+				845AEE032644DFD3003957DB /* java.util.Map.c */,
+				845AEDC92644DFD3003957DB /* java.util.NoSuchElementException.c */,
+				845AEDED2644DFD3003957DB /* java.util.Random.c */,
+				845AED912644DFD2003957DB /* java.util.Set.c */,
+				845AEE222644DFD3003957DB /* java.util.SubList_1.c */,
+				845AEE1E2644DFD3003957DB /* java.util.SubList.c */,
+				845AED9A2644DFD2003957DB /* java.util.TimeZone.c */,
+				845AEDF92644DFD3003957DB /* java.util.TimeZoneImpl.c */,
+				845AEE0A2644DFD3003957DB /* java.util.Vector_1.c */,
+				845AEDFA2644DFD3003957DB /* java.util.Vector.c */,
+				845AEDCD2644DFD3003957DB /* java.util.WeakHashMap_1.c */,
+				845AEDFE2644DFD3003957DB /* java.util.WeakHashMap_Entry.c */,
+				845AEDF62644DFD3003957DB /* java.util.WeakHashMap_EntryIterator.c */,
+				845AEE102644DFD3003957DB /* java.util.WeakHashMap_EntrySet.c */,
+				845AEDEF2644DFD3003957DB /* java.util.WeakHashMap_HashIterator.c */,
+				845AEDA22644DFD2003957DB /* java.util.WeakHashMap_KeyIterator.c */,
+				845AEDE92644DFD3003957DB /* java.util.WeakHashMap_KeySet.c */,
+				845AEE072644DFD3003957DB /* java.util.WeakHashMap_ValueIterator.c */,
+				845AED9E2644DFD2003957DB /* java.util.WeakHashMap_Values.c */,
+				845AEDF82644DFD3003957DB /* java.util.WeakHashMap.c */,
+				845AEE1D2644DFD3003957DB /* metadata.c */,
+				845AEDCF2644DFD3003957DB /* metadata.h */,
+				845AEE152644DFD3003957DB /* native_gen.txt */,
+				845AEE042644DFD3003957DB /* test_Foo1_lambda_testThreadWait_0.c */,
+				845AEE162644DFD3003957DB /* test_SpecTest_lambda_test_0005fmethod_0.c */,
+				845AEDE82644DFD3003957DB /* test.Apple.c */,
+				845AEDC82644DFD3003957DB /* test.BpDeep.c */,
+				845AEDF12644DFD3003957DB /* test.BpDeepTest.c */,
+				845AED922644DFD2003957DB /* test.Father.c */,
+				845AEE1B2644DFD3003957DB /* test.Foo1_1.c */,
+				845AEDC42644DFD3003957DB /* test.Foo1_Tclass.c */,
+				845AEDDF2644DFD3003957DB /* test.Foo1.c */,
+				845AEDBD2644DFD3003957DB /* test.Grandpa.c */,
+				845AEE142644DFD3003957DB /* test.HelloWorld.c */,
+				845AED932644DFD2003957DB /* test.Human.c */,
+				845AED882644DFD2003957DB /* test.Son.c */,
+				845AEE212644DFD3003957DB /* test.SpecTest_1.c */,
+				845AEDC72644DFD3003957DB /* test.SpecTest_1A.c */,
+				845AEDC02644DFD3003957DB /* test.SpecTest_1Lua.c */,
+				845AEE232644DFD3003957DB /* test.SpecTest_XF.c */,
+				845AEE0B2644DFD3003957DB /* test.SpecTest.c */,
+			);
+			name = c;
+			path = out/c;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		457248DD2020AAC600349683 /* tinyapp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 457248E52020AAC600349683 /* Build configuration list for PBXNativeTarget "tinyapp" */;
+			buildPhases = (
+				457248DA2020AAC600349683 /* Sources */,
+				457248DB2020AAC600349683 /* Frameworks */,
+				457248DC2020AAC600349683 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tinyapp;
+			productName = jvm_macos;
+			productReference = 457248DE2020AAC600349683 /* tinyapp */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		457248D62020AAC600349683 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = Gust;
+				TargetAttributes = {
+					457248DD2020AAC600349683 = {
+						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 457248D92020AAC600349683 /* Build configuration list for PBXProject "app" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 457248D52020AAC600349683;
+			productRefGroup = 457248DF2020AAC600349683 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				457248DD2020AAC600349683 /* tinyapp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		457248DA2020AAC600349683 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				845AEEAE2644DFD3003957DB /* java.util.WeakHashMap_EntrySet.c in Sources */,
+				845AEE9E2644DFD3003957DB /* java.lang.RuntimeException.c in Sources */,
+				845AED7E2644DFB6003957DB /* jvmsvc.c in Sources */,
+				845AEEB92644DFD3003957DB /* java.util.List.c in Sources */,
+				845AEE7D2644DFD3003957DB /* test.Foo1.c in Sources */,
+				845AEE832644DFD3003957DB /* java.io.InputStream.c in Sources */,
+				845AEE342644DFD3003957DB /* java.util.HashMap_EntryIterator.c in Sources */,
+				845AEEB32644DFD3003957DB /* test_SpecTest_lambda_test_0005fmethod_0.c in Sources */,
+				845AEEAC2644DFD3003957DB /* java.util.AbstractMap_2_1.c in Sources */,
+				845AEEBD2644DFD3003957DB /* java.lang.Math.c in Sources */,
+				845AEEB62644DFD3003957DB /* java.util.HashMap_EntrySet.c in Sources */,
+				845AEEC12644DFD3003957DB /* java.util.LinkedHashMap_LinkedHashIterator.c in Sources */,
+				845AEE552644DFD3003957DB /* java.util.AbstractList_1.c in Sources */,
+				845AEE422644DFD3003957DB /* java.io.Reader.c in Sources */,
+				845AEE822644DFD3003957DB /* java.util.Hashtable_2.c in Sources */,
+				845AED7A2644DFB6003957DB /* miniz.c in Sources */,
+				845AEE512644DFD3003957DB /* java.util.Calendar.c in Sources */,
+				845AEE2A2644DFD3003957DB /* java.lang.System_1.c in Sources */,
+				845AEE362644DFD3003957DB /* java.lang.ref.Reference.c in Sources */,
+				845AEE372644DFD3003957DB /* java.util.AbstractMap.c in Sources */,
+				845AEE392644DFD3003957DB /* java.util.TimeZone.c in Sources */,
+				845AEE602644DFD3003957DB /* java.lang.CloneNotSupportedException.c in Sources */,
+				845AEE962644DFD3003957DB /* java.util.WeakHashMap.c in Sources */,
+				845AEE7E2644DFD3003957DB /* java.io.ConsoleOutputStream.c in Sources */,
+				845AEE4B2644DFD3003957DB /* java.util.Date.c in Sources */,
+				845AEE2B2644DFD3003957DB /* java.util.HashMap_HashIterator.c in Sources */,
+				845AEE842644DFD3003957DB /* java.lang.ClassNotFoundException.c in Sources */,
+				845AEE382644DFD3003957DB /* java.util.LinkedHashMap.c in Sources */,
+				845AEE732644DFD3003957DB /* java.lang.Throwable.c in Sources */,
+				845AEE6E2644DFD3003957DB /* java.lang.Enum.c in Sources */,
+				845AEE6C2644DFD3003957DB /* java.util.WeakHashMap_1.c in Sources */,
+				845AEE5D2644DFD3003957DB /* java.lang.System.c in Sources */,
+				845AED7D2644DFB6003957DB /* native_std.c in Sources */,
+				845AED842644DFB6003957DB /* miniz_wrapper.c in Sources */,
+				845AEE4E2644DFD3003957DB /* java.lang.Exception.c in Sources */,
+				845AEE2E2644DFD3003957DB /* java.io.EOFException.c in Sources */,
+				845AEE902644DFD3003957DB /* java.util.LinkedHashMap_ValueIterator.c in Sources */,
+				845AEE7C2644DFD3003957DB /* java.util.ConcurrentModificationException.c in Sources */,
+				845AEE632644DFD3003957DB /* test.Foo1_Tclass.c in Sources */,
+				845AEEB02644DFD3003957DB /* java.lang.Class.c in Sources */,
+				845AEE532644DFD3003957DB /* java.util.HashMap.c in Sources */,
+				845AED792644DFB6003957DB /* garbage.c in Sources */,
+				845AEE592644DFD3003957DB /* java.lang.CharSequence.c in Sources */,
+				845AEE3E2644DFD3003957DB /* java.io.PrintStream.c in Sources */,
+				845AEEA92644DFD3003957DB /* test.SpecTest.c in Sources */,
+				845AEEBB2644DFD3003957DB /* java.util.SubList.c in Sources */,
+				845AEE4D2644DFD3003957DB /* java.util.AbstractMap_2.c in Sources */,
+				845AEE292644DFD3003957DB /* java.lang.ClassCastException.c in Sources */,
+				845AEE502644DFD3003957DB /* java.util.LinkedHashMap_1.c in Sources */,
+				845AEEA22644DFD3003957DB /* test_Foo1_lambda_testThreadWait_0.c in Sources */,
+				845AEE5A2644DFD3003957DB /* java.lang.Runnable.c in Sources */,
+				845AEE872644DFD3003957DB /* java.util.WeakHashMap_KeySet.c in Sources */,
+				845AEEA42644DFD3003957DB /* java.io.DataOutputStream.c in Sources */,
+				845AEEB52644DFD3003957DB /* java.lang.NoSuchMethodException.c in Sources */,
+				845AEEA62644DFD3003957DB /* java.util.ListIterator.c in Sources */,
+				845AEE712644DFD3003957DB /* java.lang.Void.c in Sources */,
+				845AEE412644DFD3003957DB /* java.util.WeakHashMap_KeyIterator.c in Sources */,
+				845AEE942644DFD3003957DB /* java.util.WeakHashMap_EntryIterator.c in Sources */,
+				845AEE662644DFD3003957DB /* test.SpecTest_1A.c in Sources */,
+				845AED832644DFB6003957DB /* hashtable.c in Sources */,
+				845AEE3D2644DFD3003957DB /* java.util.WeakHashMap_Values.c in Sources */,
+				845AEE7F2644DFD3003957DB /* java.io.IOException.c in Sources */,
+				845AEE802644DFD3003957DB /* java.util.AbstractList_ListItr.c in Sources */,
+				845AEEB82644DFD3003957DB /* test.Foo1_1.c in Sources */,
+				845AEE622644DFD3003957DB /* java.io.RandomAccessFile_1.c in Sources */,
+				845AEE862644DFD3003957DB /* test.Apple.c in Sources */,
+				845AEE782644DFD3003957DB /* java.util.AbstractList.c in Sources */,
+				845AEE562644DFD3003957DB /* java.lang.StringBuffer.c in Sources */,
+				845AEE7B2644DFD3003957DB /* java.util.AbstractCollection.c in Sources */,
+				845AED7B2644DFB6003957DB /* jvm.c in Sources */,
+				845AEE6D2644DFD3003957DB /* java.util.ArrayList.c in Sources */,
+				845AEEBA2644DFD3003957DB /* metadata.c in Sources */,
+				845AEE772644DFD3003957DB /* java.util.Hashtable.c in Sources */,
+				845AEE9A2644DFD3003957DB /* java.lang.InterruptedException.c in Sources */,
+				845AEE952644DFD3003957DB /* java.util.HashMap_KeySet.c in Sources */,
+				845AED7C2644DFB6003957DB /* jassist.c in Sources */,
+				845AEE9B2644DFD3003957DB /* java.lang.Boolean.c in Sources */,
+				845AEEA02644DFD3003957DB /* java.util.Iterator.c in Sources */,
+				845AEE892644DFD3003957DB /* java.lang.ArithmeticException.c in Sources */,
+				845AEEAB2644DFD3003957DB /* java.util.HashMap_KeyIterator.c in Sources */,
+				845AEEC02644DFD3003957DB /* test.SpecTest_XF.c in Sources */,
+				845AEE3A2644DFD3003957DB /* java.lang.Long.c in Sources */,
+				845AED822644DFB6003957DB /* main.c in Sources */,
+				845AEE692644DFD3003957DB /* java.lang.String.c in Sources */,
+				845AEE572644DFD3003957DB /* java.lang.ArrayIndexOutOfBoundsException.c in Sources */,
+				845AEEB12644DFD3003957DB /* java.util.AbstractList_Itr.c in Sources */,
+				845AEEB22644DFD3003957DB /* test.HelloWorld.c in Sources */,
+				845AEEAF2644DFD3003957DB /* java.util.AbstractSet.c in Sources */,
+				845AEE9C2644DFD3003957DB /* java.util.WeakHashMap_Entry.c in Sources */,
+				845AED802644DFB6003957DB /* arraylist.c in Sources */,
+				845AEEA12644DFD3003957DB /* java.util.Map.c in Sources */,
+				845AEE8A2644DFD3003957DB /* java.lang.NullPointerException.c in Sources */,
+				845AEE8E2644DFD3003957DB /* java.lang.OutOfMemoryError.c in Sources */,
+				845AEE932644DFD3003957DB /* java.io.RandomAccessFile.c in Sources */,
+				845AEE312644DFD3003957DB /* test.Father.c in Sources */,
+				845AEEA52644DFD3003957DB /* java.util.WeakHashMap_ValueIterator.c in Sources */,
+				845AEE4A2644DFD3003957DB /* java.lang.Iterable.c in Sources */,
+				845AEE9F2644DFD3003957DB /* java.util.AbstractMap_1_1.c in Sources */,
+				845AEE542644DFD3003957DB /* java.lang.Float.c in Sources */,
+				845AEE482644DFD3003957DB /* java.util.Enumeration.c in Sources */,
+				845AEE272644DFD3003957DB /* test.Son.c in Sources */,
+				845AEE702644DFD3003957DB /* java.util.LinkedHashMap_KeyIterator.c in Sources */,
+				845AEEA32644DFD3003957DB /* java.util.LinkedHashMap_EntryIterator.c in Sources */,
+				845AEE762644DFD3003957DB /* java.io.Writer.c in Sources */,
+				845AEE402644DFD3003957DB /* java.io.DataInputStream.c in Sources */,
+				845AEE852644DFD3003957DB /* java.lang.reflect.Array.c in Sources */,
+				845AEE522644DFD3003957DB /* java.lang.ref.ReferenceQueue.c in Sources */,
+				845AEE6F2644DFD3003957DB /* java.util.AbstractMap_1.c in Sources */,
+				845AEE722644DFD3003957DB /* java.util.HashMap_ValueIterator.c in Sources */,
+				845AEE652644DFD3003957DB /* java.lang.ref.WeakReference.c in Sources */,
+				845AEE612644DFD3003957DB /* java.lang.reflect.Constructor.c in Sources */,
+				845AEE882644DFD3003957DB /* java.lang.IndexOutOfBoundsException.c in Sources */,
+				845AEE6B2644DFD3003957DB /* java.lang.Error.c in Sources */,
+				845AEE9D2644DFD3003957DB /* java.util.AbstractMap_SimpleImmutableEntry.c in Sources */,
+				845AEE4C2644DFD3003957DB /* java.io.ByteArrayOutputStream.c in Sources */,
+				845AEE5E2644DFD3003957DB /* java.io.ByteArrayInputStream.c in Sources */,
+				845AEE442644DFD3003957DB /* java.util.Map_Entry.c in Sources */,
+				845AEE582644DFD3003957DB /* java.io.OutputStream.c in Sources */,
+				845AEE452644DFD3003957DB /* java.lang.Object.c in Sources */,
+				845AEE322644DFD3003957DB /* test.Human.c in Sources */,
+				845AEEB42644DFD3003957DB /* java.util.Hashtable_1.c in Sources */,
+				845AEE5B2644DFD3003957DB /* java.util.HashMap_Entry.c in Sources */,
+				845AEE332644DFD3003957DB /* java.lang.IllegalArgumentException.c in Sources */,
+				845AEE2C2644DFD3003957DB /* java.lang.Thread.c in Sources */,
+				845AEE472644DFD3003957DB /* java.util.Collection.c in Sources */,
+				845AEE432644DFD3003957DB /* java.lang.Override.c in Sources */,
+				845AED812644DFB6003957DB /* utf8string.c in Sources */,
+				845AEE982644DFD3003957DB /* java.util.Vector.c in Sources */,
+				845AEEA72644DFD3003957DB /* java.util.HashMap_1.c in Sources */,
+				845AEE752644DFD3003957DB /* java.lang.Comparable.c in Sources */,
+				845AEE8F2644DFD3003957DB /* test.BpDeepTest.c in Sources */,
+				845AEE8C2644DFD3003957DB /* java.lang.Byte.c in Sources */,
+				845AEE302644DFD3003957DB /* java.util.Set.c in Sources */,
+				845AED852644DFB6003957DB /* bytebuf.c in Sources */,
+				845AEE8D2644DFD3003957DB /* java.util.WeakHashMap_HashIterator.c in Sources */,
+				845AEEC32644DFD3003957DB /* java.util.AbstractMap_SimpleEntry.c in Sources */,
+				845AEE3C2644DFD3003957DB /* java.util.CalendarImpl.c in Sources */,
+				845AEE912644DFD3003957DB /* java.lang.StackTraceElement.c in Sources */,
+				845AEE2F2644DFD3003957DB /* java.lang.IllegalThreadStateException.c in Sources */,
+				845AEEBF2644DFD3003957DB /* java.util.SubList_1.c in Sources */,
+				845AEE792644DFD3003957DB /* java.util.HashSet.c in Sources */,
+				845AEE462644DFD3003957DB /* java.io.RandomAccessFile_2.c in Sources */,
+				845AEE492644DFD3003957DB /* java.io.Serializable.c in Sources */,
+				845AEE5C2644DFD3003957DB /* test.Grandpa.c in Sources */,
+				845AEE2D2644DFD3003957DB /* java.lang.StringBuilder.c in Sources */,
+				845AEE6A2644DFD3003957DB /* java.lang.UnsupportedEncodingException.c in Sources */,
+				845AEE922644DFD3003957DB /* java.lang.NoSuchFieldException.c in Sources */,
+				845AEE812644DFD3003957DB /* java.lang.Character.c in Sources */,
+				845AEEB72644DFD3003957DB /* java.lang.VM.c in Sources */,
+				845AEEBC2644DFD3003957DB /* java.util.LinkedHashMap_Entry.c in Sources */,
+				845AEE642644DFD3003957DB /* java.lang.InstantiationException.c in Sources */,
+				845AEE3B2644DFD3003957DB /* java.lang.Double.c in Sources */,
+				845AEE4F2644DFD3003957DB /* java.lang.Short.c in Sources */,
+				845AEEAD2644DFD3003957DB /* java.lang.Integer.c in Sources */,
+				845AEE5F2644DFD3003957DB /* test.SpecTest_1Lua.c in Sources */,
+				845AEE672644DFD3003957DB /* test.BpDeep.c in Sources */,
+				845AEE8B2644DFD3003957DB /* java.util.Random.c in Sources */,
+				845AEEA82644DFD3003957DB /* java.util.Vector_1.c in Sources */,
+				845AEE3F2644DFD3003957DB /* java.lang.NumberFormatException.c in Sources */,
+				845AEE742644DFD3003957DB /* java.lang.reflect.Field.c in Sources */,
+				845AED7F2644DFB6003957DB /* tinycthread.c in Sources */,
+				845AEE282644DFD3003957DB /* java.lang.Cloneable.c in Sources */,
+				845AEE682644DFD3003957DB /* java.util.NoSuchElementException.c in Sources */,
+				845AEE992644DFD3003957DB /* java.lang.Runtime.c in Sources */,
+				845AEEC22644DFD3003957DB /* java.lang.annotation.Annotation.c in Sources */,
+				845AEEBE2644DFD3003957DB /* test.SpecTest_1.c in Sources */,
+				845AEEAA2644DFD3003957DB /* java.lang.IllegalStateException.c in Sources */,
+				845AEE972644DFD3003957DB /* java.util.TimeZoneImpl.c in Sources */,
+				845AEE352644DFD3003957DB /* java.util.HashMap_Values.c in Sources */,
+				845AEE7A2644DFD3003957DB /* java.lang.reflect.Method.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		457248E32020AAC600349683 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		457248E42020AAC600349683 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+			};
+			name = Release;
+		};
+		457248E62020AAC600349683 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = "../../minijvm/c/**";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "jvm_macos/jvm_macos-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				USER_HEADER_SEARCH_PATHS = "./vm/ ./out/c/";
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		457248E72020AAC600349683 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = "../../minijvm/c/**";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "jvm_macos/jvm_macos-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+				USER_HEADER_SEARCH_PATHS = "./vm/ ./out/c/";
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		457248D92020AAC600349683 /* Build configuration list for PBXProject "app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				457248E32020AAC600349683 /* Debug */,
+				457248E42020AAC600349683 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		457248E52020AAC600349683 /* Build configuration list for PBXNativeTarget "tinyapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				457248E62020AAC600349683 /* Debug */,
+				457248E72020AAC600349683 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 457248D62020AAC600349683 /* Project object */;
+}

@@ -17,7 +17,6 @@
 #include "garbage.h"
 
 
-
 #if __JVM_OS_VS__
 #include <stdio.h>
 #else
@@ -487,7 +486,7 @@ s64 func_java_lang_Runtime_freeMemory___J(JThreadRuntime *runtime, struct java_l
 }
 
 void func_java_lang_Runtime_gc___V(JThreadRuntime *runtime, struct java_lang_Runtime *p0) {
-    return;
+    g_jvm->collector->lastgc = 0;
 }
 
 s64 func_java_lang_Runtime_totalMemory___J(JThreadRuntime *runtime, struct java_lang_Runtime *p0) {
@@ -620,7 +619,7 @@ s32 func_java_lang_Thread_activeCount___I(JThreadRuntime *runtime) {
 
 s64 func_java_lang_Thread_createStackFrame___J(JThreadRuntime *runtime, struct java_lang_Thread *p0) {
     JThreadRuntime *r = jthreadruntime_create();
-    jthread_set_stackFrame((__refer)p0, r);
+    jthread_set_stackFrame((__refer) p0, r);
     return (s64) (intptr_t) r;
 }
 
