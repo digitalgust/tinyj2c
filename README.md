@@ -38,10 +38,11 @@ Or
 package test;
 
 public class HelloWorld {
+    static String str = "Hello world!";
 
     void test() throws RuntimeException {
         try {
-            System.out.println("Hello world!");
+            System.out.println(str);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,8 +52,6 @@ public class HelloWorld {
         new HelloWorld().test();
     }
 }
-
-
 ```     
      
 * converted C code:     
