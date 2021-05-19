@@ -3,14 +3,14 @@
 #ifndef _GARBAGE_H
 #define _GARBAGE_H
 
-#include "jvm.h"
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 
+
+#include "jvm.h"
 
 //回收线程
 

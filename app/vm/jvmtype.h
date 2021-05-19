@@ -4,6 +4,9 @@
 
 #ifndef CCJVM_JVMTYPE_H
 #define CCJVM_JVMTYPE_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdlib.h>
 
@@ -98,5 +101,8 @@ static inline void *jvm_realloc(__refer pPtr, u32 size) {
 
 }
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif //CCJVM_JVMTYPE_H
