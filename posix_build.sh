@@ -45,7 +45,7 @@ CSRC="./app"
 VMLIST=`find ${CSRC}/vm  -type f  -name "*.c" `
 GENLIST=`find ${CSRC}/out/c  -type f  -name "*.c" `
 
-${GCC} -O3 -pipe -o app.out -I${CSRC}/out/c -I${CSRC}/vm  -lpthread -lm   $VMLIST  ${GENLIST} 
+${GCC} -O3 -pipe -o app.out -I${CSRC}/out/c -I${CSRC}/vm  $VMLIST  ${GENLIST}  -lpthread -lm
 
 echo "build completed : app.out"
 
