@@ -15,7 +15,8 @@ Tinyj2c translate JAVA source to C source, build as standlone binary, and run wi
 # Requirement 
 1. JDK 8+ (not only jre).         
 2. clang/gcc/vsc.     
-
+   win i686 download:  https://github.com/digitalgust/mingw-w64/releases/download/release/i686-8.1.0-release-posix-dwarf-rt_v6-rev0.7z
+   win x64 download:   https://github.com/digitalgust/mingw-w64/releases/download/release/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z
      
 # Steps    
 
