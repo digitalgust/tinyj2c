@@ -19,16 +19,16 @@ Tinyj2c transfer JAVA source to C source, build as standlone binary, and run wit
    win x64 download:   https://github.com/digitalgust/mingw-w64/releases/download/release/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z    
      
 # Steps    
+ 
+* run build script :    
+ /tinyj2c/posix_build.sh   
+
+Or 
 
 * git clone https://github.com/digitalgust/tinyj2c.git        
 * Idea open /tinyj2c/class2c , run translator.    
 * Clion/vs/xcode open /tinyj2c/app , compile c source and run .      
 * Run binary no java classes dependence.   
-
-Or 
- 
-* run build script :    
- /tinyj2c/posix_build.sh   
 
      
 # Translated java file Example   
