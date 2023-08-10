@@ -1,7 +1,7 @@
 
 # Tinyj2c
 
-Tinyj2c translate JAVA source to C source, build as standlone binary, and run without any class file. It's so small can be used to embedded device.
+Tinyj2c transfer JAVA source to C source, build as standlone binary, and run without any class file. It's so small can be used to embedded device.
 
 # Feature  
 * A very very small java runtime    
